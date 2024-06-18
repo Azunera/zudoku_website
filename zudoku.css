@@ -26,29 +26,31 @@ h1 {
     color: #333;
     font-family: 'Dancing Script', cursive;
     margin: 20px;
-    text-align: left;
+    text-align: center;
     font-size: 48px;
     text-shadow: 2px 2px 4px #aaa;
 }
 
 .columns-container {
-    display: flex;
-    flex-wrap: wrap;
     padding: 20px;
+    margin: 0 auto; /* Center the container */
+    max-width: 1200px; /* Adjust the max-width to your preference */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.body_column {
+    display: block; /* Use block instead of flex */
+    padding: 20px;
+    margin: 0 auto; /* Center align */
+    text-align: center;
 }
 
 .column {
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
-}
-
-.column.side {
-    flex: 1 1 25%;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-.column.middle {
-    flex: 2 1 75%;
-    background-color: rgba(255, 255, 255, 0.8);
+    margin: 20px 0;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 p {
@@ -57,11 +59,19 @@ p {
     color: #333;
     line-height: 1.5;
     padding: 20px;
+    text-align: center;
 }
 
 img {
     max-width: 100%;
     height: auto;
+    margin: 20px 0;
+}
+
+.download-button {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
 }
 
 .download-button button {
@@ -84,9 +94,9 @@ img {
 
 @media only screen and (max-width: 620px) {
     .columns-container {
-        flex-direction: column;
+        padding: 10px;
     }
     .column {
-        flex: 1 1 100%;
+        padding: 10px;
     }
 }
