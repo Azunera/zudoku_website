@@ -3,10 +3,10 @@
 
 body {
     font-family: Arial, sans-serif;
-    position: relative;
     margin: 0;
     padding: 0;
     background: #f2f2f2;
+    position: relative;
 }
 
 body::before {
@@ -31,26 +31,20 @@ h1 {
     text-shadow: 2px 2px 4px #aaa;
 }
 
-.columns-container {
+.container {
+    max-width: 1200px;
     padding: 20px;
-    margin: 0 auto; /* Center the container */
-    max-width: 1200px; /* Adjust the max-width to your preference */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-.body_column {
-    display: block; /* Use block instead of flex */
-    padding: 20px;
-    margin: 0 auto; /* Center align */
+    margin: 0 auto;
     text-align: center;
+    box-sizing: border-box;
 }
 
-.column {
+.content {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     margin: 20px 0;
+    width: 80%
     box-sizing: border-box;
-    width: 100%;
 }
 
 p {
@@ -68,35 +62,23 @@ img {
     margin: 20px 0;
 }
 
-.download-button {
-    display: block;
-    text-align: center;
-    margin: 20px auto;
-}
-
-.download-button button {
-    background-color: #4CAF50;
+button {
+    background: #4CAF50;
     border: none;
     color: white;
     padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 16px;
     margin: 10px 0;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.3s;
 }
 
-.download-button button:hover {
-    background-color: #45a049;
+button:hover {
+    background: #45a049;
 }
 
 @media only screen and (max-width: 620px) {
-    .columns-container {
-        padding: 10px;
-    }
-    .column {
+    .container {
         padding: 10px;
     }
 }
