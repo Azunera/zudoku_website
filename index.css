@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -34,7 +33,7 @@ h1 {
 .container {
     max-width: 1200px;
     padding: 20px;
-    margin: 0 auto;
+    margin: 0 auto; /* Center the container horizontally */
     text-align: center;
     box-sizing: border-box;
 }
@@ -42,8 +41,8 @@ h1 {
 .content {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
-    margin: 20px 0;
-    width: 80%
+    margin: 20px auto; /* Center the content within the container */
+    width: 80%; /* Adjust width as needed */
     box-sizing: border-box;
 }
 
