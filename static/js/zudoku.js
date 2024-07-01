@@ -248,3 +248,51 @@ document.addEventListener('DOMContentLoaded', () => {
         
     });
 });
+
+// Function to save Sudoku data
+async function saveSudoku(sudoku) {
+    const response = await fetch('/save_sudoku', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            sudoku: sudoku.sudoku,
+            difficulty: sudoku.difficulty,
+            status: sudoku.statuses,
+            wrongs: sudoku.wrongs,
+            solution: sudoku.solution,
+            lives: sudoku.lives,
+        }),
+    });
+    const data = await response.json();
+    console.log(data.message);
+}
+
+// Function to load Sudoku data
+async function loadSudoku(id) {
+    const response = await fetch(`/load_sudoku/${id}`);
+    const data = await response.json();
+    // Populate the Sudoku object with data
+    let sudoku = new Sudoku();
+    sudoku.sudoku = data.sudoku;
+    sudoku.difficulty = data.difficulty;
+    sudoku.statuses = data.status;
+    sudoku.wrongs = data.wrongs;
+    sudoku.solution = data.solution;
+    sudoku.lives = data.lives;
+    return sudoku;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Sample code to save Sudoku data
+    let sudoku = new Sudoku();
+    sudoku.generateSudoku();
+    sudoku.setDifficulty('Medium');
+    saveSudoku(sudoku);
+
+    // Sample code to load Sudoku data
+    loadSudoku(1).then((sudoku) => {
+        console.log(sudoku);
+    });
+});
