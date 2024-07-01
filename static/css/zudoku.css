@@ -1,0 +1,71 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+body, #description {
+    transition: background-color 2s ease-out, color 2s ease-out;
+}
+
+.body_column {
+    text-align: center;
+}
+.row{
+    display: flex;
+    justify-content: center;
+    /* margin-top: 10px; */
+
+}
+canvas {
+    border: 1px solid black;
+}
+
+
+
+.difficulty-button {
+    background-color: #f2f2f2;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    margin: 20px auto;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.difficulty-button:hover {
+    background-color: #dedede;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: center; /* Horizontally center the items */
+    margin-top: 10px; /* Adjust as needed for vertical alignment */
+}
+
+
+li a{
+    display: block;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-family: 'Dancing Script';
+    font-size: 22px;
+    padding: 14px 16px;
+    text-decoration: none;
+}

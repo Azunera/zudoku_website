@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Register, Zudoku">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for Zudoku</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/zudoku.css">
+</head>
+<body>
+    <h1 id="title">Register for Zudoku</h1>
+    <div class="body_column">
+        <div class="column middle">
+            <form id="register-form">
+                <div class="row">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="row">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="row">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="row">
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+                </div>
+                <div class="row">
+                    <button class="difficulty-button" type="submit">Register</button>
+                </div>
+                <div class="row">
+                    <p>Already have an account? <a href="login.html">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="zudoku.js"></script>
+</body>
+</html>
