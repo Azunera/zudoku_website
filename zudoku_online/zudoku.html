@@ -5,8 +5,13 @@
     <meta name="keywords" content="Sudoku, Game">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zudoku Online</title>
+    <link rel="stylesheet" href="..\index.css">
     <link rel="stylesheet" href="zudoku.css">
-    <link rel="stylesheet" href="online-game.css">
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <h1>Play Zudoku Online!</h1>
@@ -15,10 +20,10 @@
             <p>
                 Enjoy the online version of Zudoku! Fill the grid and challenge yourself.
             </p>
-            <div id="sudoku-board"></div>
+            <canvas id="sudoku-canvas" width="450" height="450"></canvas>
             <button id="solve-button">Solve</button>
         </div>
     </div>
-    <script src="online-game.js"></script>
+    <script src="zudoku.js"></script>
 </body>
 </html>
