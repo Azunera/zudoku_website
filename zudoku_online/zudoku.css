@@ -9,27 +9,33 @@ body {
 .body_column {
     text-align: center;
 }
+.row{
+
+}
 canvas {
     border: 1px solid black;
 }
 
 
 
-#solve-button {
-    background-color: #4CAF50;
+#difficulty-button {
+    background-color: #f2f2f2;
     border: none;
-    color: white;
+    color: rgb(0, 0, 0);
     padding: 15px 32px;
     text-align: center;
+    font-family: 'Dancing Script', cursive;
+
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 32px;
     margin: 20px auto;
     display: block;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.5s;
 }
 
-#solve-button:hover {
-    background-color: #45a049;
+#difficulty-button:hover {
+    background-color: #dedede;
 }
+

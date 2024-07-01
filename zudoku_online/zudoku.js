@@ -1,5 +1,4 @@
 class Sudoku {
-
     constructor() {
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
@@ -33,6 +32,7 @@ class Sudoku {
 
             let ii = true;
             let g = true;
+            let i;
 
             while (g) {
                 let indexes = '012345678';
@@ -44,7 +44,7 @@ class Sudoku {
                 indexes = indexes.split('').map(Number);
                 this.shuffle(indexes);
 
-                for (const i of indexes) {
+                for (i of indexes) {
                     if (this.sudoku[r][i] === ' ') {
                         this.sudoku[r][i] = String(n);
                         if (this.check()) {
@@ -81,16 +81,65 @@ class Sudoku {
         this.solution = JSON.parse(JSON.stringify(this.sudoku));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
     }
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    check() {
+        // Add your Sudoku validity check logic here
+        return true;
+    }
+
+    setDifficulty(difficulty) {
+        if (!['Easy', 'Medium', 'Hard', 'Test'].includes(difficulty)) {
+            throw new Error('Invalid difficulty');
+        }
+
+        let emptyCells;
+        if (difficulty === 'Easy') {
+            emptyCells = 40;
+            this.lives = 15;
+        } else if (difficulty === 'Medium') {
+            emptyCells = 50;
+            this.lives = 10;
+        } else if (difficulty === 'Hard') {
+            emptyCells = 60;
+            this.lives = 5;
+        } else { // Test
+            emptyCells = 1;
+            this.lives = 100;
+        }
+
+        const selectedPositions = new Set();
+        const cellsWithNumbers = this.sudoku.flatMap((row, rowIndex) =>
+            row.map((col, colIndex) => (col !== ' ' ? [rowIndex, colIndex] : null)).filter(Boolean)
+        );
+
+        while (selectedPositions.size < emptyCells) {
+            const [row, col] = cellsWithNumbers[Math.floor(Math.random() * cellsWithNumbers.length)];
+            if (!selectedPositions.has(`${row},${col}`)) {
+                selectedPositions.add(`${row},${col}`);
+                this.sudoku[row][col] = ' ';
+            }
+        }
+
+        return this.sudoku;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
     const ctx = canvas.getContext('2d');
     const cellSize = canvas.width / 9;
+    let selectedCell = null; // To store the currently selected cell
 
     // Sample Sudoku data
-    let sudoku = Sudoku;
-    sudoku.generateSudoku;
+    let sudoku = new Sudoku();
+    sudoku.generateSudoku();
+    sudoku.setDifficulty('Medium');
     console.log(sudoku.sudoku);
 
     function drawGrid() {
@@ -133,15 +182,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-        const num = prompt("Enter a number (1-9):");
-        if (num >= "1" && num <= "9") {
-            sudoku.sudoku[row][col] = num;
+        selectedCell = { row, col }; // Store the selected cell
+    }
+
+    function handleKeyPress(event) {
+        if (selectedCell && event.key >= "1" && event.key <= "9") {
+            const { row, col } = selectedCell;
+            sudoku.sudoku[row][col] = event.key;
             drawGrid();
             drawNumbers();
         }
     }
 
     canvas.addEventListener('click', handleClick);
+    document.addEventListener('keypress', handleKeyPress);
 
     drawGrid();
     drawNumbers();
