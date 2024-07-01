@@ -7,6 +7,7 @@ class Sudoku {
         this.wrongs = [];
         this.solution = null;
         this.lives = 5;
+        this.color = 'black'
         this.events = {
             lostOneLife: [],
             lostAllLives: [],
@@ -136,7 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cellSize = canvas.width / 9;
     let selectedCell = null; // To store the currently selected cell
 
-    // Sample Sudoku data
+    const title = document.getElementById('title')
+    const intro = document.getElementById('intro')
+    
+
+
+    // Sampling Sudoku data
     let sudoku = new Sudoku();
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
@@ -144,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = sudoku.color;
 
         for (let i = 0; i <= 9; i++) {
             ctx.lineWidth = (i % 3 === 0) ? 2 : 1;
@@ -161,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.font = `${cellSize / 2}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+        ctx.fillStyle = sudoku.color
 
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
@@ -200,9 +207,44 @@ document.addEventListener('DOMContentLoaded', () => {
     drawGrid();
     drawNumbers();
 
-    const solveButton = document.getElementById('solve-button');
-    solveButton.addEventListener('click', () => {
-        alert('Solve button clicked!');
-        // Add your Sudoku solving logic here
+    document.getElementById('easy-button').addEventListener('click', () => {
+        document.body.style.backgroundColor = 'white';
+        intro.style.color = 'black';
+        title.style.color = 'black';
+        sudoku.color = 'black';
+
+
+        sudoku.generateSudoku();
+        sudoku.setDifficulty('Easy');
+        drawGrid();
+        drawNumbers();
+        title.style.color = 'lightblue';
+
+    });
+
+    document.getElementById('medium-button').addEventListener('click', () => {       
+        document.body.style.backgroundColor = '#f0f0f0';
+        intro.style.color = '#c71585';
+        title.style.color = '#c71585';
+        sudoku.color = '#c71585'
+
+        sudoku.generateSudoku();
+        sudoku.setDifficulty('Medium');
+        drawGrid();
+        drawNumbers();
+    });
+
+    document.getElementById('hard-button').addEventListener('click', () => {
+        document.body.style.backgroundColor = 'black';
+        intro.style.color = '#eee8aa';
+        title.style.color = '#eee8aa';
+        sudoku.color = '#eee8aa'
+    
+        sudoku.generateSudoku();
+        sudoku.setDifficulty('Hard');
+        drawGrid();
+        drawNumbers();
+
+        
     });
 });
