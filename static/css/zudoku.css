@@ -11,6 +11,11 @@ body, #description {
     transition: background-color 2s ease-out, color 2s ease-out;
 }
 
+
+.sidenav {
+    font-family: 'Dancing Script', cursive;
+}
+
 .body_column {
     text-align: center;
 }
@@ -19,7 +24,19 @@ body, #description {
     justify-content: center;
     /* margin-top: 10px; */
 
+    
 }
+
+.row {
+    display: flex;
+    flex-direction: horizontal; /* Arrange rows vertically */
+    align-items: center;
+}
+
+.row > * {
+    margin-bottom: 10px; /* Add spacing between elements */
+}
+
 canvas {
     border: 1px solid black;
 }
