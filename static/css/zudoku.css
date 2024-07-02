@@ -43,7 +43,7 @@ canvas {
 
 
 
-.difficulty-button {
+.button {
     background-color: #f2f2f2;
     border: none;
     color: rgb(0, 0, 0);
@@ -60,7 +60,7 @@ canvas {
     transition: background-color 0.5s;
 }
 
-.difficulty-button:hover {
+.button:hover {
     background-color: #dedede;
 }
 

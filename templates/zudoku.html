@@ -12,12 +12,16 @@
 
     <div class="navbar" id="myNavBar">
         <ul>
-            <a href="register">Register (to save your progress!)</a>
-            <a href="login">Login</a>
+            <li><a href="register">Register (to save your progress!)</a></li>
+            <li><a href="login">Login</a></li>
+            <li hidden='true'>
+                <p id="welcome">Estas logeado!</p></li>
         </ul>
     </div>
 
+
     <h1 id="title">Play Zudoku Online!</h1>
+
     <div class="body_column">
         <div class="column middle">
             <p id="intro">
@@ -28,9 +32,11 @@
 
             <div class="row">
 
-                <button class="difficulty-button" id="easy-button">Skylight</button>
-                <button class="difficulty-button" id="medium-button">Twilight</button>
-                <button class="difficulty-button" id="hard-button">Moonlight</button>
+                <button class="button" id="easy-button">Skylight</button>
+                <button class="button" id="medium-button">Twilight</button>
+                <button class="button" id="hard-button">Moonlight</button>
+                <button class="button" id="save">Save</button>
+                <button class="button" id="load">Load</button>
 
             </div>
         </div>

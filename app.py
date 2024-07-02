@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, jsonify, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -26,15 +26,15 @@ class User(db.Model):
     def check_password(self, password): 
         return check_password_hash(self.password_hash, password)
     
-# Define your Sudoku model
-# class Sudoku(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     sudoku_data = db.Column(db.Text, nullable=False)
-#     difficulty = db.Column(db.String(50), nullable=False)
-#     status = db.Column(db.Text, nullable=True)
-#     wrongs = db.Column(db.Text, nullable=True)
-#     solution = db.Column(db.Text, nullable=True)
-#     lives = db.Column(db.Integer, nullable=False)
+
+class Zudoku(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sudoku = db.Column(db.Text, nullable=False)
+    difficulty = db.Column(db.Text, nullable=False)
+    status = db.Column(db.Text, nullable=True)
+    solution = db.Column(db.Text, nullable=True)
+    lives = db.Column(db.Integer, nullable=False)
+    User = db.Column(db.Text, nullable=False)
 
 # Route for main page
 @app.route('/')
@@ -45,6 +45,29 @@ def index():
 @app.route('/zudoku')
 def zudoku():
     return render_template('zudoku.html')
+
+# 
+@app.route('/save', methods=['POST'])
+def save():
+    data = request.json
+    
+    zudoku = Zudoku(
+        sudoku=data['sudoku'],
+        difficulty=data['difficulty'],
+        status=data['status'],
+        solution=data['solution'],
+        lives=data['lives']
+        
+    )
+
+    db.session.add(zudoku)
+    db.session.commit()
+    
+    return jsonify({'message': 'Sudoku saved successfully'}), 201
+
+# @app.route('/load', method=['GET']) 
+# def load():
+    
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -65,7 +88,12 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+@app.route('/login_user', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -75,36 +103,16 @@ def login():
             flash('Invalid username or password!')
             return redirect(url_for('login'))
         flash('Login successful!')
-        return redirect(url_for('index'))
+        return redirect(url_for('zudoku'))
     return render_template('login.html')
 
-# @app.route('/save_sudoku', methods=['POST'])
-# def save_sudoku():
-#     data = request.json
-#     sudoku = Sudoku(
-#         sudoku_data=data['sudoku'],
-#         difficulty=data['difficulty'],
-#         status=data['status'],
-#         wrongs=data['wrongs'],
-#         solution=data['solution'],
-#         lives=data['lives']
-#     )
-#     db.session.add(sudoku)
-#     db.session.commit()
-#     return jsonify({'message': 'Sudoku saved successfully'}), 201
 
-# @app.route('/load_sudoku/<int:id>')
-# def load_sudoku(id):
-#     sudoku = Sudoku.query.get_or_404(id)
-#     return jsonify({
-#         'sudoku': sudoku.sudoku_data,
-#         'difficulty': sudoku.difficulty,
-#         'status': sudoku.status,
-#         'wrongs': sudoku.wrongs,
-#         'solution': sudoku.solution,
-#         'lives': sudoku.lives
-#     })
 
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
+    
+ 
+ 
+ 
+ 

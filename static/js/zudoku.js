@@ -99,6 +99,8 @@ class Sudoku {
             throw new Error('Invalid difficulty');
         }
 
+        this.difficulty = difficulty 
+
         let emptyCells;
         if (difficulty === 'Easy') {
             emptyCells = 40;
@@ -126,7 +128,7 @@ class Sudoku {
                 this.sudoku[row][col] = ' ';
             }
         }
-
+        
         return this.sudoku;
     }
 }
@@ -244,55 +246,45 @@ document.addEventListener('DOMContentLoaded', () => {
         sudoku.setDifficulty('Hard');
         drawGrid();
         drawNumbers();
-
-        
     });
-});
 
-// Function to save Sudoku data
-async function saveSudoku(sudoku) {
-    const response = await fetch('/save_sudoku', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+    document.getElementById('save').addEventListener('click', () => {
+
+        let data= JSON.stringify({
             sudoku: sudoku.sudoku,
             difficulty: sudoku.difficulty,
             status: sudoku.statuses,
-            wrongs: sudoku.wrongs,
             solution: sudoku.solution,
             lives: sudoku.lives,
-        }),
-    });
-    const data = await response.json();
-    console.log(data.message);
-}
+    
+        })
+        
+        fetch("/save", {
+            method: "POST",
+            body: data,
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+          });
+    })
 
-// Function to load Sudoku data
-async function loadSudoku(id) {
-    const response = await fetch(`/load_sudoku/${id}`);
-    const data = await response.json();
-    // Populate the Sudoku object with data
-    let sudoku = new Sudoku();
-    sudoku.sudoku = data.sudoku;
-    sudoku.difficulty = data.difficulty;
-    sudoku.statuses = data.status;
-    sudoku.wrongs = data.wrongs;
-    sudoku.solution = data.solution;
-    sudoku.lives = data.lives;
-    return sudoku;
-}
+    document.getElementById('login-form').addEventListener('submit', () => {
+    user = document.forms['login-form']['username'].value;
+    password = document.forms['login-form']['password'].value;
+    console.log(user, password)
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Sample code to save Sudoku data
-    let sudoku = new Sudoku();
-    sudoku.generateSudoku();
-    sudoku.setDifficulty('Medium');
-    saveSudoku(sudoku);
 
-    // Sample code to load Sudoku data
-    loadSudoku(1).then((sudoku) => {
-        console.log(sudoku);
-    });
-});
+    fetch("/login_user", {
+        method: "POST",
+    
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        }
+    })
+})
+})
+
+        //load button needs to ask get from flask
+// Guardarlo local Storage
