@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for, flash
+from flask import Flask, jsonify, make_response, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -69,43 +69,65 @@ def save():
 # def load():
     
 
-@app.route('/register', methods=['GET', 'POST'])
+# REGISTER SYSTEM
+@app.route('/register', methods=['GET'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        confirm_password = request.form['confirm-password']
-
-        if password != confirm_password:
-            flash('Passwords do not match!')
-            return redirect(url_for('register'))
-        
-        user = User(username=username)
-        user.set_password(password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Registration successful! Please login.')
-        return redirect(url_for('login'))
     return render_template('register.html')
 
+@app.route('/register_user', methods=['POST'])
+def register_user():
+    try:
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        
+        if not username or not password:
+            flash('Invalid username or password!')
+            return jsonify({'status': 'error', 'message': 'user or password are required'}), 400
+        
+        if User.query.filter_by(username=username).first() is not None:
+            flash('User already exists!')
+            return jsonify({'status': 'error', 'message': 'user already exists'}), 400
 
+        new_user = User(username=username)
+        new_user.set_password(password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Registered succesfully')
+        return jsonify({'status': 'success', 'message': 'User registered successfully'})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+# LOGGING SYSTEM
 @app.route('/login')
 def login():
     return render_template('login.html')
 
-# @app.route('/save', methods=['POST'])
-# def save():
-#     data = request.get_json()
-#     # Handle saving the data
-#     return jsonify({'status': 'success'})
+@app.route('/login_user', methods=['POST'])
+def login_user():
+    # try:
+    credentials = request.get_json()
+    username = credentials['username']
+    password = credentials['password']
 
-# @app.route('/login_user', methods=['POST'])
-# def login_user():
-#     credentials = request.get_json()
-#     username = credentials['username']
-#     password = credentials['password']
-#     # Handle login logic
-#     return jsonify({'status': 'success', 'username': username})
+    user = User.query.filter_by(username=username).first()
+
+    if user is None:
+        flash('Invalid username!')
+        return jsonify({'status': 'error', 'message': 'Invalid username!'}), 401
+    elif not user.check_password(password):
+        flash('Invalid password!')
+        return jsonify({'status': 'error', 'message': 'Invalid password!'}), 401
+
+    response = make_response(jsonify({'status': 'success', 'message': 'Logged in successfully'}))
+    response.set_cookie('session_token', user.token, httponly=True, secure=True)  # setting a secure HttpOnly cookie
+    flash('Logged in successfully!')
+    return jsonify({'status': 'success', 'username': username})
+
 
 # @app.route('/login_user', methods=['GET','POST'])
 # def login():
@@ -121,18 +143,12 @@ def login():
 #     return render_template('login.html')
 
 
-@app.route('/login_user', methods=['POST'])
-def login_user():
-    try:
-        credentials = request.get_json()
-        username = credentials['username']
-        password = credentials['password']
-        # Handle login logic
-        return jsonify({'status': 'success', 'username': username})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-
-
+# @app.route('/save', methods=['POST'])
+# def save():
+#     data = request.get_json()
+#     # Handle saving the data
+#     return jsonify({'status': 'success'})
+ 
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)

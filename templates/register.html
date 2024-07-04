@@ -13,6 +13,15 @@
     <h1 id="title">Register for Zudoku</h1>
     <div class="body_column">
         <div class="column middle">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div id="flash-messages">
+                        {% for messages in messages %}
+                            <div class="flash-message"> {{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
             <form id="register-form" method="post" action="/register">
                 <div class="row">
                     <input type="text" id="username" name="username" placeholder="Username" required>
@@ -24,7 +33,7 @@
                     <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
                 </div>
                 <div class="row">
-                    <button class="difficulty-button" type="submit">Register</button>
+                    <button class="button" type="submit">Register</button>
                 </div>
                 <div class="row">
                     <p>Already have an account? <a href="/login">Login here</a></p>
@@ -32,6 +41,7 @@
             </form>
         </div>
     </div>
-    <!-- <script src="/static/js/zudoku.js"></script> -->
+    <script src="/static/js/register.js"></script>
 </body>
 </html>
+
