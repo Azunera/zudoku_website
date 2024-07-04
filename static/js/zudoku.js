@@ -248,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawNumbers();
     });
 
+    // SYSTEM FOR SAVING AND LOADING
     document.getElementById('save').addEventListener('click', () => {
 
         let data= JSON.stringify({
@@ -268,23 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           });
     })
-
-    document.getElementById('login-form').addEventListener('submit', () => {
-    user = document.forms['login-form']['username'].value;
-    password = document.forms['login-form']['password'].value;
-    console.log(user, password)
-
-
-    fetch("/login_user", {
-        method: "POST",
-    
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        }
-    })
 })
-})
-
         //load button needs to ask get from flask
 // Guardarlo local Storage

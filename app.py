@@ -90,22 +90,47 @@ def register():
 
 
 @app.route('/login')
-def login_page():
-    return render_template('login.html')
-
-@app.route('/login_user', methods=['GET','POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user is None or not user.check_password(password):
-            flash('Invalid username or password!')
-            return redirect(url_for('login'))
-        flash('Login successful!')
-        return redirect(url_for('zudoku'))
     return render_template('login.html')
 
+# @app.route('/save', methods=['POST'])
+# def save():
+#     data = request.get_json()
+#     # Handle saving the data
+#     return jsonify({'status': 'success'})
+
+# @app.route('/login_user', methods=['POST'])
+# def login_user():
+#     credentials = request.get_json()
+#     username = credentials['username']
+#     password = credentials['password']
+#     # Handle login logic
+#     return jsonify({'status': 'success', 'username': username})
+
+# @app.route('/login_user', methods=['GET','POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         user = User.query.filter_by(username=username).first()
+#         if user is None or not user.check_password(password):
+#             flash('Invalid username or password!')
+#             return redirect(url_for('login'))
+#         flash('Login successful!')
+#         return redirect(url_for('zudoku'))
+#     return render_template('login.html')
+
+
+@app.route('/login_user', methods=['POST'])
+def login_user():
+    try:
+        credentials = request.get_json()
+        username = credentials['username']
+        password = credentials['password']
+        # Handle login logic
+        return jsonify({'status': 'success', 'username': username})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
 if __name__ == '__main__':

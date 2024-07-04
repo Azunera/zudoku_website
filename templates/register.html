@@ -5,14 +5,15 @@
     <meta name="keywords" content="Register, Zudoku">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register for Zudoku</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/zudoku.css') }}">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/zudoku.css">
 </head>
 <body>
     <h1 id="title">Register for Zudoku</h1>
     <div class="body_column">
         <div class="column middle">
-            <form id="register-form" method="post" action="{{ url_for('register') }}">
+            <form id="register-form" method="post" action="/register">
                 <div class="row">
                     <input type="text" id="username" name="username" placeholder="Username" required>
                 </div>
@@ -26,11 +27,11 @@
                     <button class="difficulty-button" type="submit">Register</button>
                 </div>
                 <div class="row">
-                    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+                    <p>Already have an account? <a href="/login">Login here</a></p>
                 </div>
             </form>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='zudoku.js') }}"></script>
+    <!-- <script src="/static/js/zudoku.js"></script> -->
 </body>
 </html>
