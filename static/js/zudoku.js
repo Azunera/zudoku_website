@@ -268,6 +268,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function getUserSudoku() {
+        const response = await fetch('/load', {
+                method: 'get',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const userInfo = await response.json();
+            return userInfo;
+        } else {
+            console.error('Failed to fetch user zudoku')
+            return null;
+        }
+   
+    }
+
     document.getElementById('save').addEventListener('click', async () => {
         const userInfo = await getUserInfo();
         console.log(userInfo)
@@ -293,6 +312,23 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('User info not available');
         }
     });
-})
+    
+    document.getElementById('load').addEventListener('click', async () => {
+        const userZudoku = await getUserSudoku();
+        console.log(userZudoku.zudoku)
+        if (userZudoku) {
+            sudoku.sudoku = userZudoku.zudoku.sudoku
+            sudoku.difficulty = userZudoku.zudoku.difficulty
+            sudoku.statuses = userZudoku.zudoku.status
+            sudoku.solution = userZudoku.zudoku.solution
+            sudoku.lives = userZudoku.zudoku.lives
+            drawGrid()
+            drawNumbers()
 
-// Guardarlo local Storage
+        } else {
+            console.error("User hasn't saved zudoku info or user is not loggined,")
+        }
+
+      
+    });
+})

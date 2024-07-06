@@ -23,7 +23,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(150), nullable=False)
-    token = db.Column(db.String(36), unique=True, nullable=True)  # Add token column
+    token = db.Column(db.String(36), unique=True, nullable=True)  
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -79,6 +79,8 @@ def save():
 
 # @app.route('/load', method=['GET']) 
 # def load():
+    
+    
 
 
 # REGISTER SYSTEM
@@ -173,29 +175,26 @@ def get_user_info():
     
     return jsonify({'username': user.username, 'id': user.id}), 200
 
-# @app.route('/get_user_info', methods=['GET'])
-# def get_user_info():
-#     session_token = request.cookies.get('session_token')
-#     print(session_token)
-#     if not session_token:
-#         print('r')
-#         return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
-    
-#     userid = Session.query.filter_by(token=session_token).first()
-#     user = Session.query.filter_by(id=userid)
-    
-#     if not user:
-#         print('y')
-#         return jsonify({'status': 'error', 'message': 'Invalid session token'}), 401
-    
-#     return jsonify({'username': user.username, 'id': user.id}), 200
-
-# @app.route('/save', methods=['POST'])
-# def save():
-#     data = request.get_json()
-#     # Handle saving the data
-#     return jsonify({'status': 'success'})
  
+@app.route('/load', methods=['GET']) 
+def load():
+    session_token = request.cookies.get('session_token')
+    session = Session.query.filter_by(token=session_token).first()
+    zudoku = Zudoku.query.filter_by(user_id=session.user_id).first()
+    
+    return jsonify({
+        'status': 'success',
+        'message': 'Sudoku loaded successfully',
+        'zudoku': {
+            'id': zudoku.id,
+            'sudoku': zudoku.sudoku,
+            'difficulty': zudoku.difficulty,
+            'status': zudoku.status,
+            'solution': zudoku.solution,
+            'lives': zudoku.lives,
+            'user_id': zudoku.user_id
+        }})
+    
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
