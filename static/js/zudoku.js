@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.strokeStyle = sudoku.color;
 
         for (let i = 0; i <= 9; i++) {
-            ctx.lineWidth = (i % 3 === 0) ? 2 : 1;
+            ctx.lineWidth = (i % 3 === 0) ? 2 : 0.5;
             ctx.beginPath();
             ctx.moveTo(i * cellSize, 0);
             ctx.lineTo(i * cellSize, canvas.height);
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('save').addEventListener('click', async () => {
         const userInfo = await getUserInfo();
-        
+        console.log(userInfo)
         if (userInfo) {
             let data = JSON.stringify({
                 sudoku: sudoku.sudoku,
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: sudoku.statuses,
                 solution: sudoku.solution,
                 lives: sudoku.lives,
-                user: userInfo.username // Include the user's username or ID
+                user_id: userInfo.id
             });
 
             fetch("/save", {

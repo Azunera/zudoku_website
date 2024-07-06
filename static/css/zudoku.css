@@ -11,6 +11,39 @@ body, #description {
     transition: background-color 2s ease-out, color 2s ease-out;
 }
 
+.a {
+    background-color: #dc5e5e;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    margin: 20px auto;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.li {
+    background-color: #f2f2f2;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    margin: 20px auto;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
 
 .sidenav {
     font-family: 'Dancing Script', cursive;

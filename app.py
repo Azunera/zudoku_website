@@ -1,8 +1,11 @@
-from flask import Flask, jsonify, make_response, render_template, request, redirect, url_for, flash
+from flask import Flask, jsonify, make_response, render_template, request, redirect, url_for, flash 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
+from datetime import datetime
+import uuid
 import os
+import secrets
 
 load_dotenv()  
 
@@ -10,24 +13,31 @@ app = Flask(__name__)  # Instancia de WSGI
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')  
+app.config['SECRET_KEY'] = secrets.token_hex()  
+
 
 db = SQLAlchemy(app)
 
-# Defining user model
+# <---- DEFINING CLASSES ---->
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(150), nullable=False)
     token = db.Column(db.String(36), unique=True, nullable=True)  # Add token column
 
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password): 
-        return check_password_hash(self.password_hash, password)
-    
+        return check_password_hash(self.password_hash, password)  
+
+class Session(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    token = db.Column(db.String(255), nullable=False, unique=True)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.now)
+    updated_at = db.Column(db.TIMESTAMP, default=datetime.now, onupdate=datetime.now)
+
 
 class Zudoku(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,8 +46,8 @@ class Zudoku(db.Model):
     status = db.Column(db.Text, nullable=True)
     solution = db.Column(db.Text, nullable=True)
     lives = db.Column(db.Integer, nullable=False)
-    User = db.Column(db.Text, nullable=False)
-
+    user_id = db.Column(db.Integer, nullable=False)  
+    
 # Route for main page
 @app.route('/')
 def index():
@@ -58,8 +68,8 @@ def save():
         difficulty=data['difficulty'],
         status=data['status'],
         solution=data['solution'],
-        lives=data['lives']
-        
+        lives=data['lives'],
+        user_id=data['user_id']
     )
 
     db.session.add(zudoku)
@@ -109,9 +119,9 @@ def register_user():
 def login():
     return render_template('login.html')
 
+
 @app.route('/login_user', methods=['POST'])
 def login_user():
-    # try:
     credentials = request.get_json()
     username = credentials['username']
     password = credentials['password']
@@ -119,42 +129,66 @@ def login_user():
     user = User.query.filter_by(username=username).first()
 
     if user is None:
-        flash('Invalid username!')
         return jsonify({'status': 'error', 'message': 'Invalid username!'}), 401
     elif not user.check_password(password):
-        flash('Invalid password!')
         return jsonify({'status': 'error', 'message': 'Invalid password!'}), 401
 
+    session_token = str(uuid.uuid4())
+    new_session = Session(user_id=user.id, token=session_token)
+    db.session.add(new_session)
+    db.session.commit()
+
     response = make_response(jsonify({'status': 'success', 'message': 'Logged in successfully'}))
-    response.set_cookie('session_token', user.token, httponly=True, secure=True)  # setting a secure HttpOnly cookie
-    flash('Logged in successfully!')
-    return jsonify({'status': 'success', 'username': username})
+    response.set_cookie('session_token', session_token, httponly=True, secure=True, samesite=None)  # Use secure=True in production
+    
+    return response
 
+# @app.route('/logout')
+# def logout():
+#     session.clear()
+#     return redirect(url_for('login'))
 
-# @app.route('/login_user', methods=['GET','POST'])
-# def login():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         user = User.query.filter_by(username=username).first()
-#         if user is None or not user.check_password(password):
-#             flash('Invalid username or password!')
-#             return redirect(url_for('login'))
-#         flash('Login successful!')
-#         return redirect(url_for('zudoku'))
-#     return render_template('login.html')
+# if __name__ == '__main__':
+#     db.create_all()
+#     app.run(debug=True)
 
 @app.route('/get_user_info', methods=['GET'])
 def get_user_info():
     session_token = request.cookies.get('session_token')
     if not session_token:
+        print('Session token is missing')
         return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
     
-    user = User.query.filter_by(token=session_token).first()
-    if not user:
+    # Find the session using the session token
+    session = Session.query.filter_by(token=session_token).first()
+    if not session:
+        print('Invalid session token')
         return jsonify({'status': 'error', 'message': 'Invalid session token'}), 401
 
+    # Find the user using the session's user_id
+    user = User.query.filter_by(id=session.user_id).first()
+    if not user:
+        print('User not found')
+        return jsonify({'status': 'error', 'message': 'User not found'}), 404
+    
     return jsonify({'username': user.username, 'id': user.id}), 200
+
+# @app.route('/get_user_info', methods=['GET'])
+# def get_user_info():
+#     session_token = request.cookies.get('session_token')
+#     print(session_token)
+#     if not session_token:
+#         print('r')
+#         return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
+    
+#     userid = Session.query.filter_by(token=session_token).first()
+#     user = Session.query.filter_by(id=userid)
+    
+#     if not user:
+#         print('y')
+#         return jsonify({'status': 'error', 'message': 'Invalid session token'}), 401
+    
+#     return jsonify({'username': user.username, 'id': user.id}), 200
 
 # @app.route('/save', methods=['POST'])
 # def save():

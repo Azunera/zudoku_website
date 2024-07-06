@@ -11,12 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
             method: "POST",
             body: JSON.stringify({ username: user, password: password }),
             headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         })
-
-        .then (response => {
+        .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -25,12 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             console.log(data);
             if (data.status === 'success') {
-                window.location.href('/zudoku')
+                window.location.href = '/zudoku';
+            } else {
+                console.error('Login failed:', data.message);
+                window.location.href = '/login';
             }
         })
         .catch(error => {
-            console.error('There was a problem with the connection')
-            window.location.href = '/login'
-        })
+            console.error('There was a problem with the connection:', error);
+            window.location.href = '/login';
+        });
     });
 });
