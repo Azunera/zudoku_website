@@ -19,6 +19,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(150), nullable=False)
+    token = db.Column(db.String(36), unique=True, nullable=True)  # Add token column
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -67,7 +69,7 @@ def save():
 
 # @app.route('/load', method=['GET']) 
 # def load():
-    
+
 
 # REGISTER SYSTEM
 @app.route('/register', methods=['GET'])
@@ -142,6 +144,17 @@ def login_user():
 #         return redirect(url_for('zudoku'))
 #     return render_template('login.html')
 
+@app.route('/get_user_info', methods=['GET'])
+def get_user_info():
+    session_token = request.cookies.get('session_token')
+    if not session_token:
+        return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
+    
+    user = User.query.filter_by(token=session_token).first()
+    if not user:
+        return jsonify({'status': 'error', 'message': 'Invalid session token'}), 401
+
+    return jsonify({'username': user.username, 'id': user.id}), 200
 
 # @app.route('/save', methods=['POST'])
 # def save():

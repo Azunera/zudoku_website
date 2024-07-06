@@ -249,26 +249,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // SYSTEM FOR SAVING AND LOADING
-    document.getElementById('save').addEventListener('click', () => {
 
-        let data= JSON.stringify({
-            sudoku: sudoku.sudoku,
-            difficulty: sudoku.difficulty,
-            status: sudoku.statuses,
-            solution: sudoku.solution,
-            lives: sudoku.lives,
-    
-        })
-        
-        fetch("/save", {
-            method: "POST",
-            body: data,
+    async function getUserInfo() {
+        const response = await fetch('/get_user_info', {
+            method: 'GET',
             headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
-          });
-    })
+        });
+        
+        if (response.ok) {
+            const userInfo = await response.json();
+            return userInfo;
+        } else {
+            console.error('Failed to fetch user info');
+            return null;
+        }
+    }
+
+    document.getElementById('save').addEventListener('click', async () => {
+        const userInfo = await getUserInfo();
+        
+        if (userInfo) {
+            let data = JSON.stringify({
+                sudoku: sudoku.sudoku,
+                difficulty: sudoku.difficulty,
+                status: sudoku.statuses,
+                solution: sudoku.solution,
+                lives: sudoku.lives,
+                user: userInfo.username // Include the user's username or ID
+            });
+
+            fetch("/save", {
+                method: "POST",
+                body: data,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+        } else {
+            console.error('User info not available');
+        }
+    });
 })
-        //load button needs to ask get from flask
+
 // Guardarlo local Storage
