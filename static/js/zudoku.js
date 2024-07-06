@@ -90,7 +90,7 @@ class Sudoku {
     }
 
     check() {
-        // Add your Sudoku validity check logic here
+        //to add
         return true;
     }
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
     const ctx = canvas.getContext('2d');
     const cellSize = canvas.width / 9;
-    let selectedCell = null; // To store the currently selected cell
+    let selectedCell = null; 
 
     const title = document.getElementById('title')
     const intro = document.getElementById('intro')
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-        selectedCell = { row, col }; // Store the selected cell
+        selectedCell = { row, col }; 
     }
 
     function handleKeyPress(event) {
@@ -317,18 +317,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const userZudoku = await getUserSudoku();
         console.log(userZudoku.zudoku)
         if (userZudoku) {
-            sudoku.sudoku = userZudoku.zudoku.sudoku
-            sudoku.difficulty = userZudoku.zudoku.difficulty
-            sudoku.statuses = userZudoku.zudoku.status
-            sudoku.solution = userZudoku.zudoku.solution
-            sudoku.lives = userZudoku.zudoku.lives
-            drawGrid()
-            drawNumbers()
-
+            sudoku.sudoku = userZudoku.zudoku.sudoku;
+            sudoku.difficulty = userZudoku.zudoku.difficulty;
+            sudoku.statuses = userZudoku.zudoku.status;
+            sudoku.solution = userZudoku.zudoku.solution;
+            sudoku.lives = userZudoku.zudoku.lives;
+            drawGrid();
+            drawNumbers();
         } else {
-            console.error("User hasn't saved zudoku info or user is not loggined,")
+            console.error("User hasn't saved Sudoku info or user is not logged in.");
         }
-
-      
     });
 })
