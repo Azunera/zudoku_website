@@ -314,18 +314,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     document.getElementById('load').addEventListener('click', async () => {
+
+        function JSONtoObject(str) {
+            str = str.replace(/'/g, '"'); 
+            str = str.replace(/" "/g, '""');
+            str = str.replace(/{{/g, '[[');  
+            str = str.replace(/}}/g, ']]');  
+            str = str.replace(/{/g, "["); 
+            str = str.replace(/}/g, "]");  
+            return JSON.parse(str);  
+        }
+    
         const userZudoku = await getUserSudoku();
         console.log(userZudoku.zudoku)
         if (userZudoku) {
-            sudoku.sudoku = userZudoku.zudoku.sudoku;
+            sudoku.sudoku = JSONtoObject(userZudoku.zudoku.sudoku);
             sudoku.difficulty = userZudoku.zudoku.difficulty;
-            sudoku.statuses = userZudoku.zudoku.status;
-            sudoku.solution = userZudoku.zudoku.solution;
+            // sudoku.statuses = JSONtoObject(userZudoku.zudoku.status);
+            sudoku.solution = JSONtoObject(userZudoku.zudoku.solution);
             sudoku.lives = userZudoku.zudoku.lives;
+            console.log(typeof(userZudoku.zudoku.sudoku))
             drawGrid();
             drawNumbers();
         } else {
             console.error("User hasn't saved Sudoku info or user is not logged in.");
         }
     });
+
+
 })
+
+
+async function getUserInfo() {
+    const response = await fetch('/get_user_info', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    if (response.ok) {
+        const userInfo = await response.json();
+        return userInfo;
+    } else {
+        console.error('Failed to fetch user info');
+        return null;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const userInfo = await getUserInfo();
+    if (userInfo) {
+        const welcome = document.getElementById('welcome');
+        const register = document.getElementById('register');
+        const login = document.getElementById('login');
+        document.getElementById('welcome-message').innerHTML =  `Bienvenido ${userInfo.username}!`;
+        welcome.hidden = false;
+        register.hidden = true;
+        login.hidden = true;
+    } 
+});
+a
