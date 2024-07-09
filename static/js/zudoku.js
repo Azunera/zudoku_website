@@ -15,7 +15,7 @@ class Sudoku {
         };
     }
 
-    generateSudoku() {
+    generateSudoku() {3
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         let n = 1;
         let r = -1;
@@ -80,6 +80,7 @@ class Sudoku {
         }
 
         this.solution = JSON.parse(JSON.stringify(this.sudoku));
+        console.log(this.solution, this.sudoku)
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
     }
     shuffle(array) {
@@ -290,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('save').addEventListener('click', async () => {
         const userInfo = await getUserInfo();
         console.log(userInfo)
+        console.log(sudoku)
         if (userInfo) {
             let data = JSON.stringify({
                 sudoku: sudoku.sudoku,
@@ -316,19 +318,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('load').addEventListener('click', async () => {
 
         function JSONtoObject(str) {
-            str = str.replace(/'/g, '"'); 
-            str = str.replace(/" "/g, '""');
             str = str.replace(/{{/g, '[[');  
             str = str.replace(/}}/g, ']]');  
             str = str.replace(/{/g, "["); 
-            str = str.replace(/}/g, "]");  
+            str = str.replace(/}/g, "]");
+            numbers = [1,2,3,4,5,6,7,8,9]  
+            numbers.forEach(number => {
+                let regex = new RegExp(number, 'g');
+                str = str.replace(regex, `"${number}"`);
+            })
             return JSON.parse(str);  
         }
     
         const userZudoku = await getUserSudoku();
-        console.log(userZudoku.zudoku)
+        console.log(userZudoku.zudoku, 'AFTER')
         if (userZudoku) {
             sudoku.sudoku = JSONtoObject(userZudoku.zudoku.sudoku);
+            console.log(sudoku.sudoku, 'THE TRUTH')
             sudoku.difficulty = userZudoku.zudoku.difficulty;
             // sudoku.statuses = JSONtoObject(userZudoku.zudoku.status);
             sudoku.solution = JSONtoObject(userZudoku.zudoku.solution);
@@ -375,4 +381,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         login.hidden = true;
     } 
 });
-a

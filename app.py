@@ -9,12 +9,11 @@ import secrets
 
 load_dotenv()  
 
-app = Flask(__name__)  # Instancia de WSGI
+app = Flask(__name__)  
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = secrets.token_hex()  
-
 
 db = SQLAlchemy(app)
 
@@ -62,16 +61,24 @@ def zudoku():
 @app.route('/save', methods=['POST'])
 def save():
     data = request.json
-    
-    zudoku = Zudoku(
-        sudoku=data['sudoku'],
-        difficulty=data['difficulty'],
-        status=data['status'],
-        solution=data['solution'],
-        lives=data['lives'],
-        user_id=data['user_id']
-    )
 
+    zudoku = Zudoku.query.filter_by(user_id=data['user_id']).first()
+
+    if zudoku:
+        zudoku.sudoku     = data['sudoku']
+        zudoku.difficulty = data['difficulty']
+        zudoku.status     = data['status']
+        zudoku.solution   = data['solution']
+        zudoku.lives      = data['lives']
+    else:
+        zudoku = Zudoku(
+            sudoku=data['sudoku'],
+            difficulty=data['difficulty'],
+            status=data['status'],
+            solution=data['solution'],
+            lives=data['lives'],
+            user_id=data['user_id']
+        )
     db.session.add(zudoku)
     db.session.commit()
     
@@ -181,7 +188,7 @@ def load():
     session_token = request.cookies.get('session_token')
     session = Session.query.filter_by(token=session_token).first()
     zudoku = Zudoku.query.filter_by(user_id=session.user_id).first()
-    
+    print(zudoku.sudoku)
     return jsonify({
         'status': 'success',
         'message': 'Sudoku loaded successfully',
