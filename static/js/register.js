@@ -4,7 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let user = document.forms['register-form']['username'].value;
         let password = document.forms['register-form']['password'].value;
-
+        let conf_password = document.forms['register-form']['confirm-password'].value;
+        
+        // if (user === '' || password === '' || conf_password === '') {
+        //     alert('Please fill in all fields');
+        //     return;
+        // }
+        if (password !== conf_password) {
+            alert('Passwords do not match');
+            return;
+        }
         console.log(user, password);
 
         fetch("/register_user", {

@@ -11,6 +11,22 @@ body, #description {
     transition: background-color 2s ease-out, color 2s ease-out;
 }
 
+.sudoku-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sudoku-container canvas {
+    border: 1px solid black;
+}
+
+.lives-label-container {
+    margin-left: 20px;
+}
+
+
 .a {
     background-color: #dc5e5e;
     border: none;
@@ -33,10 +49,33 @@ body, #description {
     font-family: 'Dancing Script', cursive;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: center; /* Horizontally center the items */
+    margin-top: 10px; /* Adjust as needed for vertical alignment */
+}
+
+
+li a{
+    display: block;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-family: 'Dancing Script';
+    font-size: 22px;
+    padding: 14px 16px;
+    text-decoration: none;
+}
 
 .body_column {
     text-align: center;
+    display: flex;
 }
+
 .row{
     display: flex;
     justify-content: center;
@@ -61,7 +100,38 @@ canvas {
 
 
 
-.button {
+.canva-side-container {
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    align-items: center; /* Center items horizontally */
+    margin: 20px;
+    gap: 20px;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0; /* No space between the buttons */
+}
+
+.number_button {
+    width: 75px; /* Set the size of the buttons */
+    height: 75px; /* Set the size of the buttons */
+    background-color: #f2f2f2;
+    border: 1px solid #000; /* Add a border to distinguish them */
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    text-decoration: none;
+    font-size: 32px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0; /* Ensure no margin between buttons */
+}
+.bottom_buttons {
     background-color: #f2f2f2;
     border: none;
     color: rgb(0, 0, 0);
@@ -78,29 +148,20 @@ canvas {
     transition: background-color 0.5s;
 }
 
-.button:hover {
+.bottom_buttons:hover {
     background-color: #dedede;
 }
 
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: rgba(255, 255, 255, 0);
-    display: flex;
-    justify-content: center; /* Horizontally center the items */
-    margin-top: 10px; /* Adjust as needed for vertical alignment */
+.number_button:hover {
+    background-color: #dedede;
 }
 
+label {
 
-li a{
-    display: block;
-    color: rgb(0, 0, 0);
     text-align: center;
-    font-family: 'Dancing Script';
-    font-size: 22px;
-    padding: 14px 16px;
+    font-family: 'Dancing Script', cursive;
     text-decoration: none;
+    font-size: 30px;
+    
+
 }

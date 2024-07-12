@@ -15,7 +15,34 @@ class Sudoku {
         };
     }
 
-    generateSudoku() {3
+    check() {
+        let rows = Array.from({ length: 9 }, () => new Set());
+        let cols = Array.from({ length: 9 }, () => new Set());
+        let boxes = Array.from({ length: 9 }, () => new Set());
+    
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                if (this.sudoku[r][c] === ' ') {
+                    continue;
+                }
+    
+                let value = this.sudoku[r][c];
+                let boxIndex = Math.floor(r / 3) * 3 + Math.floor(c / 3);
+    
+                if (rows[r].has(value) || cols[c].has(value) || boxes[boxIndex].has(value)) {
+                    return false;
+                }
+    
+                rows[r].add(value);
+                cols[c].add(value);
+                boxes[boxIndex].add(value);
+            }
+        }
+    
+        return true;    
+    };
+      
+    generateSudoku() {
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         let n = 1;
         let r = -1;
@@ -38,9 +65,11 @@ class Sudoku {
             while (g) {
                 let indexes = '012345678';
                 if (blacklist[t]) {
-                    blacklist[t].forEach(el => {
-                        el.forEach(e => indexes = indexes.replace(e, ''));
-                    });
+                    for (const el of blacklist[t]) {
+                        for (const e of el) {
+                            indexes = indexes.replace(e, '');
+                        }
+                    }
                 }
                 indexes = indexes.split('').map(Number);
                 this.shuffle(indexes);
@@ -90,9 +119,12 @@ class Sudoku {
         }
     }
 
-    check() {
-        //to add
-        return true;
+    check_cell(x,y) {
+        if (this.sudoku[x][y] == this.solution[x][y]) {
+            return true; 
+        } else { 
+            return false
+        }
     }
 
     setDifficulty(difficulty) {
@@ -198,7 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleKeyPress(event) {
         if (selectedCell && event.key >= "1" && event.key <= "9") {
             const { row, col } = selectedCell;
-            sudoku.sudoku[row][col] = event.key;
+
+            if (sudoku.sudoku[row][col] == event.key) {
+                sudoku.sudoku[row][col] = ' ';
+            } else {
+                sudoku.sudoku[row][col] = event.key;
+                if (!sudoku.check_cell(row, col)) { 
+                    sudoku.lives -= 1
+                    document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`               
+                }
+            }
+            console.log('YESSS')
             drawGrid();
             drawNumbers();
         }
@@ -287,7 +329,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
    
     }
+    //side stuff
+    number_buttons = document.getElementsByClassName('number_button')
 
+    for (let i = 0; i < number_buttons.length; i++)
+        number_buttons[i].addEventListener('click', (event) => {
+        selectedNumber = event.target.textContent
+
+        const { row, col } = selectedCell;
+        sudoku.sudoku[row][col] = selectedNumber;
+        drawGrid();
+        drawNumbers();
+        
+    })
+ 
+
+
+    //bottoms buttons
     document.getElementById('save').addEventListener('click', async () => {
         const userInfo = await getUserInfo();
         console.log(userInfo)
