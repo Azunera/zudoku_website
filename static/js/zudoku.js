@@ -109,7 +109,6 @@ class Sudoku {
         }
 
         this.solution = JSON.parse(JSON.stringify(this.sudoku));
-        console.log(this.solution, this.sudoku)
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
     }
     shuffle(array) {
@@ -138,12 +137,15 @@ class Sudoku {
         if (difficulty === 'Easy') {
             emptyCells = 40;
             this.lives = 15;
+            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
         } else if (difficulty === 'Medium') {
             emptyCells = 50;
             this.lives = 10;
+            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
         } else if (difficulty === 'Hard') {
             emptyCells = 60;
             this.lives = 5;
+            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
         } else { // Test
             emptyCells = 1;
             this.lives = 100;
@@ -181,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let sudoku = new Sudoku();
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
-    console.log(sudoku.sudoku);
 
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -227,24 +228,30 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCell = { row, col }; 
     }
 
-    function handleKeyPress(event) {
-        if (selectedCell && event.key >= "1" && event.key <= "9") {
-            const { row, col } = selectedCell;
+    function insert_number(num) {
+        if (sudoku.lives >  0) {
+            if (selectedCell && num >= "1" && num <= "9") {
+                const { row, col } = selectedCell;
 
-            if (sudoku.sudoku[row][col] == event.key) {
-                sudoku.sudoku[row][col] = ' ';
-            } else {
-                sudoku.sudoku[row][col] = event.key;
-                if (!sudoku.check_cell(row, col)) { 
-                    sudoku.lives -= 1
-                    document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`               
+                if (sudoku.sudoku[row][col] == num) {
+                    sudoku.sudoku[row][col] = ' ';
+                } else {
+                    sudoku.sudoku[row][col] = num;
+                    if (!sudoku.check_cell(row, col)) { 
+                        sudoku.lives -= 1;
+                        document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`;              
+                    }
                 }
+                drawGrid();
+                drawNumbers();
             }
-            console.log('YESSS')
-            drawGrid();
-            drawNumbers();
-        }
+        }  
     }
+
+    function handleKeyPress(event) {
+        insert_number(event.key);
+        }
+    
 
     canvas.addEventListener('click', handleClick);
     document.addEventListener('keypress', handleKeyPress);
@@ -252,7 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
     drawGrid();
     drawNumbers();
 
+    function color_changer(back_color, main_color) {}
+        
     document.getElementById('easy-button').addEventListener('click', () => {
+
         document.body.style.backgroundColor = 'white';
         intro.style.color = 'black';
         title.style.color = 'black';
@@ -261,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sudoku.generateSudoku();
         sudoku.setDifficulty('Easy');
+        
         drawGrid();
         drawNumbers();
         title.style.color = 'lightblue';
@@ -334,22 +345,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let i = 0; i < number_buttons.length; i++)
         number_buttons[i].addEventListener('click', (event) => {
-        selectedNumber = event.target.textContent
-
-        const { row, col } = selectedCell;
-        sudoku.sudoku[row][col] = selectedNumber;
-        drawGrid();
-        drawNumbers();
+        insert_number(event.target.textContent)
         
     })
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownContent = document.getElementById('dropdownContent');
+
+    dropdownButton.addEventListener('click', () => {
+        dropdownContent.style.display = dropdownContent.style.display === 'grid' ? 'none' : 'grid';
+    });
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', () => {
+            const selectedValue = option.getAttribute('data-value');
+            dropdownButton.textContent = `Selected Option: ${selectedValue}`;
+            dropdownContent.style.display = 'none';
+        });
+    });
+
+    window.addEventListener('click', (e) => {
+        if (!dropdownButton.contains(e.target) && !dropdownContent.contains(e.target)) {
+            dropdownContent.style.display = 'none';
+        }
+    });
+    
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', (e) => {
+        if (!styleButton.contains(e.target) && !styleOptions.contains(e.target)) {
+            styleOptions.style.display = 'none';
+        }
+    });
  
 
 
     //bottoms buttons
     document.getElementById('save').addEventListener('click', async () => {
         const userInfo = await getUserInfo();
-        console.log(userInfo)
-        console.log(sudoku)
+
         if (userInfo) {
             let data = JSON.stringify({
                 sudoku: sudoku.sudoku,
@@ -389,15 +421,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         const userZudoku = await getUserSudoku();
-        console.log(userZudoku.zudoku, 'AFTER')
         if (userZudoku) {
             sudoku.sudoku = JSONtoObject(userZudoku.zudoku.sudoku);
-            console.log(sudoku.sudoku, 'THE TRUTH')
             sudoku.difficulty = userZudoku.zudoku.difficulty;
             // sudoku.statuses = JSONtoObject(userZudoku.zudoku.status);
             sudoku.solution = JSONtoObject(userZudoku.zudoku.solution);
             sudoku.lives = userZudoku.zudoku.lives;
-            console.log(typeof(userZudoku.zudoku.sudoku))
             drawGrid();
             drawNumbers();
         } else {
