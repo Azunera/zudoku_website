@@ -15,34 +15,33 @@ class Sudoku {
         };
     }
 
-
     check() {
         let rows = Array.from({ length: 9 }, () => new Set());
         let cols = Array.from({ length: 9 }, () => new Set());
         let boxes = Array.from({ length: 9 }, () => new Set());
-   
+    
         for (let r = 0; r < 9; r++) {
             for (let c = 0; c < 9; c++) {
                 if (this.sudoku[r][c] === ' ') {
                     continue;
                 }
-   
+    
                 let value = this.sudoku[r][c];
                 let boxIndex = Math.floor(r / 3) * 3 + Math.floor(c / 3);
-   
+    
                 if (rows[r].has(value) || cols[c].has(value) || boxes[boxIndex].has(value)) {
                     return false;
                 }
-   
+    
                 rows[r].add(value);
                 cols[c].add(value);
                 boxes[boxIndex].add(value);
             }
         }
-   
+    
         return true;    
     };
-     
+      
     generateSudoku() {
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         let n = 1;
@@ -50,7 +49,6 @@ class Sudoku {
         let t = 1;
         const history = [];
         const blacklist = {};
-
 
         while (n < 10) {
             r += 1;
@@ -60,11 +58,9 @@ class Sudoku {
             }
             if (n === 10) break;
 
-
             let ii = true;
             let g = true;
             let i;
-
 
             while (g) {
                 let indexes = '012345678';
@@ -77,7 +73,6 @@ class Sudoku {
                 }
                 indexes = indexes.split('').map(Number);
                 this.shuffle(indexes);
-
 
                 for (i of indexes) {
                     if (this.sudoku[r][i] === ' ') {
@@ -92,7 +87,6 @@ class Sudoku {
                     }
                 }
 
-
                 if (ii) {
                     delete blacklist[t];
                     t -= 1;
@@ -101,7 +95,6 @@ class Sudoku {
                     this.sudoku[parseInt(lastHistory[0])][parseInt(hisd)] = ' ';
                     if (!blacklist[t]) blacklist[t] = [];
                     if (!blacklist[t].includes(hisd)) blacklist[t].push(hisd);
-
 
                     r -= 1;
                     if (r < 0) {
@@ -115,7 +108,6 @@ class Sudoku {
             }
         }
 
-
         this.solution = JSON.parse(JSON.stringify(this.sudoku));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
     }
@@ -126,24 +118,20 @@ class Sudoku {
         }
     }
 
-
     check_cell(x,y) {
         if (this.sudoku[x][y] == this.solution[x][y]) {
-            return true;
-        } else {
+            return true; 
+        } else { 
             return false
         }
     }
-
 
     setDifficulty(difficulty) {
         if (!['Easy', 'Medium', 'Hard', 'Test'].includes(difficulty)) {
             throw new Error('Invalid difficulty');
         }
 
-
-        this.difficulty = difficulty
-
+        this.difficulty = difficulty 
 
         let emptyCells;
         if (difficulty === 'Easy') {
@@ -163,12 +151,10 @@ class Sudoku {
             this.lives = 100;
         }
 
-
         const selectedPositions = new Set();
         const cellsWithNumbers = this.sudoku.flatMap((row, rowIndex) =>
             row.map((col, colIndex) => (col !== ' ' ? [rowIndex, colIndex] : null)).filter(Boolean)
         );
-
 
         while (selectedPositions.size < emptyCells) {
             const [row, col] = cellsWithNumbers[Math.floor(Math.random() * cellsWithNumbers.length)];
@@ -177,24 +163,20 @@ class Sudoku {
                 this.sudoku[row][col] = ' ';
             }
         }
-       
+        
         return this.sudoku;
     }
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
     const ctx = canvas.getContext('2d');
     const cellSize = canvas.width / 9;
-    let selectedCell = null;
-
+    let selectedCell = null; 
 
     const title = document.getElementById('title')
     const intro = document.getElementById('intro')
-   
-
-
+    
 
 
     // Sampling Sudoku data
@@ -202,11 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
 
-
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = sudoku.color;
-
 
         for (let i = 0; i <= 9; i++) {
             ctx.lineWidth = (i % 3 === 0) ? 2 : 0.5;
@@ -219,13 +199,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     function drawNumbers() {
         ctx.font = `${cellSize / 2}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = sudoku.color
-
 
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
@@ -239,32 +217,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     function handleClick(event) {
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-
-        selectedCell = { row, col };
+        selectedCell = { row, col }; 
     }
-
 
     function insert_number(num) {
         if (sudoku.lives >  0) {
             if (selectedCell && num >= "1" && num <= "9") {
                 const { row, col } = selectedCell;
 
-
                 if (sudoku.sudoku[row][col] == num) {
                     sudoku.sudoku[row][col] = ' ';
                 } else {
                     sudoku.sudoku[row][col] = num;
-                    if (!sudoku.check_cell(row, col)) {
+                    if (!sudoku.check_cell(row, col)) { 
                         sudoku.lives -= 1;
                         document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`;              
                     }
@@ -275,25 +248,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }  
     }
 
-
     function handleKeyPress(event) {
         insert_number(event.key);
         }
-   
-
+    
 
     canvas.addEventListener('click', handleClick);
     document.addEventListener('keypress', handleKeyPress);
 
-
     drawGrid();
     drawNumbers();
 
-
     function color_changer(back_color, main_color) {}
-       
+        
     document.getElementById('easy-button').addEventListener('click', () => {
-
 
         document.body.style.backgroundColor = 'white';
         intro.style.color = 'black';
@@ -301,25 +269,20 @@ document.addEventListener('DOMContentLoaded', () => {
         sudoku.color = 'black';
 
 
-
-
         sudoku.generateSudoku();
         sudoku.setDifficulty('Easy');
-       
+        
         drawGrid();
         drawNumbers();
         title.style.color = 'lightblue';
 
-
     });
 
-
-    document.getElementById('medium-button').addEventListener('click', () => {      
+    document.getElementById('medium-button').addEventListener('click', () => {       
         document.body.style.backgroundColor = '#f0f0f0';
         intro.style.color = '#c71585';
         title.style.color = '#c71585';
         sudoku.color = '#c71585'
-
 
         sudoku.generateSudoku();
         sudoku.setDifficulty('Medium');
@@ -327,22 +290,19 @@ document.addEventListener('DOMContentLoaded', () => {
         drawNumbers();
     });
 
-
     document.getElementById('hard-button').addEventListener('click', () => {
         document.body.style.backgroundColor = 'black';
         intro.style.color = '#eee8aa';
         title.style.color = '#eee8aa';
         sudoku.color = '#eee8aa'
-   
+    
         sudoku.generateSudoku();
         sudoku.setDifficulty('Hard');
         drawGrid();
         drawNumbers();
     });
 
-
     // SYSTEM FOR SAVING AND LOADING
-
 
     async function getUserInfo() {
         const response = await fetch('/get_user_info', {
@@ -352,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json'
             }
         });
-       
+        
         if (response.ok) {
             const userInfo = await response.json();
             return userInfo;
@@ -362,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     async function getUserSudoku() {
         const response = await fetch('/load', {
                 method: 'get',
@@ -371,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
             }
         });
-
 
         if (response.ok) {
             const userInfo = await response.json();
@@ -385,50 +343,28 @@ document.addEventListener('DOMContentLoaded', () => {
     //side stuff
     number_buttons = document.getElementsByClassName('number_button')
 
-
     for (let i = 0; i < number_buttons.length; i++)
         number_buttons[i].addEventListener('click', (event) => {
         insert_number(event.target.textContent)
-       
+        
     })
-
 
 
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownContent = document.getElementById('dropdownContent');
     const options = document.querySelectorAll('.option');
 
-
-
     dropdownButton.addEventListener('click', () => {
-        dropdownContent.style.display = dropdownContent.style.display === 'grid' ? 'none' : 'grid';
+        dropdownContent.classList.toggle('show');
     });
-
 
     options.forEach(option => {
         option.addEventListener('click', () => {
             const value = option.getAttribute('data-value');
             setTheme(value);
             dropdownContent.classList.remove('show');
-            dropdownContent.style.display = 'none';
         });
     });
-
-
-    window.addEventListener('click', (e) => {
-        if (!dropdownButton.contains(e.target) && !dropdownContent.contains(e.target)) {
-            dropdownContent.style.display = 'none';
-        }
-    });
-
-
-    // Close the dropdown if the user clicks outside of it
-    window.addEventListener('click', (e) => {
-        if (!styleButton.contains(e.target) && !styleOptions.contains(e.target)) {
-            styleOptions.style.display = 'none';
-        }
-    });
- 
     function setTheme(value) {
         document.body.className = '';
         let color = '';
@@ -512,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('save').addEventListener('click', async () => {
         const userInfo = await getUserInfo();
 
-
         if (userInfo) {
             let data = JSON.stringify({
                 sudoku: sudoku.sudoku,
@@ -522,7 +457,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 lives: sudoku.lives,
                 user_id: userInfo.id
             });
-
 
             fetch("/save", {
                 method: "POST",
@@ -536,14 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('User info not available');
         }
     });
-   
+    
     document.getElementById('load').addEventListener('click', async () => {
-
 
         function JSONtoObject(str) {
             str = str.replace(/{{/g, '[[');  
             str = str.replace(/}}/g, ']]');  
-            str = str.replace(/{/g, "[");
+            str = str.replace(/{/g, "["); 
             str = str.replace(/}/g, "]");
             numbers = [1,2,3,4,5,6,7,8,9]  
             numbers.forEach(number => {
@@ -552,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             return JSON.parse(str);  
         }
-   
+    
         const userZudoku = await getUserSudoku();
         if (userZudoku) {
             sudoku.sudoku = JSONtoObject(userZudoku.zudoku.sudoku);
@@ -569,9 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-
 async function getUserInfo() {
     const response = await fetch('/get_user_info', {
         method: 'GET',
@@ -580,7 +510,7 @@ async function getUserInfo() {
             'Content-Type': 'application/json'
         }
     });
-   
+    
     if (response.ok) {
         const userInfo = await response.json();
         return userInfo;
@@ -589,7 +519,6 @@ async function getUserInfo() {
         return null;
     }
 }
-
 
 document.addEventListener('DOMContentLoaded', async () => {
     const userInfo = await getUserInfo();
@@ -601,7 +530,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         welcome.hidden = false;
         register.hidden = true;
         login.hidden = true;
-    }
+    } 
 })
 });
-

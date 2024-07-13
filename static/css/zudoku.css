@@ -1,10 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    background: #f2f2f2;
+    position: releative;
+    overflow: hidden;
+
     height: 100vh;
     margin: 0;
+
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: url('a.png') no-repeat center center fixed; */
+    background-size: cover;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+h1 {
+    color: #333;
+    font-family: 'Dancing Script', cursive;
+    margin: 10px;
+    text-align: center;
+    font-size: 48px;
+    text-shadow: 2px 2px 4px #aaa;
+}
+
+p {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: #333;
+    line-height: 1.5;
+    padding: 10px;
+    text-align: center;
 }
 
 body, #description {
@@ -76,13 +116,6 @@ li a{
     display: flex;
 }
 
-.row{
-    display: flex;
-    justify-content: center;
-    /* margin-top: 10px; */
-
-    
-}
 
 .row {
     display: flex;
@@ -90,9 +123,7 @@ li a{
     align-items: center;
 }
 
-.row > * {
-    margin-bottom: 10px; /* Add spacing between elements */
-}
+
 
 canvas {
     border: 1px solid black;
@@ -132,7 +163,7 @@ canvas {
     margin: 0; /* Ensure no margin between buttons */
 }
 .bottom_buttons {
-    background-color: #f2f2f2;
+    background-color: transparent;
     border: none;
     color: rgb(0, 0, 0);
     padding: 15px 32px;
@@ -142,7 +173,8 @@ canvas {
     text-decoration: none;
     display: inline-block;
     font-size: 32px;
-    margin: 20px auto;
+    margin-top: 5px; /* Less margin above */
+    margin-bottom: 20px; /* More margin below */
     display: block;
     cursor: pointer;
     transition: background-color 0.5s;
@@ -168,9 +200,10 @@ label {
 
 
 /* style switchers */
-
 .dropdown {
-    position: relative;
+    position: fixed; /* Change to fixed to position it relative to the viewport */
+    top: 10px; /* Position 10px from the top of the viewport */
+    right: 200px; /* Position 10px from the right of the viewport */
     display: inline-block;
 }
 
@@ -186,10 +219,12 @@ label {
     background-color: white;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    grid-template-columns: repeat(3, auto);
-    grid-gap: 10px;
+    display: grid; /* Change to grid to enable grid layout */
+    /* grid-template-columns: repeat(2, auto); */
+    grid-gap: 10px; /* Add space between grid items */
     padding: 10px;
 }
+
 
 .option {
     padding: 10px 20px;
@@ -200,3 +235,134 @@ label {
 .option:hover {
     background-color: #ddd;
 }
+
+@media only screen and (max-width: 620px) {
+    .container {
+        padding: 10px;
+    }
+}
+
+
+
+/* 
+
+
+
+/* you know this */
+body.daylight {
+    background-color: #fffae3;
+    color: #333;
+}
+
+body.daylight::before {
+    background-image: url('../static/images/daylight.jpg');
+}
+
+body.candlelight {
+    background-color: #fff5e1;
+    color: #b3541e;
+}
+
+body.candlelight::before {
+    background-image: url('../static/images/candlelight.jpg');
+}
+
+body.moonlight {
+    background-color: #1a1a2e;
+    color: #ffffff;
+}
+
+body.moonlight::before {
+    background-image: url('../static/images/moonlight.jpg');
+}
+
+body.aquatic {
+    background-color: #e0f7fa;
+    color: #00796b;
+}
+
+body.aquatic::before {
+    background-image: url('../static/images/aquatic.jpg');
+}
+
+body.twilight {
+    background-color: #ffe4e1;
+    color: #c71585;
+}
+
+body.twilight::before {
+    background-image: url('../static/images/twilight.jpg');
+}
+
+body.enchanted {
+    background-color: #e0ffe0;
+    color: #6a1b9a;
+}
+
+body.enchanted::before {
+    background-image: url('../static/images/enchanted.jpg');
+}
+
+body.sinitic {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+body.sinitic::before {
+    background-image: url('../static/images/sinitic.jpg');
+}
+
+body.velvet {
+    background-color: #ffebee;
+    color: #c2185b;
+}
+
+body.velvet::before {
+    background-image: url('../static/images/velvet.jpg');
+}
+
+body.vintage {
+    background-color: #faf0e6;
+    color: #8b4513;
+}
+
+body.vintage::before {
+    background-image: url('../static/images/vintage.jpg');
+}
+
+/* Apply theme color to elements */
+.daylight p, .daylight h1, .daylight .number_button, .daylight .bottom_buttons {
+    color: #333;
+}
+
+.candlelight p, .candlelight h1, .candlelight .number_button, .candlelight .bottom_buttons {
+    color: #b3541e;
+}
+
+.moonlight p, .moonlight h1, .moonlight .number_button, .moonlight .bottom_buttons {
+    color: #ffffff;
+}
+
+.aquatic p, .aquatic h1, .aquatic .number_button, .aquatic .bottom_buttons {
+    color: #00796b;
+}
+
+.twilight p, .twilight h1, .twilight .number_button, .twilight .bottom_buttons {
+    color: #c71585;
+}
+
+.enchanted p, .enchanted h1, .enchanted .number_button, .enchanted .bottom_buttons {
+    color: #6a1b9a;
+}
+
+.sinitic p, .sinitic h1, .sinitic .number_button, .sinitic .bottom_buttons {
+    color: #d32f2f;
+}
+
+.velvet p, .velvet h1, .velvet .number_button, .velvet .bottom_buttons {
+    color: #c2185b;
+}
+
+.vintage p, .vintage h1, .vintage .number_button, .vintage .bottom_buttons {
+    color: #8b4513;
+} */

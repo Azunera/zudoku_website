@@ -26,8 +26,16 @@
 
 
     <p id="intro">
-        Enjoy the online version of Zudoku! Fill the grid and challenge yourself.
+        Enjoy the online version of Zudoku! Fill the grid and challenge yourself!
     </p>
+    <div class="row">
+
+        <button class="bottom_buttons" id="easy-button">Easy</button>
+        <button class="bottom_buttons" id="medium-button">Medium</button>
+        <button class="bottom_buttons" id="hard-button">Hard</button>
+        <button class="bottom_buttons" id="hard-button">e̵͇͝x̸̼͐p̶̤̌ĕ̵̞ŗ̸͒t̴̻̒
+            ̵̖͒</button>
+    </div>
     <div class="sudoku-container">
         <canvas id="sudoku-canvas" width="450" height="450"></canvas>
         <div class="canva-side-container">
@@ -46,17 +54,17 @@
             </div>
 
             <div class="dropdown">
-                <button id="dropdownButton">Select Option</button>
-                <div id="dropdownContent" class="dropdown-content">
-                    <div class="option" data-value="1">Option 1</div>
-                    <div class="option" data-value="2">Option 2</div>
-                    <div class="option" data-value="3">Option 3</div>
-                    <div class="option" data-value="4">Option 4</div>
-                    <div class="option" data-value="5">Option 5</div>
-                    <div class="option" data-value="6">Option 6</div>
-                    <div class="option" data-value="7">Option 7</div>
-                    <div class="option" data-value="8">Option 8</div>
-                    <div class="option" data-value="9">Option 9</div>
+                <button id="dropdownButton">Style</button>
+                <div id="dropdownContent" class="dropdown-content"> 
+                    <div class="option" data-value="1">Daylight</div> <!--light mode but with day style,-->
+                    <div class="option" data-value="2">Candlelight</div> <!--cozy color like candle flames-->
+                    <div class="option" data-value="3">Moonlight</div> <!--dark mode but with night style-->
+                    <div class="option" data-value="4">Aquatic</div>  <!--warm sea color and coral colors, cozy-->
+                    <div class="option" data-value="5">Twilight</div> <!-- something with color #c71585-->
+                    <div class="option" data-value="6">Enchanted</div> <!--cozy green-purple fantasy magic colors-->
+                    <div class="option" data-value="7">Sinitic</div> <!--red style liike china-->
+                    <div class="option" data-value="8">Velvet</div> <!--red like cake but cozy -->
+                    <div class="option" data-value="9">Vintage</div> <!--like old times--> 
                 </div>
             </div>
  
@@ -65,9 +73,6 @@
     </div>
     <div class="row">
 
-        <button class="bottom_buttons" id="easy-button">Skylight</button>
-        <button class="bottom_buttons" id="medium-button">Twilight</button>
-        <button class="bottom_buttons" id="hard-button">Moonlight</button>
         <button class="bottom_buttons" id="save">Save</button>
         <button class="bottom_buttons" id="load">Load</button>
 
