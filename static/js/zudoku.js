@@ -182,22 +182,14 @@ class Sudoku {
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
     const ctx = canvas.getContext('2d');
     const cellSize = canvas.width / 9;
     let selectedCell = null;
-
-
     const title = document.getElementById('title')
     const intro = document.getElementById('intro')
    
-
-
-
-
-    // Sampling Sudoku data
     let sudoku = new Sudoku();
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
@@ -285,23 +277,17 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('click', handleClick);
     document.addEventListener('keypress', handleKeyPress);
 
-
     drawGrid();
     drawNumbers();
-
 
     function color_changer(back_color, main_color) {}
        
     document.getElementById('easy-button').addEventListener('click', () => {
 
-
         document.body.style.backgroundColor = 'white';
         intro.style.color = 'black';
         title.style.color = 'black';
         sudoku.color = 'black';
-
-
-
 
         sudoku.generateSudoku();
         sudoku.setDifficulty('Easy');
@@ -309,8 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         drawGrid();
         drawNumbers();
         title.style.color = 'lightblue';
-
-
     });
 
 
@@ -320,13 +304,11 @@ document.addEventListener('DOMContentLoaded', () => {
         title.style.color = '#c71585';
         sudoku.color = '#c71585'
 
-
         sudoku.generateSudoku();
         sudoku.setDifficulty('Medium');
         drawGrid();
         drawNumbers();
     });
-
 
     document.getElementById('hard-button').addEventListener('click', () => {
         document.body.style.backgroundColor = 'black';
@@ -342,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // SYSTEM FOR SAVING AND LOADING
-
 
     async function getUserInfo() {
         const response = await fetch('/get_user_info', {
@@ -393,17 +374,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 
-
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownContent = document.getElementById('dropdownContent');
     const options = document.querySelectorAll('.option');
 
-
-
     dropdownButton.addEventListener('click', () => {
         dropdownContent.style.display = dropdownContent.style.display === 'grid' ? 'none' : 'grid';
     });
-
 
     options.forEach(option => {
         option.addEventListener('click', () => {
@@ -413,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownContent.style.display = 'none';
         });
     });
-
 
     window.addEventListener('click', (e) => {
         if (!dropdownButton.contains(e.target) && !dropdownContent.contains(e.target)) {
@@ -436,24 +412,34 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (value) {
             case '1': // Daylight
                 document.body.classList.add('daylight');
-                color = '#fffae3';
+                // color = '#fffae3';
+                document.body.getElementById('dropdownButton').innerHTML = 'Daylight'
                 hoverColor = '#ddd';
+                sudoku.color = '#000'; // Black for daylight
+                drawGrid();
+                drawNumbers();
                 break;
             case '2': // Candlelight
                 document.body.classList.add('candlelight');
                 color = '#fff5e1';
                 hoverColor = '#e0c3a1';
+                sudoku.color = '#8b4513'; // SaddleBrown for candlelight
+                drawGrid();
+                drawNumbers();
                 break;
             case '3': // Moonlight
                 document.body.classList.add('moonlight');
                 color = '#1a1a2e';
                 hoverColor = '#3a3a5e';
+                sudoku.color = '#f0e68c'; // Khaki for moonlight
+                drawGrid();
+                drawNumbers();
                 break;
             case '4': // Aquatic
                 document.body.classList.add('aquatic');
                 color = '#e0f7fa';
                 hoverColor = '#b2ebf2';
-                sudoku.color = '#00796b';
+                sudoku.color = '#00796b'; // Teal for aquatic
                 drawGrid();
                 drawNumbers();
                 break;
@@ -461,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.add('twilight');
                 color = '#ffe4e1';
                 hoverColor = '#ffb6c1';
-                sudoku.color = '#c71585';
+                sudoku.color = '#c71585'; // MediumVioletRed for twilight
                 drawGrid();
                 drawNumbers();
                 break;
@@ -469,21 +455,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.add('enchanted');
                 color = '#e0ffe0';
                 hoverColor = '#c8e6c9';
+                sudoku.color = '#4b0082'; // Indigo for enchanted
+                drawGrid();
+                drawNumbers();
                 break;
             case '7': // Sinitic
                 document.body.classList.add('sinitic');
                 color = '#ffebee';
                 hoverColor = '#ffcdd2';
+                sudoku.color = '#b22222'; // FireBrick for sinitic
+                drawGrid();
+                drawNumbers();
                 break;
             case '8': // Velvet
                 document.body.classList.add('velvet');
                 color = '#ffebee';
                 hoverColor = '#f8bbd0';
+                sudoku.color = '#8b008b'; // DarkMagenta for velvet
+                drawGrid();
+                drawNumbers();
                 break;
             case '9': // Vintage
                 document.body.classList.add('vintage');
                 color = '#faf0e6';
                 hoverColor = '#f5deb3';
+                sudoku.color = '#8b4513'; // SaddleBrown for vintage
+                drawGrid();
+                drawNumbers();
                 break;
         }
         // Update elements color
@@ -566,9 +564,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("User hasn't saved Sudoku info or user is not logged in.");
         }
     });
-
-
-
 
 
 

@@ -26,7 +26,7 @@ body::before {
     /* background: url('a.png') no-repeat center center fixed; */
     background-size: cover;
     z-index: -1;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 h1 {
@@ -148,7 +148,8 @@ canvas {
 .number_button {
     width: 75px; /* Set the size of the buttons */
     height: 75px; /* Set the size of the buttons */
-    background-color: #f2f2f2;
+    background-color: transparent;
+
     border: 1px solid #000; /* Add a border to distinguish them */
     color: rgb(0, 0, 0);
     text-align: center;
@@ -209,6 +210,7 @@ label {
 
 #dropdownButton {
     padding: 10px 20px;
+    background: transparent;
     font-size: 16px;
     cursor: pointer;
 }
@@ -244,18 +246,17 @@ label {
 
 
 
-/* 
 
 
 
-/* you know this */
-body.daylight {
-    background-color: #fffae3;
-    color: #333;
-}
+
+ ody.daylight {
+     background-color: #ECFEFF;
+    color: #333; 
+ }
 
 body.daylight::before {
-    background-image: url('../static/images/daylight.jpg');
+    background-image: url('../images/skylight.jpg');
 }
 
 body.candlelight {
@@ -264,7 +265,7 @@ body.candlelight {
 }
 
 body.candlelight::before {
-    background-image: url('../static/images/candlelight.jpg');
+    background-image: url('../images/candlelight.jpg');
 }
 
 body.moonlight {
@@ -273,7 +274,7 @@ body.moonlight {
 }
 
 body.moonlight::before {
-    background-image: url('../static/images/moonlight.jpg');
+    background-image: url('../images/night.jpg');
 }
 
 body.aquatic {
@@ -365,4 +366,4 @@ body.vintage::before {
 
 .vintage p, .vintage h1, .vintage .number_button, .vintage .bottom_buttons {
     color: #8b4513;
-} */
+} 
