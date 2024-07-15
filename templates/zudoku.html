@@ -11,7 +11,19 @@
     <link rel="stylesheet" href="../static/css/zudoku.css">
 </head>
 <body>
+    <!-- Dropdown for styling, its as fixed location-->
+    <div class="dropdown">
+        <button id="dropdownButton">Style</button>
+        <div id="dropdownContent" class="dropdown-content"> 
+            <div class="option" data-value="1">Daylight</div> <!--light mode but with day style,-->
+            <div class="option" data-value="2">Candlelight</div> <!--cozy color like candle flames-->
+            <div class="option" data-value="3">Moonlight</div> <!--dark mode but with night style-->
+            <div class="option" data-value="4">Aquatic</div>  <!--warm sea color and coral colors, cozy-->
+            <div class="option" data-value="5">Twilight</div> <!-- something with color #c71585-->
 
+        </div>
+    </div>
+     <!-- Dropdown for styling, its as flex location-->
     <div class="navbar" id="myNavBar">
         <ul>
             <li id="register"><a href="register">Register (to save your progress!)</a></li>
@@ -35,11 +47,18 @@
         <button class="bottom_buttons" id="hard-button">Hard</button>
         <button class="bottom_buttons" id="hard-button">Arduous</button>
     </div>
+
     <div class="sudoku-container">
+        <div class="canva-side-container">
+            <div class="filler"></div> 
+        </div>
+        <div class="canva-side-container">
+            <div class="filler"></div> 
+        </div>
         <canvas id="sudoku-canvas" width="450" height="450"></canvas>
         <div class="canva-side-container">
             <label id="lives_label">10 lives left</label>
-            
+            <div class="filler"></div> 
             <div class="button-grid">
                 <button class="number_button" id="1">1</button>
                 <button class="number_button" id="2">2</button>
@@ -51,31 +70,18 @@
                 <button class="number_button" id="8">8</button>
                 <button class="number_button" id="9">9</button>
             </div>
-
-            <div class="dropdown">
-                <button id="dropdownButton">Style</button>
-                <div id="dropdownContent" class="dropdown-content"> 
-                    <div class="option" data-value="1">Daylight</div> <!--light mode but with day style,-->
-                    <div class="option" data-value="2">Candlelight</div> <!--cozy color like candle flames-->
-                    <div class="option" data-value="3">Moonlight</div> <!--dark mode but with night style-->
-                    <div class="option" data-value="4">Aquatic</div>  <!--warm sea color and coral colors, cozy-->
-                    <div class="option" data-value="5">Twilight</div> <!-- something with color #c71585-->
-                    <div class="option" data-value="6">Enchanted</div> <!--cozy green-purple fantasy magic colors-->
-                    <div class="option" data-value="7">Sinitic</div> <!--red style liike china-->
-                    <div class="option" data-value="8">Velvet</div> <!--red like cake but cozy -->
-                    <div class="option" data-value="9">Vintage</div> <!--like old times--> 
-                </div>
-            </div>
- 
-
+            <div class="filler"></div> 
+            <div class="filler"></div> 
+            <div class="filler"></div> 
         </div>
     </div>
+
     <div class="row">
 
         <button class="bottom_buttons" id="save">Save</button>
         <button class="bottom_buttons" id="load">Load</button>
 
     </div>
-    <script src="../static/js/zudoku.js"></script>
+    <script type="module" src="../static/js/zudoku.js"></script>
 </body>
 </html>

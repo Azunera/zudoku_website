@@ -53,10 +53,13 @@ body, #description {
 
 .sudoku-container {
     display: flex;
-    justify-content: center;
-    flex-direction: horizontal;
+    /* justify-content: center; previous */
     align-items: center;
     margin-bottom: 20px;
+
+    justify-content: space-between; /* Distribute space between items */
+    align-items: stretch; /* Stretch items to the container height */
+    height: 100vh; /* Set height to fill the viewport */
 }
 
 .sudoku-container canvas {
@@ -194,17 +197,13 @@ canvas {
     flex-grow: 1;
 }
 
-.filler2 {
-    flex-grow: 1;
-}
 
 label {
 
     text-align: center;
     font-family: 'Dancing Script', cursive;
     text-decoration: none;
-    font-size: 30px;
-    
+    font-size: 15px;
 
 }
 
@@ -216,6 +215,7 @@ label {
     right: 200px; /* Position 10px from the right of the viewport */
     display: inline-block;
 }
+
 
 #dropdownButton {
     padding: 10px 20px;
@@ -230,7 +230,7 @@ label {
     background-color: white;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    display: grid; /* Change to grid to enable grid layout */
+    display: none; /* Change to grid to enable grid layout */
     /* grid-template-columns: repeat(2, auto); */
     grid-gap: 10px; /* Add space between grid items */
     padding: 10px;
@@ -259,7 +259,7 @@ label {
 
 
 
- body.daylight {
+ ody.daylight {
      background-color: #ECFEFF;
     color: #333; 
  }
@@ -279,7 +279,7 @@ body.candlelight::before {
 
 body.moonlight {
     background-color: #1a1a2e;
-    /* color: #ffffff; */
+    color: #ffffff;
 }
 
 body.moonlight::before {
@@ -304,43 +304,8 @@ body.twilight::before {
     background-image: url('../static/images/twilight.jpg');
 }
 
-body.enchanted {
-    background-color: #e0ffe0;
-    color: #6a1b9a;
-}
 
-body.enchanted::before {
-    background-image: url('../static/images/enchanted.jpg');
-}
-
-body.sinitic {
-    background-color: #ffebee;
-    color: #d32f2f;
-}
-
-body.sinitic::before {
-    background-image: url('../static/images/sinitic.jpg');
-}
-
-body.velvet {
-    background-color: #ffebee;
-    color: #c2185b;
-}
-
-body.velvet::before {
-    background-image: url('../static/images/velvet.jpg');
-}
-
-body.vintage {
-    background-color: #faf0e6;
-    color: #8b4513;
-}
-
-body.vintage::before {
-    background-image: url('../static/images/vintage.jpg');
-}
-
-/* Apply theme color to elements
+/* Apply theme color to elements */
 .daylight p, .daylight h1, .daylight .number_button, .daylight .bottom_buttons {
     color: #333;
 }
@@ -360,19 +325,3 @@ body.vintage::before {
 .twilight p, .twilight h1, .twilight .number_button, .twilight .bottom_buttons {
     color: #c71585;
 }
-
-.enchanted p, .enchanted h1, .enchanted .number_button, .enchanted .bottom_buttons {
-    color: #6a1b9a;
-}
-
-.sinitic p, .sinitic h1, .sinitic .number_button, .sinitic .bottom_buttons {
-    color: #d32f2f;
-}
-
-.velvet p, .velvet h1, .velvet .number_button, .velvet .bottom_buttons {
-    color: #c2185b;
-}
-
-.vintage p, .vintage h1, .vintage .number_button, .vintage .bottom_buttons {
-    color: #8b4513;
-}  */

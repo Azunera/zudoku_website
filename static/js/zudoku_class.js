@@ -1,4 +1,4 @@
-class Sudoku {
+export default class Sudoku {
     constructor() {
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
@@ -181,5 +181,3 @@ class Sudoku {
         return this.sudoku;
     }
 }
-
-export default Sudoku;

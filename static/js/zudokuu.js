@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
         }
         // Update elements color
-        document.querySelector('p').style.color = color;
+        document.body.querySelector('p').style.color = color;
         document.querySelector('h1').style.color = color;
         document.querySelectorAll('.number_button').forEach(button => {
             button.style.backgroundColor = color;
