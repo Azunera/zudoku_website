@@ -137,13 +137,11 @@ export default class Sudoku {
 
 
     setDifficulty(difficulty) {
-        if (!['Easy', 'Medium', 'Hard', 'Test'].includes(difficulty)) {
+        if (!['Easy', 'Medium', 'Hard', 'Arduous', 'Test'].includes(difficulty)) {
             throw new Error('Invalid difficulty');
         }
 
-
         this.difficulty = difficulty
-
 
         let emptyCells;
         if (difficulty === 'Easy') {
@@ -157,6 +155,10 @@ export default class Sudoku {
         } else if (difficulty === 'Hard') {
             emptyCells = 60;
             this.lives = 5;
+            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
+        } else if (difficulty === 'Arduous') {
+            emptyCells = 63;
+            this.lives = 3;
             document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
         } else { // Test
             emptyCells = 1;

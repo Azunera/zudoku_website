@@ -134,8 +134,8 @@ canvas {
 
 .canva-side-container {
     display: flex;
-    flex-direction: column; /* Arrange items vertically */
-    align-items: center; /* Center items horizontally */
+    flex-direction: column; /* Arranging items vertically */
+    align-items: center; /* Centering items horizontally */
     margin: 20px;
     gap: 50px;
 }
@@ -147,11 +147,11 @@ canvas {
 }
 
 .number_button {
-    width: 60px; /* Set the size of the buttons */
-    height: 60px; /* Set the size of the buttons */
+    width: 60px; 
+    height: 60px; 
     background-color: transparent;
 
-    border: 1px solid #000; /* Add a border to distinguish them */
+    border: 1px solid #000; /* add border to distinguishing in between*/
     color: rgb(0, 0, 0);
     text-align: center;
     font-family: 'Caveat', cursive;
@@ -162,9 +162,22 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0; /* Ensure no margin between buttons */
+    margin: 0; /* Ensuring no margin between buttons */
+    overflow: hidden;
 }
-.bottom_buttons {
+
+.number_button_content {
+    transition: transform 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.number_button:hover .number_button_content {
+    transform: scale(1.3);
+}
+
+.difficulty_button, .bottom_buttons {
     background-color: transparent;
     border: none;
     color: rgb(0, 0, 0);
@@ -179,33 +192,26 @@ canvas {
     margin-bottom: 20px; /* More margin below */
     display: block;
     cursor: pointer;
-    transition: background-color 0.5s;
+    transition: transform 0.3s ease; /* Smooth transition for transform */
+}
+
+.difficulty_button:hover {
+    transform: scale(1.2); /* Grow on hover */
 }
 
 .bottom_buttons:hover {
-    background-color: #dedede;
-}
-
-.number_button:hover {
-    background-color: #dedede;
+    transform: scale(1.2); /* Grow on hover */
 }
 
 .filler {
     flex-grow: 1;
 }
 
-.filler2 {
-    flex-grow: 1;
-}
-
 label {
-
     text-align: center;
     font-family: 'Dancing Script', cursive;
     text-decoration: none;
     font-size: 30px;
-    
-
 }
 
 
@@ -218,17 +224,24 @@ label {
 }
 
 #dropdownButton {
+    border: none;
     padding: 10px 20px;
     background: transparent;
-    font-size: 16px;
+    font-size: 28px; /* originally 16 */
+    font-family: 'Dancing Script', cursive;
     cursor: pointer;
+    transition: transform 0.3s ease; /* Smooth transition for transform */
+}
+
+#dropdownButton:hover {
+    transform: scale(1.1);
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: transparent;
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
     z-index: 1;
     display: grid; /* Change to grid to enable grid layout */
     /* grid-template-columns: repeat(2, auto); */
@@ -241,22 +254,19 @@ label {
     padding: 10px 20px;
     cursor: pointer;
     white-space: nowrap;
+    transition: transform 0.3s ease; /* Smooth transition for transform */
 }
 
 .option:hover {
-    background-color: #ddd;
+    transform: scale(1.2); /* Grow on hover */
 }
+
 
 @media only screen and (max-width: 620px) {
     .container {
         padding: 10px;
     }
 }
-
-
-
-
-
 
 
  body.daylight {
@@ -268,14 +278,6 @@ body.daylight::before {
     background-image: url('../images/skylight.jpg');
 }
 
-body.candlelight {
-    background-color: #fff5e1;
-    color: #b3541e;
-}
-
-body.candlelight::before {
-    background-image: url('../images/candlelight.jpg');
-}
 
 body.moonlight {
     background-color: #1a1a2e;
@@ -292,87 +294,16 @@ body.aquatic {
 }
 
 body.aquatic::before {
-    background-image: url('../static/images/aquatic.jpg');
+    background-image: url('../images/aquatic2.png');
 }
 
 body.twilight {
-    background-color: #ffe4e1;
-    color: #c71585;
-}
-
-body.twilight::before {
-    background-image: url('../static/images/twilight.jpg');
-}
-
-body.enchanted {
-    background-color: #e0ffe0;
-    color: #6a1b9a;
-}
-
-body.enchanted::before {
-    background-image: url('../static/images/enchanted.jpg');
-}
-
-body.sinitic {
-    background-color: #ffebee;
-    color: #d32f2f;
-}
-
-body.sinitic::before {
-    background-image: url('../static/images/sinitic.jpg');
-}
-
-body.velvet {
-    background-color: #ffebee;
-    color: #c2185b;
-}
-
-body.velvet::before {
-    background-image: url('../static/images/velvet.jpg');
-}
-
-body.vintage {
-    background-color: #faf0e6;
-    color: #8b4513;
-}
-
-body.vintage::before {
-    background-image: url('../static/images/vintage.jpg');
-}
-
-/* Apply theme color to elements
-.daylight p, .daylight h1, .daylight .number_button, .daylight .bottom_buttons {
-    color: #333;
-}
-
-.candlelight p, .candlelight h1, .candlelight .number_button, .candlelight .bottom_buttons {
-    color: #b3541e;
-}
-
-.moonlight p, .moonlight h1, .moonlight .number_button, .moonlight .bottom_buttons {
+    background-color: #aa6a93;
     color: #ffffff;
 }
 
-.aquatic p, .aquatic h1, .aquatic .number_button, .aquatic .bottom_buttons {
-    color: #00796b;
-}
 
-.twilight p, .twilight h1, .twilight .number_button, .twilight .bottom_buttons {
-    color: #c71585;
+body.twilight::before {
+    background-image: url('../images/twilight.jpg');
+    opacity: 0.8;
 }
-
-.enchanted p, .enchanted h1, .enchanted .number_button, .enchanted .bottom_buttons {
-    color: #6a1b9a;
-}
-
-.sinitic p, .sinitic h1, .sinitic .number_button, .sinitic .bottom_buttons {
-    color: #d32f2f;
-}
-
-.velvet p, .velvet h1, .velvet .number_button, .velvet .bottom_buttons {
-    color: #c2185b;
-}
-
-.vintage p, .vintage h1, .vintage .number_button, .vintage .bottom_buttons {
-    color: #8b4513;
-}  */

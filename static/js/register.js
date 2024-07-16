@@ -6,10 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let password = document.forms['register-form']['password'].value;
         let conf_password = document.forms['register-form']['confirm-password'].value;
         
-        // if (user === '' || password === '' || conf_password === '') {
-        //     alert('Please fill in all fields');
-        //     return;
-        // }
         if (password !== conf_password) {
             alert('Passwords do not match');
             return;
@@ -31,12 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return response.json();
         })
+        
         .then(data => {
             console.log(data);
             if (data.status === 'success') {
                 window.location.href = '/login'
             }
         })
+
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
             window.location.href = '/register'
