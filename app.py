@@ -17,6 +17,7 @@ app.config['SECRET_KEY'] = secrets.token_hex()
 
 db = SQLAlchemy(app)
 
+
 # <---- DEFINING CLASSES ---->
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -195,9 +196,8 @@ def load():
             'lives': zudoku.lives,
             'user_id': zudoku.user_id
         }})
-    
-    
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
-    
+  
+
+@app.route('/about')
+def about():
+    return 'About'
