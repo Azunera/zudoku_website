@@ -87,7 +87,7 @@ def save():
 # REGISTER SYSTEM
 @app.route('/register', methods=['GET'])
 def register():
-    return render_template('register.html')
+    return render_template('/register.html')
 
 @app.route('/register_user', methods=['POST'])
 def register_user():
