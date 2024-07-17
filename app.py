@@ -61,7 +61,6 @@ def zudoku():
 @app.route('/save', methods=['POST'])
 def save():
     data = request.json
-
     zudoku = Zudoku.query.filter_by(user_id=data['user_id']).first()
 
     if zudoku:
@@ -83,12 +82,6 @@ def save():
     db.session.commit()
     
     return jsonify({'message': 'Sudoku saved successfully'}), 201
-
-# @app.route('/load', method=['GET']) 
-# def load():
-    
-    
-
 
 # REGISTER SYSTEM
 @app.route('/register', methods=['GET'])
@@ -148,18 +141,16 @@ def login_user():
     db.session.commit()
 
     response = make_response(jsonify({'status': 'success', 'message': 'Logged in successfully'}))
-    response.set_cookie('session_token', session_token, httponly=True, secure=True, samesite=None)  # Use secure=True in production
+    response.set_cookie('session_token', session_token, httponly=True, secure=True, samesite=None) 
+    #Sec must be true in production
     
     return response
 
-# @app.route('/logout')
-# def logout():
-#     session.clear()
-#     return redirect(url_for('login'))
+@app.route('/logout')
+def logout():
+    db.session.clear()
+    return redirect(url_for('login'))
 
-# if __name__ == '__main__':
-#     db.create_all()
-#     app.run(debug=True)
 
 @app.route('/get_user_info', methods=['GET'])
 def get_user_info():
@@ -168,13 +159,13 @@ def get_user_info():
         print('Session token is missing')
         return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
     
-    # Find the session using the session token
+    # Finding the session using the session token
     session = Session.query.filter_by(token=session_token).first()
     if not session:
         print('Invalid session token')
         return jsonify({'status': 'error', 'message': 'Invalid session token'}), 401
 
-    # Find the user using the session's user_id
+    # Finding the user using the session's user_id
     user = User.query.filter_by(id=session.user_id).first()
     if not user:
         print('User not found')
@@ -185,9 +176,12 @@ def get_user_info():
  
 @app.route('/load', methods=['GET']) 
 def load():
+    
     session_token = request.cookies.get('session_token')
     session = Session.query.filter_by(token=session_token).first()
     zudoku = Zudoku.query.filter_by(user_id=session.user_id).first()
+    
+    # Ideally for changing the zudoku.sudoku and solution need to be done here
     print(zudoku.sudoku)
     return jsonify({
         'status': 'success',
@@ -202,11 +196,8 @@ def load():
             'user_id': zudoku.user_id
         }})
     
+    
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
     
- 
- 
- 
- 
