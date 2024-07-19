@@ -1,7 +1,38 @@
+// export default class Colors {
+//     static WRONG_RED_DARK = "#1E5A8C"; // Tomato Red
+//     static LIGHTER_WRONG_RED = "rgb(255, 150, 128)";
+//     static DARKER_WRONG_RED = "rgb(205, 49, 21)";
+//     static CORRECT_BLUE = "rgb(70, 130, 180)"; // Steel Blue
+//     static LIGHTER_CORRECT_BLUE = "rgb(100, 170, 220)";
+//     static DARKER_CORRECT_BLUE = "rgb(30, 90, 140)";
+// }
+// RGB: (255, 150, 128)
+// Hex: #FF9680
+// Lighter Steel Blue:
+// RGB: (100, 170, 220)
+// Hex: #64AAD8
+// Darker Versions:
+// Darker Tomato Red:
+// RGB: (205, 49, 21)
+// Hex: #CD3115
+// Darker Steel Blue:
+// RGB: (30, 90, 140)
+// Hex: #1E5A8C
+
 export default class Sudoku {
     constructor() {
+        this.colors = {
+            WRONG_RED: "rgb(255, 99, 71)",    // Tomato Red
+            LIGHT_WRONG_RED: "rgb(255, 150, 128)", 
+            DARK_WRONG_RED: "rgb(205, 49, 21)",
+            CORRECT_BLUE: "rgb(70, 130, 180)", // Steel Blue
+            LIGHT_CORRECT_BLUE: "rgb(100, 170, 220)",
+            DARK_CORRECT_BLUE: "rgb(30, 90, 140)"
+        };
+
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
-        this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
+        this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => 'clear'));
+        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => 'rgb(0, 0, 0)'));
         this.o_sudoku = null;
         this.difficulty = null;
         this.wrongs = [];
@@ -182,4 +213,67 @@ export default class Sudoku {
        
         return this.sudoku;
     }
+    findWrongs() {
+        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => 'rgb(0, 0, 0)'));
+        
+        let rows = Array.from({ length: 9 }, () => new Set());
+        let cols = Array.from({ length: 9 }, () => new Set());
+        let boxes = Array.from({ length: 9 }, () => new Set());
+    
+        let wrongCells = new Set(); // for wronging cell coordinates as strings and avoiding repetition of them
+    
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                if (this.sudoku[r][c] === ' ') {
+                    continue;
+                }
+    
+                let value = this.sudoku[r][c];
+                let boxIndex = Math.floor(r / 3) * 3 + Math.floor(c / 3);
+    
+                let cellStr = `${r},${c}`;
+    
+                if (rows[r].has(value) || cols[c].has(value) || boxes[boxIndex].has(value)) {
+                    // If a duplicate is found, mark this cell as wrong
+                    wrongCells.add(cellStr);
+    
+                    // Marking the first appearance in rows, cols, and boxes as wrong as well.
+                    for (let rr = 0; rr < 9; rr++) {
+                        if (this.sudoku[rr][c] === value && !wrongCells.has(`${rr},${c}`)) {
+                            wrongCells.add(`${rr},${c}`);
+                            break;
+                        }
+                    }
+    
+                    for (let cc = 0; cc < 9; cc++) {
+                        if (this.sudoku[r][cc] === value && !wrongCells.has(`${r},${cc}`)) {
+                            wrongCells.add(`${r},${cc}`);
+                            break;
+                        }
+                    }
+    
+                    for (let i = 0; i < 9; i++) {
+                        let boxRow = Math.floor(boxIndex / 3) * 3 + Math.floor(i / 3);
+                        let boxCol = (boxIndex % 3) * 3 + (i % 3);
+                        if (this.sudoku[boxRow][boxCol] === value && !wrongCells.has(`${boxRow},${boxCol}`)) {
+                            wrongCells.add(`${boxRow},${boxCol}`);
+                            break;
+                        }
+                    }
+    
+                } else {
+                    rows[r].add(value);
+                    cols[c].add(value);
+                    boxes[boxIndex].add(value);
+                }
+            }
+        }
+        wrongCells.forEach(cell => {
+            const [r, c] = cell.split(',').map(Number);
+            this.number_color[r][c] = 'rgb(255, 99, 71)';
+        });
+        
+        return Array.from(wrongCells).map(cell => cell.split(',').map(Number));
+    }
+    
 }

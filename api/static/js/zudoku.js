@@ -4,7 +4,10 @@ import {saveSudoku, loadSudoku, welcomeLogin, getUserInfo} from './saveLoad.js'
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
     const ctx = canvas.getContext('2d');
+
+    
     const cellSize = canvas.width / 9;
+    
     let selectedCell = null;
     const title = document.getElementById('title')
     const intro = document.getElementById('intro')
@@ -34,11 +37,35 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.font = `${cellSize / 2}px Dancing Script`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = sudoku.color
+        ctx.fillStyle = '#690000';  // This is the DARKER_CORRECT_BLUE color
 
 
+        // # Cells colors
+        // WHITE         = (255, 255, 255)  # White, for clear cells,
+        // FOCUS_BLUE    = (173, 216, 230)  # Light Blue, for focused cell
+        // CROSS_BLUE    = (240, 248, 255)  # Alice Blue, for highlight
+        // RED           = (255, 200, 200)  # R
+        
+        // # Numbers colors
+        // BLACK         = (0,0,0)
+        // WRONG_RED     = (255, 99, 71)   # Tomato Red, for wrong nmbers
+        // CORRECT_BLUE  = (70, 130, 180)   # Steel Blue, for right numbers
+        
+        
+        // # WIDGETS COLOR
+        // WINNING_GREEN = (0, 128, 0) 
+        // LOSING_RED    = (128, 0, 0)
+    
+        // EASY_GREEN    = (193, 255, 193)   #  pastel green
+        // MEDIUM_ORANGE = (255, 187, 119)  #  pastel orange
+        // HARD_RED      = (191, 97, 97)     #  pastel red 
+    
+        
+        // BACKGROUND    = (211, 211, 211)   # Light_gray
+        
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
+                ctx.fillStyle = sudoku.number_color[row][col]
                 const num = sudoku.sudoku[row][col];
                 if (num) {
                     const x = col * cellSize + cellSize / 2;
@@ -67,16 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedCell && num >= "1" && num <= "9") {
                 const { row, col } = selectedCell;
 
-
-                if (sudoku.sudoku[row][col] == num) {
-                    sudoku.sudoku[row][col] = ' ';
-                } else {
-                    sudoku.sudoku[row][col] = num;
+                if (sudoku.sudoku[row][col] != sudoku.solution[row][col]) {
+                    if (sudoku.sudoku[row][col] == num) {
+                        sudoku.sudoku[row][col] = ' ';
+                    } else {
+                        sudoku.sudoku[row][col] = num;
                     if (!sudoku.check_cell(row, col)) {
                         sudoku.lives -= 1;
                         document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`;              
                     }
-                }
+                }   
+                sudoku.findWrongs()
                 drawGrid();
                 drawNumbers();
             }

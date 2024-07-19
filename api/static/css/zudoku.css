@@ -38,6 +38,20 @@ h1 {
     text-shadow: 2px 2px 4px #aaa;
 }
 
+h1 {
+    color: #333;
+    font-family: 'Dancing Script', cursive;
+    margin: 10px;
+    text-align: center;
+    font-size: 48px;
+    text-shadow: 2px 2px 4px #aaa;
+}
+
+/* h1 {
+    background: linear-gradient(to right, red, blue);
+    background-clip: text;
+    color: transparent;
+} */
 p {
     font-family: 'Caveat', cursive;
     font-size: 24px;
