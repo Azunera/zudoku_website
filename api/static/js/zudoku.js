@@ -1,5 +1,6 @@
 import Sudoku from './zudoku_class.js'
 import {saveSudoku, loadSudoku, welcomeLogin, getUserInfo} from './saveLoad.js'
+// import { Fireworks } from './fireworks-js'
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
@@ -13,6 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const intro = document.getElementById('intro')
    
     let sudoku = new Sudoku();
+    let style = 'light'; 
+
+    const container = document.querySelector('.fireworks')
+    const fireworks = new Fireworks.default(container, {
+        hue: { min: 0, max: 360 },
+        delay: { min: 15, max: 30 },
+        speed: 2,
+        acceleration: 1.05,
+        friction: 0.98,
+        gravity: 1.5,
+        particles: 50,
+        trace: 3,
+        explosion: 5,
+        autoresize: true,
+        brightness: { min: 50, max: 80 },
+        decay: { min: 0.015, max: 0.03 },
+        mouse: { click: false, move: false, max: 1 },
+        boundaries: { x: 50, y: 50, width: canvas.width, height: canvas.height },
+     });
+    // fireworks.start()
+    
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
 
@@ -33,50 +55,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+ 
     function drawNumbers() {
         ctx.font = `${cellSize / 2}px Dancing Script`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = '#690000';  // This is the DARKER_CORRECT_BLUE color
-
-
-        // # Cells colors
-        // WHITE         = (255, 255, 255)  # White, for clear cells,
-        // FOCUS_BLUE    = (173, 216, 230)  # Light Blue, for focused cell
-        // CROSS_BLUE    = (240, 248, 255)  # Alice Blue, for highlight
-        // RED           = (255, 200, 200)  # R
-        
-        // # Numbers colors
-        // BLACK         = (0,0,0)
-        // WRONG_RED     = (255, 99, 71)   # Tomato Red, for wrong nmbers
-        // CORRECT_BLUE  = (70, 130, 180)   # Steel Blue, for right numbers
-        
-        
-        // # WIDGETS COLOR
-        // WINNING_GREEN = (0, 128, 0) 
-        // LOSING_RED    = (128, 0, 0)
-    
-        // EASY_GREEN    = (193, 255, 193)   #  pastel green
-        // MEDIUM_ORANGE = (255, 187, 119)  #  pastel orange
-        // HARD_RED      = (191, 97, 97)     #  pastel red 
-    
-        
-        // BACKGROUND    = (211, 211, 211)   # Light_gray
+        ctx.fillStyle = '#000000'; 
         
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
-                ctx.fillStyle = sudoku.number_color[row][col]
+                ctx.fillStyle == sudoku.color;
+                // If the current number has no color, use the standard one
+                // if (sudoku.number_color[row][col] == 'clear') { 
+                //     ctx.fillStyle == sudoku.color 
+  
                 const num = sudoku.sudoku[row][col];
-                if (num) {
+                if (num != ' ') {
                     const x = col * cellSize + cellSize / 2;
                     const y = row * cellSize + cellSize / 2;
                     ctx.fillText(num, x, y);
-                }
+                } 
+
             }
         }
     }
+    
+    // function highlightingSelectedCell() {
 
+    // }
     function handleClick(event) {
+
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
@@ -85,8 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-
         selectedCell = { row, col };
+        
     }
 
     function insert_number(num) {
@@ -107,11 +115,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 sudoku.findWrongs()
                 drawGrid();
                 drawNumbers();
+
+                // fireworks.start();
+                // handleWin();
+                 
+                 
+                }
             }
-        }  
+        }
     }
 
 
+    
     function handleKeyPress(event) {
         insert_number(event.key);
         }
@@ -259,5 +274,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     welcomeLogin()
-
+    
 });

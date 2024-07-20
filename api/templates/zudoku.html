@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +8,20 @@
     <link rel="icon" href="../static/images/favicon.ico">
     <!-- <link rel="stylesheet" href="../static/css/index.css"> -->
     <link rel="stylesheet" href="../static/css/zudoku.css">
+    <style>
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
+    <div class="fireworks"></div>
     <!-- Dropdown for styling, its as fixed location-->
     <div class="dropdown">
         <button id="dropdownButton">Style</button>
@@ -19,7 +30,6 @@
             <div class="option" data-value="2">Moonlight</div> <!--dark mode but with night style-->
             <div class="option" data-value="3">Aquatic</div>  <!--warm sea color and coral colors, cozy-->
             <div class="option" data-value="4">Twilight</div> <!-- something with color #c71585-->
-
         </div>
     </div>
      <!-- Dropdown for styling, its as flex location-->
@@ -32,15 +42,12 @@
         </ul>
     </div>
 
-
     <h1 id="title">Play Zudoku Online!</h1>
-
 
     <p id="intro">
         Enjoy the online version of Zudoku! Fill the grid and challenge yourself!
     </p>
     <div class="row">
-
         <button class="difficulty_button" id="easy-button">Easy</button>
         <button class="difficulty_button" id="medium-button">Medium</button>
         <button class="difficulty_button" id="hard-button">Hard</button>
@@ -55,6 +62,7 @@
             <div class="filler"></div> 
         </div>
         <canvas id="sudoku-canvas" width="450" height="450"></canvas>
+        
         <div class="canva-side-container">
             <label id="lives_label">10 lives left</label>
             <div class="filler"></div> 
@@ -76,11 +84,11 @@
     </div>
 
     <div class="row">
-
         <button class="bottom_buttons" id="save">Save</button>
         <button class="bottom_buttons" id="load">Load</button>
-
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
     <script type="module" src="../static/js/zudoku.js"></script>
 </body>
 </html>
