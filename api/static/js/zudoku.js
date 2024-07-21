@@ -4,37 +4,21 @@ import {saveSudoku, loadSudoku, welcomeLogin, getUserInfo} from './saveLoad.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
+    const ratio = window.devicePixelRatio;
     const ctx = canvas.getContext('2d');
 
-    
-    const cellSize = canvas.width / 9;
-    
-    let selectedCell = null;
-    const title = document.getElementById('title')
-    const intro = document.getElementById('intro')
-   
-    let sudoku = new Sudoku();
-    let style = 'light'; 
+    canvas.width = 450 * ratio;
+    canvas.height = 450 * ratio;
+    canvas.style.width = 450 + "px";
+    canvas.style.height = 450 + "px";
+    canvas.getContext("2d").scale(ratio, ratio);
 
-    const container = document.querySelector('.fireworks')
-    const fireworks = new Fireworks.default(container, {
-        hue: { min: 0, max: 360 },
-        delay: { min: 15, max: 30 },
-        speed: 2,
-        acceleration: 1.05,
-        friction: 0.98,
-        gravity: 1.5,
-        particles: 50,
-        trace: 3,
-        explosion: 5,
-        autoresize: true,
-        brightness: { min: 50, max: 80 },
-        decay: { min: 0.015, max: 0.03 },
-        mouse: { click: false, move: false, max: 1 },
-        boundaries: { x: 50, y: 50, width: canvas.width, height: canvas.height },
-     });
-    // fireworks.start()
-    
+    const cellSize = canvas.width / 9 / ratio;
+
+    let numbers_style = 'dark'; 
+    let selectedCell = null;
+    let sudoku = new Sudoku();
+
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
 
@@ -53,22 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(canvas.width, i * cellSize);
             ctx.stroke();
         }
+        highlightingSelectedCell()
     }
 
- 
     function drawNumbers() {
         ctx.font = `${cellSize / 2}px Dancing Script`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = '#000000'; 
-        
+
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
                 ctx.fillStyle == sudoku.color;
-                // If the current number has no color, use the standard one
-                // if (sudoku.number_color[row][col] == 'clear') { 
-                //     ctx.fillStyle == sudoku.color 
-  
+                // Deciding the color of the numbers
+                if (numbers_style == 'dark') { 
+                    ctx.fillStyle = sudoku.number_color[row][col][0];
+                } 
+                else if (numbers_style == 'light') {
+                    ctx.fillStyle = sudoku.number_color[row][col][1];
+                }
+
                 const num = sudoku.sudoku[row][col];
                 if (num != ' ') {
                     const x = col * cellSize + cellSize / 2;
@@ -80,21 +67,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // function highlightingSelectedCell() {
+    function highlightingSelectedCell() { 
+        if (selectedCell) {
+            const { row, col } = selectedCell;
+            const x = col * cellSize + 2.5;
+            const y = row * cellSize + 2.5;
+            const size = cellSize - 5;
 
-    // }
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1; 
+            ctx.beginPath();
+            ctx.rect(x, y, size, size);
+            ctx.stroke();
+        }
+    }
+
     function handleClick(event) {
-
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-        selectedCell = { row, col };
-        
+        // Checking if the clicked cell is the same as the currently selected cell
+        if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
+            selectedCell = null;
+        } else {
+            selectedCell = { row, col };
+        }
+
+        drawGrid(); 
+        drawNumbers(); 
     }
 
     function insert_number(num) {
@@ -116,17 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 drawGrid();
                 drawNumbers();
 
-                // fireworks.start();
-                // handleWin();
-                 
+
                  
                 }
             }
         }
     }
 
-
-    
     function handleKeyPress(event) {
         insert_number(event.key);
         }
@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawGrid();
         drawNumbers();
     });
+
     // SETTING DIFFICULTIES
     document.querySelectorAll('.difficulty_button').forEach(button => {
         button.addEventListener('click', (event) => {
@@ -158,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             drawNumbers()
         })
     })
-
 
     // NUMBERS BESIDES SCREEN
     let number_buttons = document.getElementsByClassName('number_button')
@@ -206,10 +206,9 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (value) {
             case '1': // Daylight
                 document.body.classList.add('daylight');
-                // color = '#fffae3';
-                // document.body.getElementById('dropdownButton').innerHTML = 'Daylight'
+                color = '#ffffff'
+                color2 = '#ffffff'
                 hoverColor = '#ddd';
-                sudoku.color = '#000'; // Black for daylight
                 drawGrid();
                 drawNumbers();
                 break;
@@ -217,27 +216,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.add('moonlight');
                 color = '#f0e68c';
                 color2 = '#ffffff';
-                // color2 = '#1a1a2e';  // maybe for background?
-                sudoku.color = '#f0e68c'; // Khaki for moonlight
+                sudoku.color = '#f0e68c'; 
                 drawGrid();
                 drawNumbers();
                 break;
             case '3': // Aquatic
                 document.body.classList.add('aquatic');
                 color = '#000000';
-                sudoku.color = '#000000'; // Teal for aquatic
+                sudoku.color = '#000000';
                 drawGrid();
                 drawNumbers();
                 break;
             case '4': // Twilight
                 document.body.classList.add('twilight');
                 color = '#ffe4e1';
-                sudoku.color = '#ffffff'; // MediumVioletRed for twilight
+                sudoku.color = '#ffffff'; 
                 drawGrid();
                 drawNumbers();
                 break;
         }
-
 
         //UPDATING ELEMENTS BY COLOR
         document.querySelectorAll('p').forEach(p => {
@@ -269,8 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.style.color = color2;
 
         });
-    
-    
     }
     
     welcomeLogin()

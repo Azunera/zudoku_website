@@ -34,7 +34,7 @@ export default class Sudoku {
 
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => 'clear'));
-        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => 'rgb(0, 0, 0)'));
+        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
         this.o_sudoku = null;
         this.difficulty = null;
         this.wrongs = [];
@@ -216,7 +216,7 @@ export default class Sudoku {
         return this.sudoku;
     }
     findWrongs() {
-        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.WHITE, this.colors.BLACK]));
+        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
         
         let rows = Array.from({ length: 9 }, () => new Set());
         let cols = Array.from({ length: 9 }, () => new Set());
@@ -273,9 +273,10 @@ export default class Sudoku {
         wrongCells.forEach(cell => {
             const [r, c] = cell.split(',').map(Number);
             this.number_color[r][c] = [this.colors.DARK_WRONG_RED, this.colors.LIGHT_WRONG_RED];
+            console.log(this.number_color)
         });
         
-        return Array.from(wrongCells).map(cell => cell.split(',').map(Number));
+        // return Array.from(wrongCells).map(cell => cell.split(',').map(Number));
     }
     
 }
