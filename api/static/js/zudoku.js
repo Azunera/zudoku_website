@@ -1,6 +1,5 @@
 import Sudoku from './zudoku_class.js'
 import {saveSudoku, loadSudoku, welcomeLogin, getUserInfo} from './saveLoad.js'
-// import { Fireworks } from './fireworks-js'
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
@@ -17,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let numbers_style = 'dark'; 
     let selectedCell = null;
+    let notes_mode = false;
     let sudoku = new Sudoku();
 
     sudoku.generateSudoku();
@@ -25,7 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = sudoku.color;
+        if (numbers_style == 'dark') { 
+            ctx.fillStyle = sudoku.number_color[0][0][0];
+        } 
+        else if (numbers_style == 'light') {
+            ctx.fillStyle = sudoku.number_color[1][1][1];
+        }
 
 
         for (let i = 0; i <= 9; i++) {
@@ -44,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.font = `${cellSize / 2}px Dancing Script`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-
+        
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
                 ctx.fillStyle == sudoku.color;
@@ -57,16 +62,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const num = sudoku.sudoku[row][col];
-                if (num != ' ') {
-                    const x = col * cellSize + cellSize / 2;
-                    const y = row * cellSize + cellSize / 2;
-                    ctx.fillText(num, x, y);
-                } 
 
+                const x = col * cellSize + cellSize / 2;
+                const y = row * cellSize + cellSize / 2;
+
+                // VERY IMPORTANT LOGIC ORDER!, should be kept in this form to avoid issues)
+                if (sudoku.notes_map[row][col]) {
+                    ctx.font = `${cellSize / 3}px Dancing Script`;
+                    drawNotes(ctx, sudoku.notes[row][col], x, y, cellSize);
+                    ctx.font = `${cellSize / 2}px Dancing Script`;
+                } else if (num != ' ' ) {
+                    ctx.fillText(num, x, y);
+                    }
+                }
             }
         }
-    }
+
+    function drawNotes(ctx, num, x, y, cellSize) {
+        const positions = [
+            [-cellSize / 3, -cellSize / 3], [0, -cellSize / 3], [cellSize / 3, -cellSize / 3],
+            [-cellSize / 3, 0], [0, 0], [cellSize / 3, 0],
+            [-cellSize / 3, cellSize / 3], [0, cellSize / 3], [cellSize / 3, cellSize / 3]
+        ];
     
+        for (let i = 0; i < 9; i++) {
+            const [dx, dy] = positions[i];
+            const note = num[i] || ' '; // Using an empty string if the note is missing
+            ctx.fillText(note, x + dx, y + dy);
+        }
+    }
+
+
     function highlightingSelectedCell() { 
         if (selectedCell) {
             const { row, col } = selectedCell;
@@ -90,6 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
+        if (notes_mode) {
+            sudoku.notes_map[row][col] = !sudoku.notes_map[row][col]
+        }
+        
         // Checking if the clicked cell is the same as the currently selected cell
         if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
             selectedCell = null;
@@ -105,27 +135,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sudoku.lives >  0) {
             if (selectedCell && num >= "1" && num <= "9") {
                 const { row, col } = selectedCell;
-
-                if (sudoku.sudoku[row][col] != sudoku.solution[row][col]) {
-                    if (sudoku.sudoku[row][col] == num) {
-                        sudoku.sudoku[row][col] = ' ';
-                    } else {
-                        sudoku.sudoku[row][col] = num;
-                    if (!sudoku.check_cell(row, col)) {
-                        sudoku.lives -= 1;
-                        document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`;              
+                if (!notes_mode) {
+                    if (sudoku.sudoku[row][col] != sudoku.solution[row][col]) {
+                        if (sudoku.sudoku[row][col] == num) {
+                            sudoku.sudoku[row][col] = ' ';
+                        } else {
+                            sudoku.sudoku[row][col] = num;
+                        if (!sudoku.check_cell(row, col)) {
+                            sudoku.lives -= 1;
+                            document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`;              
+                            }
+                        }    
                     }
-                }   
+                } else {
+                    // sudoku.notes_map[row][col] = !sudoku.notes_map[row][col]
+                    if (sudoku.notes[row][col][num-1] == num) {
+                        sudoku.notes[row][col][num-1] = ' ';
+                    } else {
+                        sudoku.notes[row][col][num-1] = num;
+                    }
+                    
+                }
                 sudoku.findWrongs()
                 drawGrid();
-                drawNumbers();
-
-
-                 
+                drawNumbers();  
                 }
             }
-        }
-    }
+         }
 
     function handleKeyPress(event) {
         insert_number(event.key);
@@ -136,7 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     drawGrid();
     drawNumbers();
-
+    
+    document.getElementById('notes').addEventListener('click', () => {
+        notes_mode = !notes_mode
+    });
 
     // SAVING AND LOADING SYSTEM
     document.getElementById('save').addEventListener('click', () => {
@@ -206,9 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (value) {
             case '1': // Daylight
                 document.body.classList.add('daylight');
-                color = '#ffffff'
-                color2 = '#ffffff'
-                hoverColor = '#ddd';
+                color = '#000000';
+                color2 = '#000000';
+                numbers_style = 'dark'
                 drawGrid();
                 drawNumbers();
                 break;
@@ -217,6 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 color = '#f0e68c';
                 color2 = '#ffffff';
                 sudoku.color = '#f0e68c'; 
+                numbers_style = 'light'
+
                 drawGrid();
                 drawNumbers();
                 break;
@@ -224,6 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.add('aquatic');
                 color = '#000000';
                 sudoku.color = '#000000';
+                numbers_style = 'dark'
+
                 drawGrid();
                 drawNumbers();
                 break;

@@ -93,7 +93,6 @@ async function loadSudoku(sudoku) {
 
 
 async function welcomeLogin() {
-    console.log('what?')
     const userInfo = await getUserInfo();
 
     if (userInfo) {

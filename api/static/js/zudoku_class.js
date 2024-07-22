@@ -34,6 +34,8 @@ export default class Sudoku {
 
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => 'clear'));
+        this.notes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']));
+        this.notes_map = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => false));
         this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
         this.o_sudoku = null;
         this.difficulty = null;
@@ -215,6 +217,12 @@ export default class Sudoku {
        
         return this.sudoku;
     }
+
+    // findNotes(row, col) {
+    //     for (row; i < 9; row++)
+    //         if this.notes() =
+    // }
+    
     findWrongs() {
         this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
         
@@ -273,7 +281,6 @@ export default class Sudoku {
         wrongCells.forEach(cell => {
             const [r, c] = cell.split(',').map(Number);
             this.number_color[r][c] = [this.colors.DARK_WRONG_RED, this.colors.LIGHT_WRONG_RED];
-            console.log(this.number_color)
         });
         
         // return Array.from(wrongCells).map(cell => cell.split(',').map(Number));
