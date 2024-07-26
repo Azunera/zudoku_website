@@ -43,18 +43,20 @@
     </div>
 
     <div class="sudoku-container">
-        <div class="canva-side-container">
+        <div class="canva-hidden-filler">
             <div class="filler"></div> 
         </div>
-        <div class="canva-side-container">
+        <div class="canva-hidden-filler">
             <div class="filler"></div> 
         </div>
         <canvas id="sudoku-canvas" width="450" height="450"></canvas>
-        
+
         <div class="canva-side-container">
-            <label id="lives_label">10 lives left</label>
-            <button id="notes">Notes</button>
-            <div class="filler"></div> 
+
+            <label id="lives_label" class="pc-only">10 lives left</label>
+
+            <button class="pc-only" id="notes">Notes</button>
+
             <div class="button-grid">
                 <button class="number_button"><span class="number_button_content" id="1">1</button>
                 <button class="number_button"><span class="number_button_content" id="2">2</button>
@@ -66,13 +68,21 @@
                 <button class="number_button"><span class="number_button_content" id="8">8</button>
                 <button class="number_button"><span class="number_button_content" id="9">9</button>
             </div>
-            <div class="filler"></div> 
-            <div class="filler"></div> 
-            <div class="filler"></div> 
+
+            <div class="filler pc-only"></div> 
+            <div class="filler pc-only"></div> 
+
+            <div class="mobile-only-row">
+                <label id="lives_label">10 lives left</label>
+                <button class="bottom_buttons mobile-only" id="notes">Notes</button>
+                <button class="bottom_buttons mobile-only" id="save">Save</button>
+                <button class="bottom_buttons mobile-only" id="load">Load</button>
+            </div>
+ 
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="save-load-pc">
         <button class="bottom_buttons" id="save">Save</button>
         <button class="bottom_buttons" id="load">Load</button>
     </div>

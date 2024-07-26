@@ -6,12 +6,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratio = window.devicePixelRatio;
     const ctx = canvas.getContext('2d');
 
-    canvas.width = 450 * ratio;
-    canvas.height = 450 * ratio;
-    canvas.style.width = 450 + "px";
-    canvas.style.height = 450 + "px";
-    canvas.getContext("2d").scale(ratio, ratio);
+    console.log(canvas.width)
 
+    const screenWidth = screen.width
+
+    if (screenWidth < 620) {
+        canvas.width = screenWidth * 0.9, canvas.height = screenWidth * 0.9
+        
+        canvas.width  *=  ratio;
+        canvas.height *=  ratio;
+
+        canvas.style.width = screenWidth * 0.9 + "px";
+        canvas.style.height = screenWidth * 0.9 + "px";
+
+        document.querySelectorAll('.pc-only').forEach(onlypc => {
+            onlypc.style.display = 'none';
+        });
+
+    } else {
+            
+        canvas.width  *=  ratio;
+        canvas.height *=  ratio;
+
+        canvas.style.width = 450 + "px";
+        canvas.style.height = 450 + "px";
+    }
+
+
+    canvas.getContext("2d").scale(ratio, ratio);
     const cellSize = canvas.width / 9 / ratio;
 
     let numbers_style = 'dark'; 
@@ -21,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
-
 
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);

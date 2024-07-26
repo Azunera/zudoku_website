@@ -1,0 +1,415 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f2f2f2;
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 2s ease-out, color 2s ease-out;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        // background: url('a.png') no-repeat center center fixed;
+        background-size: cover;
+        z-index: -1;
+        opacity: 0.5;
+    }
+
+    &.daylight {
+        background-color: #ECFEFF;
+        color: #333;
+
+        &::before {
+            background-image: url('../images/skylight.jpg');
+        }
+    }
+
+    &.moonlight {
+        background-color: #1a1a2e;
+
+        &::before {
+            background-image: url('../images/night.jpg');
+        }
+    }
+
+    &.aquatic {
+        background-color: #e0f7fa;
+        color: #00796b;
+
+        &::before {
+            background-image: url('../images/aquatic2.png');
+        }
+    }
+
+    &.twilight {
+        background-color: #aa6a93;
+        color: #ffffff;
+
+        &::before {
+            background-image: url('../images/twilight.jpg');
+            opacity: 0.8;
+        }
+    }
+}
+
+h1 {
+    color: #333;
+    font-family: 'Dancing Script', cursive;
+    margin: 10px;
+    text-align: center;
+    font-size: 48px;
+    text-shadow: 2px 2px 4px #aaa;
+
+    // & {
+    //     background: linear-gradient(to right, red, blue);
+    //     background-clip: text;
+    //     color: transparent;
+    // }
+}
+
+p {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: #333;
+    line-height: 1.5;
+    padding: 10px;
+    text-align: center;
+}
+
+.sudoku-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+
+    canvas {
+        border: 1px solid black;
+        // width: 450px;
+        // height: 450px;
+    }
+}
+
+.lives-label-container {
+    margin-left: 20px;
+}
+
+.a {
+    background-color: #dc5e5e;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    margin: 20px auto;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.navbar {
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0);
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+
+        li {
+            a {
+                display: block;
+                color: rgb(0, 0, 0);
+                text-align: center;
+                font-family: 'Dancing Script';
+                font-size: 22px;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+#description {
+    transition: background-color 2s ease-out, color 2s ease-out;
+}
+
+.body_column {
+    text-align: center;
+    display: flex;
+}
+
+.row, .mobile-only-row {
+    display: flex;
+    flex-direction: horizontal;
+    align-items: center;
+}
+
+.mobile-only-row {
+    display: none;
+}
+
+.canva-side-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    gap: 50px;
+    max-width: 450px;
+    width: 100%;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0;
+
+    .number_button {
+        width: 60px;
+        height: 60px;
+        background-color: transparent;
+        border: 1px solid #000;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        font-family: 'Caveat', cursive;
+        text-decoration: none;
+        font-size: 32px;
+        cursor: pointer;
+        transition: background-color 0.5s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        overflow: hidden;
+
+        .number_button_content {
+            transition: transform 0.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &:hover .number_button_content {
+            transform: scale(1.3);
+        }
+    }
+}
+
+
+
+.difficulty_button, .bottom_buttons, #notes {
+    background-color: transparent;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+#notes {
+    margin-top: none;
+    margin-bottom: none;
+    font-size: 28px;
+}
+.filler {
+    flex-grow: 3;
+}
+
+label {
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.dropdown {
+    position: fixed;
+    top: 10px;
+    right: 200px;
+    display: inline-block;
+
+    #dropdownButton {
+        border: none;
+        padding: 10px 20px;
+        background: transparent;
+        font-size: 28px;
+        font-family: 'Dancing Script', cursive;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background: transparent;
+        // box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        display: grid;
+        // grid-template-columns: repeat(2, auto);
+        grid-gap: 10px;
+        padding: 10px;
+
+        .option {
+            padding: 10px 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 620px) {
+    h1 {
+        color: #333;
+        font-family: 'Dancing Script', cursive;
+        margin: 5px;
+        text-align: center;
+        font-size: 32px;
+        text-shadow: 2px 2px 4px #aaa;
+    }
+
+    p {
+        font-family: 'Caveat', cursive;
+        font-size: 18px;  // from 24
+        line-height: 1; // from 1.5
+        padding: 5px; // from 10
+    }
+   
+    .canva-side-container, .canva-hidden-filler{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px;
+        gap: 50px;
+        max-width: 80vw;
+        width: 100%;
+    }
+
+    .sudoku-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    
+    }
+
+    .pc-only {
+        display: none;
+    }
+
+    .save-load-pc {
+        display: none;
+    }
+
+    .button-grid {
+        order: 1;
+    }
+
+
+
+    .row, .mobile-only-row {
+        display: flex;
+        flex-direction: horizontal;
+        align-items: center;
+    }
+    
+    #mobile-only-row { 
+        display: none;
+    }
+
+        
+    .difficulty_button, .bottom_buttons {
+        background-color: transparent;
+        border: none;
+        color: rgb(0, 0, 0);
+        padding: 7px 16px;
+        text-align: center;
+        font-family: 'Dancing Script', cursive;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 28px;
+        margin-top: 5px;
+        margin-bottom: none;
+        display: block;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+    .button-grid {
+        display: flex;
+        flex-direction: row;
+        // grid-template-columns: repeat(9, 1fr);
+        
+    
+        .number_button {
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+            border: none;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            text-decoration: none;
+            font-size: 36px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            overflow: hidden;
+    
+            .number_button_content {
+                transition: transform 0.5s;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+    
+            &:hover .number_button_content {
+                transform: scale(1.3);
+            }
+        }
+    }
+}
