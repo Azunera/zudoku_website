@@ -182,19 +182,19 @@ export default class Sudoku {
         if (difficulty === 'Easy') {
             emptyCells = 40;
             this.lives = 15;
-            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
+            document.getElementById('lives-label').innerHTML = `${this.lives} lives`;
         } else if (difficulty === 'Medium') {
             emptyCells = 50;
             this.lives = 10;
-            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
+            document.getElementById('lives-label').innerHTML = `${this.lives} lives `;
         } else if (difficulty === 'Hard') {
             emptyCells = 60;
             this.lives = 5;
-            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
+            document.getElementById('lives-label').innerHTML = `${this.lives} lives `;
         } else if (difficulty === 'Arduous') {
             emptyCells = 63;
             this.lives = 3;
-            document.getElementById('lives_label').innerHTML = `${this.lives} lives left`;
+            document.getElementById('lives-label').innerHTML = `${this.lives} lives `;
         } else { // Test
             emptyCells = 1;
             this.lives = 100;

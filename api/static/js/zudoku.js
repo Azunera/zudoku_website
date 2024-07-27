@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(canvas.width)
 
     const screenWidth = screen.width
+    
+
+    // Logic for adjusts in canvas-resolution and moving html elementsd for mobile adaptation
+    const lives_label = document.getElementById('lives-label');
+    const mobile_row = document.getElementById('mobile-row1');
+    const save = document.getElementById('save');
+    const load = document.getElementById('load');
+    const notes = document.getElementById('notes')
 
     if (screenWidth < 620) {
         canvas.width = screenWidth * 0.9, canvas.height = screenWidth * 0.9
@@ -18,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         canvas.style.width = screenWidth * 0.9 + "px";
         canvas.style.height = screenWidth * 0.9 + "px";
+
+        mobile_row.appendChild(lives_label);
+        mobile_row.appendChild(save);
+        mobile_row.appendChild(load);
+        mobile_row.appendChild(notes);
 
         document.querySelectorAll('.pc-only').forEach(onlypc => {
             onlypc.style.display = 'none';
@@ -164,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             sudoku.sudoku[row][col] = num;
                         if (!sudoku.check_cell(row, col)) {
                             sudoku.lives -= 1;
-                            document.getElementById('lives_label').innerHTML = `${sudoku.lives} lives left`;              
+                            document.getElementById('lives-label').innerHTML = `${sudoku.lives} lives`;  // used to be lives left          
                             }
                         }    
                     }

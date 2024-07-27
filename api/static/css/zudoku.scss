@@ -101,9 +101,6 @@ p {
     }
 }
 
-.lives-label-container {
-    margin-left: 20px;
-}
 
 .a {
     background-color: #dc5e5e;
@@ -165,7 +162,7 @@ p {
     display: none;
 }
 
-.canva-side-container {
+.canva-side-container, .canva-hidden-filler{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -239,6 +236,7 @@ p {
     margin-bottom: none;
     font-size: 28px;
 }
+
 .filler {
     flex-grow: 3;
 }
@@ -296,85 +294,77 @@ label {
 
 @media only screen and (max-width: 620px) {
     h1 {
-        color: #333;
-        font-family: 'Dancing Script', cursive;
-        margin: 5px;
-        text-align: center;
-        font-size: 32px;
-        text-shadow: 2px 2px 4px #aaa;
+        margin: 2px; // from 5
+        font-size: 28px; //from 32
     }
 
     p {
-        font-family: 'Caveat', cursive;
         font-size: 18px;  // from 24
         line-height: 1; // from 1.5
         padding: 5px; // from 10
     }
    
-    .canva-side-container, .canva-hidden-filler{
-        display: flex;
+    .canva-side-container{
         flex-direction: column;
-        align-items: center;
-        margin: 20px;
-        gap: 50px;
+        margin: 10px; // from 20
+        gap: 1px; // from 50
         max-width: 80vw;
         width: 100%;
     }
 
-    .sudoku-container {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
-    
-    }
-
-    .pc-only {
-        display: none;
-    }
-
-    .save-load-pc {
-        display: none;
-    }
+    // .canva-side-container, .canva-hidden-filler{
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     margin: 20px;
+    //     gap: 50px;
+    //     max-width: 450px;
+    //     width: 100%;
+    //}
 
     .button-grid {
         order: 1;
     }
 
+    .canva-hidden-filler, .filler, .pc-only, .save-load-pc {
+        display: none;
+    }
 
+    .sudoku-container {
+        flex-direction: column;
+        margin-bottom: 20px; // from 20
+    
+    }
+
+    label {
+        font-size: 24px; //from 33;
+        padding: 7px 16px; 
+        margin-bottom: none;
+    }
+
+    #notes {
+        font-size: 24px;
+        padding: 7px 16px; 
+        margin-top: 0; // from 5
+        margin-bottom: 0; //from 20
+    }
 
     .row, .mobile-only-row {
         display: flex;
         flex-direction: horizontal;
         align-items: center;
+        gap: 0;
     }
     
-    #mobile-only-row { 
-        display: none;
-    }
 
-        
     .difficulty_button, .bottom_buttons {
-        background-color: transparent;
-        border: none;
-        color: rgb(0, 0, 0);
-        padding: 7px 16px;
-        text-align: center;
-        font-family: 'Dancing Script', cursive;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 28px;
-        margin-top: 5px;
-        margin-bottom: none;
-        display: block;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-
-        &:hover {
-            transform: scale(1.2);
-        }
+        padding: 7px 16px; // from 7px 16px
+        font-size: 24px; // from 28
+        margin-top: 0; // from 5
+        margin-bottom: 0; //from 20
     }
+        // need to add transtion!
+
 
     .button-grid {
         display: flex;
@@ -383,33 +373,25 @@ label {
         
     
         .number_button {
-            width: 40px;
-            height: 40px;
-            background-color: transparent;
+            width: 40px; // from 60
+            height: 40px; // from 60
             border: none;
-            color: rgb(0, 0, 0);
-            text-align: center;
-            font-family: 'Caveat', cursive;
-            text-decoration: none;
-            font-size: 36px;
-            cursor: pointer;
-            transition: background-color 0.5s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            overflow: hidden;
+            font-size: 36px; // from 32
+            transition: background-color 0.5s; //need to properly implement
+
+            // .number_button_content {
+            //     transition: transform 0.5s;
+            //     display: flex;
+            //     justify-content: center;
+            //     align-items: center;
+            // }
     
-            .number_button_content {
-                transition: transform 0.5s;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-    
-            &:hover .number_button_content {
-                transform: scale(1.3);
-            }
+            // &:hover .number_button_content {
+            //     transform: scale(1.3);
+            // }
         }
     }
 }
+
+
+
