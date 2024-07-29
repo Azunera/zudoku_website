@@ -158,7 +158,7 @@ def get_user_info():
     session_token = request.cookies.get('session_token')
     if not session_token:
         print('Session token is missing')
-        return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
+        # return jsonify({'status': 'error', 'message': 'Session token is missing'}), 401
     
     # Finding the session using the session token
     session = Session.query.filter_by(token=session_token).first()

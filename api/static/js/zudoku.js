@@ -56,7 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
+    
+    function openNav() {
+        document.getElementById('mySidebar').style.width = '200px';
+    }
 
+    function closeNav() {
+        document.getElementById('mySidebar').style.width = '0';
+    }
+
+    window.openNav = openNav;
+    window.closeNav = closeNav;
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (numbers_style == 'dark') { 

@@ -8,41 +8,86 @@
     <link rel="icon" href="../static/images/favicon.ico">
     <!-- <link rel="stylesheet" href="../static/css/index.css"> -->
     <link rel="stylesheet" href="../static/css/zudoku.css">
+    <style>
+        /* Sidebar CSS */
+        .sidebar {
+            height: 100%; 
+            width: 0; 
+            position: fixed; 
+            z-index: 1; 
+            top: 0; 
+            right: 0; 
+            background-color: #111; 
+            overflow-x: hidden; 
+            transition: 0.5s; 
+            padding-top: 60px; 
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 25px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .openbtn-container {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+    </style>
 </head>
 <body>
     <!-- Dropdown for styling, its as fixed location-->
-    <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-        <a id="register" href="register">Register</a></li>
-        <a id="login"    href="login"   >Login</a></li>
-        <a href="#">Button 1</a>
-        <div class="dropdown">
-            <button id="dropdownButton">Style</button>
-            <div id="dropdownContent" class="dropdown-content"> 
-                <div class="option" data-value="1">Daylight</div> <!--light mode but with day style,-->
-                <div class="option" data-value="2">Moonlight</div> <!--dark mode but with night style-->
-                <div class="option" data-value="3">Aquatic</div>  <!--warm sea color and coral colors, cozy-->
-                <div class="option" data-value="4">Twilight</div> <!-- something with color #c71585-->
-            </div>
+    <div class="dropdown">
+        <button id="dropdownButton">Style</button>
+        <div id="dropdownContent" class="dropdown-content"> 
+            <div class="option" data-value="1">Daylight</div>
+            <div class="option" data-value="2">Moonlight</div>
+            <div class="option" data-value="3">Aquatic</div>  
+            <div class="option" data-value="4">Twilight</div>
         </div>
-
     </div>
-
-
-     <!-- Dropdown for styling, its as flex location-->
+    <!-- Dropdown for styling, its as flex location-->
     <div class="navbar" id="myNavBar">
         <ul>
-            <li id="register" hidden><a href="register">Register (to save your progress!)</a></li>
-            <li id="login" hidden><a href="login">Login</a></li>
+            <li id="register"><a href="register">Register (to save your progress!)</a></li>
+            <li id="login"><a href="login">Login</a></li>
             <li id="welcome" hidden='true'>
                 <p id="welcome-message">Estas logeado!</p></li>
-                <!-- here would go styles-->
         </ul>
     </div>
-    <div class="title-row">
-        <h1 id="title">Play Zudoku Online!</h1>
-        <button class="openbtn" onclick="openNav()">☰</button>
-    </div>
+
+    <h1 id="title">Play Zudoku Online!</h1>
+
     <p id="intro">
         Enjoy Zudoku online! Fill the grid and challenge yourself!
     </p>
@@ -63,9 +108,7 @@
         <canvas id="sudoku-canvas" width="450" height="450"></canvas>
 
         <div class="canva-side-container">
-
             <label id="lives-label">10 lives</label>
-
             <button id="notes">Notes</button>
 
             <div class="button-grid">
@@ -83,10 +126,7 @@
             <div class="filler pc-only"></div> 
             <div class="filler pc-only"></div> 
 
-            <div class="mobile-only-row" id='mobile-row1'>
-                <!--Elements from outside will be moved here-->
-            </div>
- 
+            <div class="mobile-only-row" id='mobile-row1'></div>
         </div>
     </div>
 
@@ -94,7 +134,29 @@
         <button class="bottom_buttons" id="save">Save</button>
         <button class="bottom_buttons" id="load">Load</button>
     </div>
-    
+
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="#">Button 1</a>
+        <a href="#">Button 2</a>
+        <a href="#">Button 3</a>
+    </div>
+
+    <div class="openbtn-container">
+        <button class="openbtn" onclick="openNav()">☰</button>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+    </script>
+
     <script type="module" src="../static/js/zudoku.js"></script>
 </body>
 </html>
