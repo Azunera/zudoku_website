@@ -1,7 +1,8 @@
 export default class Sudoku {
     constructor() {
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
-        this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
+        this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['CLEAR']));
+        this.number_color =  Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['BLACK']));
         this.o_sudoku = null;
         this.difficulty = null;
         this.wrongs = [];

@@ -16,6 +16,20 @@ body {
 
 }
 
+
+#sudoku-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.sudoku-number {
+    position: absolute;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px; /* Match the cell size for centering */
+}
+
 body::before {
     content: "";
     position: absolute;

@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = document.getElementById('title')
     const intro = document.getElementById('intro')
    
+    const container = document.getElementById('sudoku-container');
+    
     let sudoku = new Sudoku();
     sudoku.generateSudoku();
     sudoku.setDifficulty('Medium');
@@ -17,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = sudoku.color;
-
 
         for (let i = 0; i <= 9; i++) {
             ctx.lineWidth = (i % 3 === 0) ? 2 : 0.5;
@@ -34,16 +35,41 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.font = `${cellSize / 2}px Dancing Script`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = sudoku.color
+        ctx.fillStyle = 'yellow';
 
 
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
                 const num = sudoku.sudoku[row][col];
+                ctx.color = 'green';
                 if (num) {
                     const x = col * cellSize + cellSize / 2;
                     const y = row * cellSize + cellSize / 2;
                     ctx.fillText(num, x, y);
+                }
+            }
+        }
+    }
+
+    function drawNumbers() {
+        const oldNumbers = document.getElementsByClassName('sudoku-number');
+        while (oldNumbers[0]) {
+            oldNumbers[0].parentNode.removeChild(oldNumbers[0]);
+        }
+
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                const num = sudoku.sudoku[row][col];
+                if (num) {
+                    const numberDiv = document.createElement('div');
+                    numberDiv.className = 'sudoku-number';
+                    numberDiv.textContent = num;
+                    numberDiv.style.color = 'yellow';
+                    numberDiv.style.width = `${cellSize}px`;
+                    numberDiv.style.height = `${cellSize}px`;
+                    numberDiv.style.left = `${col * cellSize}px`;
+                    numberDiv.style.top = `${row * cellSize}px`;
+                    container.appendChild(numberDiv);
                 }
             }
         }
@@ -105,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawGrid();
         drawNumbers();
     });
+
     // SETTING DIFFICULTIES
     document.querySelectorAll('.difficulty_button').forEach(button => {
         button.addEventListener('click', (event) => {
