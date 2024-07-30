@@ -244,8 +244,8 @@ label {
         padding: 10px 20px;
         color: #ffffff;
         background: transparent;
-        font-size: 28px;
-        // font-family: 'Dancing Script', cursive;
+        font-size: 22px;
+        font-family: 'Dancing Script', cursive;
         cursor: pointer;
         transition: transform 0.3s ease;
 
@@ -426,8 +426,8 @@ label {
             border: none;
             padding: 10px 20px;
             background: transparent;
-            font-size: 28px;
-            font-family: 'Dancing Script';
+            font-size: 32px;
+            font-family: 'Dancing Script', cursive;
             cursor: pointer;
             transition: transform 0.3s ease;
     
@@ -524,12 +524,13 @@ label {
     .button-grid {
         display: flex;
         flex-direction: row;
+        gap: none;
         // grid-template-columns: repeat(9, 1fr);
         
     
         .number_button {
-            width: 40px; // from 60
-            height: 40px; // from 60
+            width: 25px; // from 60
+            height: 25px; // from 60
             border: none;
             font-size: 36px; // from 32
             transition: background-color 0.5s; //need to properly implement

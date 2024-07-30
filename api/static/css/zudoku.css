@@ -209,7 +209,8 @@ label {
   padding: 10px 20px;
   color: #ffffff;
   background: transparent;
-  font-size: 28px;
+  font-size: 22px;
+  font-family: "Dancing Script", cursive;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -364,7 +365,7 @@ label {
     padding: 10px 20px;
     background: transparent;
     font-size: 28px;
-    font-family: "Dancing Script";
+    font-family: "Dancing Script", cursive;
     cursor: pointer;
     transition: transform 0.3s ease;
   }

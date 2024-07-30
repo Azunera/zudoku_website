@@ -332,11 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('label').style.color = color2;
 
-        document.getElementById('dropdownButton').style.color = color2; 
+        // document.getElementById('dropdownButton').style.color = color2; 
 
-        document.querySelectorAll('.option').forEach(style_option => {
-            style_option.style.color = color2;
-        })
+        // document.querySelectorAll('.option').forEach(style_option => {
+        //     style_option.style.color = color2;
+        // })
 
         document.querySelectorAll('.number_button').forEach(button => {
             button.style.color = color2;
