@@ -98,6 +98,7 @@ p {
         border: 1px solid black;
         // width: 450px;
         // height: 450px;
+
     }
 }
 
@@ -463,7 +464,7 @@ label {
         flex-direction: column;
         margin: 10px; // from 20
         gap: 1px; // from 50
-        max-width: 80vw;
+        max-width: 90vw;
         width: 100%;
     }
 
@@ -520,34 +521,34 @@ label {
     }
         // need to add transtion!
 
-
     .button-grid {
         display: flex;
-        flex-direction: row;
-        gap: none;
-        // grid-template-columns: repeat(9, 1fr);
-        
+        flex-wrap: wrap; 
+        gap: none; 
+        max-width: 90vw; 
+        width: 100%; 
+        justify-content: space-between; 
+    }
     
-        .number_button {
-            width: 25px; // from 60
-            height: 25px; // from 60
-            border: none;
-            font-size: 36px; // from 32
-            transition: background-color 0.5s; //need to properly implement
+    .number_button {
+        flex: 1 0 10%; 
+        max-width: 10%; 
+        max-height: 40px;
 
-            // .number_button_content {
-            //     transition: transform 0.5s;
-            //     display: flex;
-            //     justify-content: center;
-            //     align-items: center;
-            // }
-    
-            // &:hover .number_button_content {
-            //     transform: scale(1.3);
-            // }
-        }
+
+        border: none !important;
+        font-size: 3vw; 
+        transition: background-color 0.5s; 
+
+        // .number_button_content {
+        //     transition: transform 0.5s;
+        //     display: flex;
+        //     justify-content: center;
+        //     align-items: center;
+        // }
+
+        // &:hover .number_button_content {
+        //     transform: scale(1.3);
+        // }
     }
 }
-
-
-

@@ -136,7 +136,7 @@ p {
   grid-gap: 0;
 }
 .button-grid .number_button {
-  width: 60px;
+  width: 30px;
   height: 60px;
   background-color: transparent;
   border: 1px solid #000;
@@ -364,7 +364,7 @@ label {
     border: none;
     padding: 10px 20px;
     background: transparent;
-    font-size: 28px;
+    font-size: 32px;
     font-family: "Dancing Script", cursive;
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -394,7 +394,7 @@ label {
     flex-direction: column;
     margin: 10px;
     gap: 1px;
-    max-width: 80vw;
+    max-width: 90vw;
     width: 100%;
   }
   .button-grid {
@@ -432,13 +432,18 @@ label {
   }
   .button-grid {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    gap: none;
+    max-width: 90vw;
+    width: 100%;
+    justify-content: space-between;
   }
-  .button-grid .number_button {
-    width: 40px;
-    height: 40px;
-    border: none;
-    font-size: 36px;
+  .number_button {
+    flex: 1 0 10%;
+    max-width: 10%;
+    max-height: 40px;
+    border: none !important;
+    font-size: 3vw;
     transition: background-color 0.5s;
   }
 }/*# sourceMappingURL=zudoku.css.map */
