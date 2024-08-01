@@ -432,18 +432,17 @@ label {
   }
   .button-grid {
     display: flex;
-    flex-wrap: wrap;
-    gap: none;
-    max-width: 90vw;
-    width: 100%;
-    justify-content: space-between;
+    align-items: center;
+    gap: 0;
   }
   .number_button {
-    flex: 1 0 10%;
-    max-width: 10%;
-    max-height: 40px;
     border: none !important;
-    font-size: 3vw;
+    transition: background-color 0.5s;
+    width: 10px;
+    height: 10px;
+    font-family: "Caveat", cursive;
+    font-size: 1vw;
+    cursor: pointer;
     transition: background-color 0.5s;
   }
 }/*# sourceMappingURL=zudoku.css.map */
