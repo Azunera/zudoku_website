@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineWidth = (i % 3 === 0) ? 2 : 0.5;
             ctx.beginPath();
             ctx.moveTo(i * cellSize, 0);
-            ctx.lineTo(i * cellSize, canvas.height);
+            ctx.lineTo(i * cellSize, canvas.height * 1.1);
             ctx.moveTo(0, i * cellSize);
-            ctx.lineTo(canvas.width, i * cellSize);
+            ctx.lineTo(canvas.width *1.1, i * cellSize);
             ctx.stroke();
         }
         highlightingSelectedCell()
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         insert_number(event.target.textContent)
        
     })
-
+    
     // CHECKPOINT 1: STYLE GROUP
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownContent = document.getElementById('dropdownContent');

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register for Zudoku</title>
     <link rel="icon" href="/static/images/favicon.ico">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <!-- <link rel="stylesheet" href="/static/css/index.css"> -->
     <link rel="stylesheet" href="/static/css/zudoku.css">
 </head>
 <body>
@@ -22,7 +23,7 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <form id="register-form" method="post" action="/register">
+            <form class="entry-form" id="register-form" method="post" action="/register">
                 <div class="row">
                     <input type="text" id="username" name="username" placeholder="Username" required>
                 </div>
@@ -33,7 +34,7 @@
                     <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
                 </div>
                 <div class="row">
-                    <button class="button" type="submit">Register</button>
+                    <button class="bottom_buttons" type="submit">Register</button>
                 </div>
                 <div class="row">
                     <p>Already have an account? <a href="/login">Login here</a></p>
@@ -44,4 +45,3 @@
     <script src="/static/js/register.js"></script>
 </body>
 </html>
-
