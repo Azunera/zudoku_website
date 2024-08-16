@@ -551,8 +551,10 @@ label {
         display: -webkit-flex;
         display: flex;       
         flex-direction: row;
-        gap: none;
+        // gap: none;
         // grid-template-columns: repeat(9, 1fr);
+        -webkit-flex-direction: row; /* Add this */
+
         
     
         .number_button {
@@ -560,6 +562,8 @@ label {
             height: 25px; // from 60
             border: none;
             font-size: 36px; // from 32
+            -webkit-transition: background-color 0.5s; /* Add this */
+
             transition: background-color 0.5s; //need to properly implement
 
             // .number_button_content {

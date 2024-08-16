@@ -452,14 +452,13 @@ label {
   }
   .button-grid {
     display: flex;
-    flex-direction: row;
-    gap: none;
+    flex-direction: row; /* Add this */
   }
   .button-grid .number_button {
     width: 25px;
     height: 25px;
     border: none;
-    font-size: 36px;
+    font-size: 36px; /* Add this */
     transition: background-color 0.5s;
   }
 }/*# sourceMappingURL=zudoku.css.map */
