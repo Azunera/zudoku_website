@@ -201,3 +201,5 @@ def load():
 @app.route('/about')
 def about():
     return 'About'
+
+a: int = "hola"

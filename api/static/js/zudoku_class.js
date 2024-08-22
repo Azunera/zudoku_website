@@ -32,11 +32,13 @@ export default class Sudoku {
             WHITE: 'rgb(255,255,255)'
         };
 
+        
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
-        this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => 'clear'));
+        // this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => 'clear'));
         this.notes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']));
         this.notes_map = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => false));
         this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
+        this.cell_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => 'clear'));
         this.o_sudoku = null;
         this.difficulty = null;
         this.wrongs = [];
@@ -170,6 +172,30 @@ export default class Sudoku {
         }
     }
 
+    switchNote(x,y, deactivate=false, activate=false ) { 
+        if (deactivate) {
+            if (this.notes_map[x][y] == false) {
+                return
+            }
+        }
+        if (activate) {
+            if (this.notes_map[x][y] == true) {
+                return
+            }
+        }
+        this.notes_map[x][y] = !this.notes_map[x][y];
+    }
+
+    resetNote(x,y) {
+        for (let z; z < 9; z++) {
+            this.notes[x][y][z] = ' ';
+        }
+    }
+
+    // checkNumber(x,y) {
+    //     this.sudoku
+    // }
+    
 
     setDifficulty(difficulty) {
         if (!['Easy', 'Medium', 'Hard', 'Arduous', 'Test'].includes(difficulty)) {
@@ -181,7 +207,7 @@ export default class Sudoku {
         let emptyCells;
         if (difficulty === 'Easy') {
             emptyCells = 40;
-            this.lives = 15;
+            this.lives = 10;
             document.getElementById('lives-label').innerHTML = `${this.lives} lives`;
         } else if (difficulty === 'Medium') {
             emptyCells = 50;
@@ -189,11 +215,11 @@ export default class Sudoku {
             document.getElementById('lives-label').innerHTML = `${this.lives} lives `;
         } else if (difficulty === 'Hard') {
             emptyCells = 60;
-            this.lives = 5;
+            this.lives = 15;
             document.getElementById('lives-label').innerHTML = `${this.lives} lives `;
         } else if (difficulty === 'Arduous') {
             emptyCells = 63;
-            this.lives = 3;
+            this.lives = 15;
             document.getElementById('lives-label').innerHTML = `${this.lives} lives `;
         } else { // Test
             emptyCells = 1;
@@ -217,23 +243,18 @@ export default class Sudoku {
        
         return this.sudoku;
     }
-
-    // findNotes(row, col) {
-    //     for (row; i < 9; row++)
-    //         if this.notes() =
-    // }
     
     findWrongs() {
-        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
-        
+
+        this.cell_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => "clear"));
         let rows = Array.from({ length: 9 }, () => new Set());
         let cols = Array.from({ length: 9 }, () => new Set());
         let boxes = Array.from({ length: 9 }, () => new Set());
     
         let wrongCells = new Set(); // for wronging cell coordinates as strings and avoiding repetition of them
     
-        for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
+        for (let r = 0; r < 9; r++) { // PER ROW
+            for (let c = 0; c < 9; c++) { // PER COLUMN
                 if (this.sudoku[r][c] === ' ') {
                     continue;
                 }
@@ -280,10 +301,10 @@ export default class Sudoku {
         }
         wrongCells.forEach(cell => {
             const [r, c] = cell.split(',').map(Number);
-            this.number_color[r][c] = [this.colors.DARK_WRONG_RED, this.colors.LIGHT_WRONG_RED];
+            this.cell_color[r][c] = 'wrong';
+            // this.number_color[r][c] = [this.colors.DARK_WRONG_RED, this.colors.LIGHT_WRONG_RED];
         });
         
         // return Array.from(wrongCells).map(cell => cell.split(',').map(Number));
     }
-    
 }

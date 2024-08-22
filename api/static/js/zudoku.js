@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratio = window.devicePixelRatio;
     const ctx = canvas.getContext('2d');
 
-    console.log(canvas.width)
-
     const screenWidth = screen.width
     
 
@@ -45,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.style.height = 450 + "px";
     }
 
-
     canvas.getContext("2d").scale(ratio, ratio);
     const cellSize = canvas.width / 9 / ratio;
 
@@ -67,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.openNav = openNav;
     window.closeNav = closeNav;
+    
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (numbers_style == 'dark') { 
@@ -86,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(canvas.width *1.1, i * cellSize);
             ctx.stroke();
         }
-        highlightingSelectedCell()
+        // highlightingSelectedCell()
     }
 
     function drawNumbers() {
@@ -96,7 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
+                if (sudoku.cell_color[row][col] == "wrong" ) {
+                    highlightCell(row,col)
+                }
+
                 ctx.fillStyle == sudoku.color;
+
                 // Deciding the color of the numbers
                 if (numbers_style == 'dark') { 
                     ctx.fillStyle = sudoku.number_color[row][col][0];
@@ -111,8 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const y = row * cellSize + cellSize / 2;
 
                 // VERY IMPORTANT LOGIC ORDER!, should be kept in this form to avoid issues)
+
                 if (sudoku.notes_map[row][col]) {
-                    ctx.font = `${cellSize / 3}px Dancing Script`;
+                    ctx.font = `${cellSize / 4}px Dancing Script`;
                     drawNotes(ctx, sudoku.notes[row][col], x, y, cellSize);
                     ctx.font = `${cellSize / 2}px Dancing Script`;
                 } else if (num != ' ' ) {
@@ -120,13 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+            highlightingSelectedCell()
         }
 
     function drawNotes(ctx, num, x, y, cellSize) {
         const positions = [
-            [-cellSize / 3, -cellSize / 3], [0, -cellSize / 3], [cellSize / 3, -cellSize / 3],
-            [-cellSize / 3, 0], [0, 0], [cellSize / 3, 0],
-            [-cellSize / 3, cellSize / 3], [0, cellSize / 3], [cellSize / 3, cellSize / 3]
+            [-cellSize / 3 + 1, -cellSize / 3 + 1], [0, -cellSize / 3 + 1], [cellSize / 3 - 1, -cellSize / 3 + 1],
+            [-cellSize / 3 + 1, 0], [0, 0], [cellSize / 3, 0],
+            [-cellSize / 3 + 1, cellSize / 3  - 1], [0, cellSize / 3  - 1], [cellSize / 3 - 1, cellSize / 3  - 1]
         ];
     
         for (let i = 0; i < 9; i++) {
@@ -137,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function highlightingSelectedCell() { 
+    function OldhighlightSelectedCell() { 
         if (selectedCell) {
             const { row, col } = selectedCell;
             const x = col * cellSize + 2.5;
@@ -152,6 +157,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+    function highlightingSelectedCell() { 
+        if (selectedCell) {
+            const { row, col } = selectedCell;
+
+            if (sudoku.sudoku[row][col] == sudoku.solution[row][col]) {
+                return
+            }
+            
+            const x = col * cellSize + 1;
+            const y = row * cellSize + 1;
+            const size = cellSize - 2;
+    
+            ctx.shadowBlur = 20; 
+            ctx.shadowColor = 'rgba(173, 216, 230, 1)'; 
+            ctx.shadowOffsetX = 0; 
+            ctx.shadowOffsetY = 0; 
+    
+            ctx.fillStyle = 'rgba(173, 216, 230, 0.5)';  
+            
+            ctx.fillRect(x, y, size, size);
+    
+            // Reseting shadow settings
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = 'transparent';
+        }
+    }
+
+    function highlightCell(row, col) { 
+        // console.log(selectedCell)
+        if (selectedCell) {
+            const { row:selected_row, col:selected_col } = selectedCell;
+            if (row == selected_row && col == selected_col && !sudoku.check_cell(row, col)) { 
+                return  // logic to make sure the focused cell doesn't get painted
+            }
+        }
+
+        const x = col * cellSize + 1;
+        const y = row * cellSize + 1;
+        const size = cellSize - 2;
+
+        ctx.shadowBlur = 20; 
+        ctx.shadowColor = 'rgba(255, 102, 102, 1)';
+        ctx.shadowOffsetX = 0; 
+        ctx.shadowOffsetY = 0; 
+        ctx.fillStyle = 'rgba(255, 102, 102, 0.5)';
+        
+        ctx.fillRect(x, y, size, size);
+
+        // Reseting shadow settings
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'transparent';
+    }
+
     function handleClick(event) {
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
@@ -160,10 +219,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-        if (notes_mode) {
-            sudoku.notes_map[row][col] = !sudoku.notes_map[row][col]
-        }
-        
         // Checking if the clicked cell is the same as the currently selected cell
         if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
             selectedCell = null;
@@ -176,36 +231,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function insert_number(num) {
-        if (sudoku.lives >  0) {
-            if (selectedCell && num >= "1" && num <= "9") {
-                const { row, col } = selectedCell;
-                if (!notes_mode) {
-                    if (sudoku.sudoku[row][col] != sudoku.solution[row][col]) {
-                        if (sudoku.sudoku[row][col] == num) {
-                            sudoku.sudoku[row][col] = ' ';
-                        } else {
-                            sudoku.sudoku[row][col] = num;
-                        if (!sudoku.check_cell(row, col)) {
-                            sudoku.lives -= 1;
-                            document.getElementById('lives-label').innerHTML = `${sudoku.lives} lives`;  // used to be lives left          
-                            }
-                        }    
-                    }
+        if (sudoku.lives <=  0) 
+            return
+        if (selectedCell && num < "1" && num > "9") 
+            return 
+
+        const { row, col } = selectedCell;
+
+        if (!notes_mode) {
+            sudoku.switchNote(row,col, true, false);
+            sudoku.resetNote(row,col);
+
+            if (sudoku.sudoku[row][col] != sudoku.solution[row][col]) {
+                if (sudoku.sudoku[row][col] == num) {
+                    sudoku.sudoku[row][col] = ' ';
                 } else {
-                    // sudoku.notes_map[row][col] = !sudoku.notes_map[row][col]
-                    if (sudoku.notes[row][col][num-1] == num) {
-                        sudoku.notes[row][col][num-1] = ' ';
-                    } else {
-                        sudoku.notes[row][col][num-1] = num;
-                    }
-                    
+                    sudoku.sudoku[row][col] = num;
+                if (!sudoku.check_cell(row, col)) {
+                    sudoku.lives -= 1;
+                    sudoku.number_color[row][col] = [sudoku.colors.DARK_WRONG_RED, sudoku.colors.DARK_WRONG_RED];
+                    document.getElementById('lives-label').innerHTML = `${sudoku.lives} lives`;  // used to be lives left          
+                } else {
+                    sudoku.number_color[row][col] = [sudoku.colors.DARK_CORRECT_BLUE, sudoku.colors.DARK_CORRECT_BLUE];
                 }
-                sudoku.findWrongs()
-                drawGrid();
-                drawNumbers();  
-                }
+                }    
             }
-         }
+        } else { // notes mode
+            
+            sudoku.switchNote(row,col, false, true)
+
+            sudoku.sudoku[row][col] = ' ';
+        
+            if (sudoku.notes[row][col][num-1] == num) {
+                sudoku.notes[row][col][num-1] = ' ';
+            } else {
+                sudoku.notes[row][col][num-1] = num;
+            }
+            
+            
+        }
+        sudoku.findWrongs()
+        drawGrid();
+        drawNumbers();  
+        }
+        
 
     function handleKeyPress(event) {
         insert_number(event.key);
