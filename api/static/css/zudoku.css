@@ -274,6 +274,7 @@ label {
 }
 
 .openbtn {
+  position: absolute;
   font-size: 20px;
   display: flex;
   flex-direction: row-reverse;
@@ -282,7 +283,7 @@ label {
   color: rgb(0, 0, 0);
   border: none;
   padding: 10px 15px;
-  margin-left: 0px;
+  margin-left: 1100px;
 }
 .openbtn:hover {
   background-color: rgba(222, 222, 222, 0.3019607843);
@@ -363,6 +364,7 @@ label {
     margin-left: 50px;
   }
   .openbtn {
+    position: relative;
     font-size: 20px;
     display: flex;
     flex-direction: row-reverse;
@@ -452,13 +454,13 @@ label {
   }
   .button-grid {
     display: flex;
-    flex-direction: row; /* Add this */
+    flex-direction: row;
+    gap: 15px;
   }
   .button-grid .number_button {
     width: 25px;
     height: 25px;
     border: none;
-    font-size: 36px; /* Add this */
-    transition: background-color 0.5s;
+    font-size: 36px;
   }
 }/*# sourceMappingURL=zudoku.css.map */

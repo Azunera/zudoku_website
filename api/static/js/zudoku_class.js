@@ -22,11 +22,10 @@
 export default class Sudoku {
     constructor() {
         this.colors = {
-            WRONG_RED: "rgb(255, 99, 71)",    // Tomato Red
-            LIGHT_WRONG_RED: "rgb(255, 150, 128)", 
-            DARK_WRONG_RED: "rgb(205, 49, 21)",
-            CORRECT_BLUE: "rgb(70, 130, 180)", // Steel Blue
-            LIGHT_CORRECT_BLUE: "rgb(100, 170, 220)",
+            WRONG_RED: "rgb(205, 49, 21)",    // Tomato Red
+            // LIGHT_WRONG_RED: "rgb(205, 49, 21)",  // temporally the same as dark
+            // DARK_WRONG_RED: "rgb(205, 49, 21)",
+            LIGHT_CORRECT_BLUE: "rgb(100, 170, 220)", // 173, 216, 230 also cool
             DARK_CORRECT_BLUE: "rgb(30, 90, 140)",
             BLACK: 'rgb(0,0,0)',
             WHITE: 'rgb(255,255,255)'
@@ -196,6 +195,12 @@ export default class Sudoku {
     //     this.sudoku
     // }
     
+    clear_colors_and_notes() {
+        this.notes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']));
+        this.notes_map = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => false));
+        this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
+        this.cell_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => 'clear'));
+    }
 
     setDifficulty(difficulty) {
         if (!['Easy', 'Medium', 'Hard', 'Arduous', 'Test'].includes(difficulty)) {

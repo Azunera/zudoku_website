@@ -321,6 +321,7 @@ label {
 }
 
 .openbtn {
+    position: absolute;
     font-size: 20px;
     display: flex;
     flex-direction: row-reverse;
@@ -329,7 +330,7 @@ label {
     color: rgb(0, 0, 0);
     border: none;
     padding: 10px 15px;
-    margin-left:0px;
+    margin-left: 1100px;
     // margin: 10px;
 
     &:hover {
@@ -424,6 +425,7 @@ label {
     }
 
     .openbtn {
+        position: relative;
         font-size: 20px;
         display: flex;
         flex-direction: row-reverse;
@@ -548,34 +550,22 @@ label {
 
 
     .button-grid {
-        display: -webkit-flex;
+        // display: -webkit-flex;
         display: flex;       
         flex-direction: row;
-        // gap: none;
-        // grid-template-columns: repeat(9, 1fr);
-        -webkit-flex-direction: row; /* Add this */
+        gap: 15px;
 
-        
     
         .number_button {
             width: 25px; // from 60
             height: 25px; // from 60
             border: none;
+
             font-size: 36px; // from 32
-            -webkit-transition: background-color 0.5s; /* Add this */
+            // -webkit-transition: background-color 0.5s; /* Add this */
 
-            transition: background-color 0.5s; //need to properly implement
+            // transition: background-color 0.5s; //need to properly implement
 
-            // .number_button_content {
-            //     transition: transform 0.5s;
-            //     display: flex;
-            //     justify-content: center;
-            //     align-items: center;
-            // }
-    
-            // &:hover .number_button_content {
-            //     transform: scale(1.3);
-            // }
         }
     }
 }

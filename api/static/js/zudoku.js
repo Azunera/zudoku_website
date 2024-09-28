@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('sudoku-canvas');
     const ratio = window.devicePixelRatio;
     const ctx = canvas.getContext('2d');
-
+    const current_hour = new Date().getHours()
+    console.log(current_hour)
     const screenWidth = screen.width
     
 
@@ -64,6 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.openNav = openNav;
     window.closeNav = closeNav;
+
+    console.log(current_hour)
+    if (current_hour >= 6 && current_hour <= 18) { 
+        setTheme('1')
+    } else {
+        setTheme('2')
+    }
     
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -91,6 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.font = `${cellSize / 2}px Dancing Script`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+
+        let selected_row, selected_col; 
+
+        if (selectedCell) {
+            selected_row = selectedCell.row; // Access row directly
+            selected_col = selectedCell.col; // Access col directly
+        }
+
         
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
@@ -98,6 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     highlightCell(row,col)
                 }
 
+                if (selected_row == row && selected_col == col) {
+                    highlightingSelectedCell()
+                }
+                
                 ctx.fillStyle == sudoku.color;
 
                 // Deciding the color of the numbers
@@ -121,10 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.font = `${cellSize / 2}px Dancing Script`;
                 } else if (num != ' ' ) {
                     ctx.fillText(num, x, y);
-                    }
+                } 
+            
                 }
             }
-            highlightingSelectedCell()
         }
 
     function drawNotes(ctx, num, x, y, cellSize) {
@@ -169,19 +189,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const x = col * cellSize + 1;
             const y = row * cellSize + 1;
             const size = cellSize - 2;
-    
+
+            ctx.save();
             ctx.shadowBlur = 20; 
             ctx.shadowColor = 'rgba(173, 216, 230, 1)'; 
+
             ctx.shadowOffsetX = 0; 
             ctx.shadowOffsetY = 0; 
     
             ctx.fillStyle = 'rgba(173, 216, 230, 0.5)';  
-            
+
+            if (numbers_style == 'light') {
+                ctx.shadowColor = 'rgba(138, 173, 184, 1)';
+                ctx.fillStyle = 'rgba(138, 173, 184, 0.5)';
+            }
+
             ctx.fillRect(x, y, size, size);
     
             // Reseting shadow settings
             ctx.shadowBlur = 0;
             ctx.shadowColor = 'transparent';
+            ctx.restore();
         }
     }
 
@@ -198,17 +226,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const y = row * cellSize + 1;
         const size = cellSize - 2;
 
-        ctx.shadowBlur = 20; 
-        ctx.shadowColor = 'rgba(255, 102, 102, 1)';
-        ctx.shadowOffsetX = 0; 
-        ctx.shadowOffsetY = 0; 
-        ctx.fillStyle = 'rgba(255, 102, 102, 0.5)';
-        
-        ctx.fillRect(x, y, size, size);
+        ctx.save();
+        // Apply shadow properties for highlighting
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = 'rgba(255, 102, 102, 0.6)';
 
-        // Reseting shadow settings
-        ctx.shadowBlur = 0;
-        ctx.shadowColor = 'transparent';
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+    
+        ctx.fillStyle = 'rgba(255, 102, 102, 0.3)';
+        // if (numbers_style == 'light') {
+        //     ctx.shadowColor = 'rgba(204, 82, 82, 0.3)';
+        // }
+        ctx.fillRect(x, y, size, size);
+    
+        // Restore the context state to remove shadow properties
+        ctx.restore();
     }
 
     function handleClick(event) {
@@ -249,10 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     sudoku.sudoku[row][col] = num;
                 if (!sudoku.check_cell(row, col)) {
                     sudoku.lives -= 1;
-                    sudoku.number_color[row][col] = [sudoku.colors.DARK_WRONG_RED, sudoku.colors.DARK_WRONG_RED];
+                    sudoku.number_color[row][col] = [sudoku.colors.WRONG_RED, sudoku.colors.WRONG_RED];
                     document.getElementById('lives-label').innerHTML = `${sudoku.lives} lives`;  // used to be lives left          
                 } else {
-                    sudoku.number_color[row][col] = [sudoku.colors.DARK_CORRECT_BLUE, sudoku.colors.DARK_CORRECT_BLUE];
+                    sudoku.number_color[row][col] = [sudoku.colors.DARK_CORRECT_BLUE, sudoku.colors.LIGHT_CORRECT_BLUE];
                 }
                 }    
             }
@@ -306,9 +339,13 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', (event) => {
             sudoku.generateSudoku();
             sudoku.setDifficulty(event.target.textContent);
+            sudoku.findWrongs();
+            sudoku.clear_colors_and_notes()
+            selectedCell = null;
 
-            drawGrid()
-            drawNumbers()
+    
+            drawGrid();
+            drawNumbers();
         })
     })
 
@@ -369,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 color = '#f0e68c';
                 color2 = '#ffffff';
                 sudoku.color = '#f0e68c'; 
-                numbers_style = 'light'
+                numbers_style = 'light';
 
                 drawGrid();
                 drawNumbers();
@@ -378,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.add('aquatic');
                 color = '#000000';
                 sudoku.color = '#000000';
-                numbers_style = 'dark'
+                numbers_style = 'dark';
 
                 drawGrid();
                 drawNumbers();
@@ -386,7 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
             case '4': // Twilight
                 document.body.classList.add('twilight');
                 color = '#ffe4e1';
+                
                 sudoku.color = '#ffffff'; 
+                numbers_style = 'light';
                 drawGrid();
                 drawNumbers();
                 break;
