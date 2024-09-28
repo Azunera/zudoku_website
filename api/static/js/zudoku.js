@@ -266,8 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function insert_number(num) {
         if (sudoku.lives <=  0) 
             return
-        if (selectedCell && num < "1" && num > "9") 
-            return 
+        if (!selectedCell)
+            return
+        if (num == '0')
+            return
+        if (!/^\d+$/.test(num)) 
+            return
 
         const { row, col } = selectedCell;
 
