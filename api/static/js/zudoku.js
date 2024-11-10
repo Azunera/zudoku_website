@@ -1,15 +1,16 @@
 import Sudoku from './zudoku_class.js'
+import {startFireworks, stopFireworks} from './fireworks.js'
 import {saveSudoku, loadSudoku, welcomeLogin, getUserInfo} from './saveLoad.js'
 
 document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('sudoku-canvas');
-    const ratio = window.devicePixelRatio;
-    const ctx = canvas.getContext('2d');
-    const current_hour = new Date().getHours()
-    console.log(current_hour)
-    const screenWidth = screen.width
-    
 
+    let numbers_style = 'dark'; 
+    let selectedCell = null;
+    let notes_mode = false;
+    let sudoku = new Sudoku();
+    const current_hour = new Date().getHours()
+    sudoku.generateSudoku('Medium');
+    
     // Logic for adjusts in canvas-resolution and moving html elementsd for mobile adaptation
     const lives_label = document.getElementById('lives-label');
     const mobile_row = document.getElementById('mobile-row1');
@@ -17,12 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const load = document.getElementById('load');
     const notes = document.getElementById('notes')
 
-    if (screenWidth < 620) {
-        canvas.width = screenWidth * 0.9, canvas.height = screenWidth * 0.9
-        
-        canvas.width  *=  ratio;
-        canvas.height *=  ratio;
+    // Variables for adjusting canvas sizing and graphics.
+    const ratio = window.devicePixelRatio || 1;
+    const screenWidth = screen.width;
+    const canvas = document.getElementById('sudoku-canvas');
+    const ctx = canvas.getContext('2d');
 
+    if (screenWidth < 620) {
+        canvas.width = screenWidth * 0.9 * ratio;
+        canvas.height = screenWidth * 0.9 * ratio;
         canvas.style.width = screenWidth * 0.9 + "px";
         canvas.style.height = screenWidth * 0.9 + "px";
 
@@ -36,25 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     } else {
-            
-        canvas.width  *=  ratio;
-        canvas.height *=  ratio;
-
+        canvas.width  *= ratio;
+        canvas.height *= ratio;
         canvas.style.width = 450 + "px";
-        canvas.style.height = 450 + "px";
+        canvas.style.height =450 + "px";
     }
 
     canvas.getContext("2d").scale(ratio, ratio);
     const cellSize = canvas.width / 9 / ratio;
 
-    let numbers_style = 'dark'; 
-    let selectedCell = null;
-    let notes_mode = false;
-    let sudoku = new Sudoku();
-
-    sudoku.generateSudoku();
-    sudoku.setDifficulty('Medium');
-    
     function openNav() {
         document.getElementById('mySidebar').style.width = '200px';
     }
@@ -66,22 +60,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.openNav = openNav;
     window.closeNav = closeNav;
 
-    console.log(current_hour)
     if (current_hour >= 6 && current_hour <= 18) { 
         setTheme('1')
+        numbers_style = 'dark'; 
     } else {
         setTheme('2')
+        numbers_style = 'light'; 
     }
     
     function drawGrid() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         if (numbers_style == 'dark') { 
-            ctx.fillStyle = sudoku.number_color[0][0][0];
+            ctx.strokeStyle = sudoku.number_color[0][0][0];
         } 
         else if (numbers_style == 'light') {
-            ctx.fillStyle = sudoku.number_color[1][1][1];
+            ctx.strokeStyle = sudoku.number_color[1][1][1];
         }
-
 
         for (let i = 0; i <= 9; i++) {
             ctx.lineWidth = (i % 3 === 0) ? 2 : 0.5;
@@ -91,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.moveTo(0, i * cellSize);
             ctx.lineTo(canvas.width *1.1, i * cellSize);
             ctx.stroke();
+            
         }
         // highlightingSelectedCell()
     }
@@ -243,6 +239,54 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore the context state to remove shadow properties
         ctx.restore();
     }
+    // const canvas = document.getElementById('sudoku-canvas');
+    const numberButtons = document.getElementsByClassName('number_button_content');
+    
+    let selectedNumber = null;
+    // Add drag event listeners to number buttons
+    for (let i = 0; i < numberButtons.length; i++) {
+        
+        numberButtons[i].addEventListener('dragstart', (event) => {
+            selectedNumber = parseInt(event.target.id, 10);
+
+            event.dataTransfer.setData('text/plain', selectedNumber);
+        });
+    }
+
+
+    // Add drop event listeners to the canvas
+    canvas.addEventListener('dragover', (event) => {
+        event.preventDefault();
+    });
+
+    canvas.addEventListener('drop', (event) => {
+        event.preventDefault();
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        const col = Math.floor(x / cellSize);
+        const row = Math.floor(y / cellSize);
+
+        // If a number was dragged, place it in the grid
+        if (selectedNumber) {
+            selectedCell = { row, col };
+            insert_number(selectedNumber)
+            selectedNumber = null;
+            drawGrid(); 
+            drawNumbers();
+        }
+    });
+
+    // Function to insert a number into a cell
+    // function insert_number_into_cell(row, col, number) {
+    //     // Update your sudoku data model with the number at the specified row and column
+    //     // Example: sudokuGrid[row][col] = number;
+    // }
+
+    // Update the canvas to handle click events
+    canvas.addEventListener('click', handleClick);
 
     function handleClick(event) {
         const rect = canvas.getBoundingClientRect();
@@ -304,14 +348,22 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 sudoku.notes[row][col][num-1] = num;
             }
-            
-            
         }
+
         sudoku.findWrongs()
         drawGrid();
         drawNumbers();  
+        if (sudoku.check_victory()) {
+            victory();
+            setTheme('2');
         }
+    }
         
+
+    function victory() {
+        startFireworks()
+        document.getElementById('win-overlay').style.display = 'flex';
+    }
 
     function handleKeyPress(event) {
         insert_number(event.key);
@@ -323,16 +375,16 @@ document.addEventListener('DOMContentLoaded', () => {
     drawGrid();
     drawNumbers();
     
-    document.getElementById('notes').addEventListener('click', () => {
+    notes.addEventListener('click', () => {
         notes_mode = !notes_mode
     });
 
     // SAVING AND LOADING SYSTEM
-    document.getElementById('save').addEventListener('click', () => {
+    save.addEventListener('click', () => {
         saveSudoku(sudoku);
     });
 
-    document.getElementById('load').addEventListener('click', async () => {
+    load.addEventListener('click', async () => {
         await loadSudoku(sudoku);
         drawGrid();
         drawNumbers();
@@ -341,13 +393,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // SETTING DIFFICULTIES
     document.querySelectorAll('.difficulty_button').forEach(button => {
         button.addEventListener('click', (event) => {
-            sudoku.generateSudoku();
-            sudoku.setDifficulty(event.target.textContent);
+            sudoku.generateSudoku(event.target.textContent);
             sudoku.findWrongs();
             sudoku.clear_colors_and_notes()
             selectedCell = null;
 
-    
             drawGrid();
             drawNumbers();
         })
@@ -466,7 +516,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         });
     }
-    
+    document.getElementById('play-again').addEventListener('click', () => {
+        document.getElementById('win-overlay').style.display = 'none';
+        document.getElementById(sudoku.difficulty + "-button").click();
+        stopFireworks()
+
+    });
+
+    document.getElementById('exit').addEventListener('click', () => {
+        document.getElementById('win-overlay').style.display = 'none';
+        stopFireworks()
+    });
     welcomeLogin()
     
 });

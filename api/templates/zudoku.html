@@ -9,9 +9,11 @@
     <link rel="icon" href="../static/images/favicon.ico">
     <!-- <link rel="stylesheet" href="../static/css/index.css"> -->
     <link rel="stylesheet" href="../static/css/zudoku.css">
-</head>
+</head
 <body>
+    <canvas id="fireworksCanvas"></canvas>   
     <!-- Dropdown for styling, its as fixed location-->
+    
     <div id="mySidebar" class="sidebar">
         <a class="closebtn" onclick="closeNav()">×</a>
         <a id="register" href="register">Register</a></li>
@@ -50,7 +52,7 @@
         <button class="difficulty_button" id="easy-button">Easy</button>
         <button class="difficulty_button" id="medium-button">Medium</button>
         <button class="difficulty_button" id="hard-button">Hard</button>
-        <button class="difficulty_button" id="arduous-button">Arduous</button>
+        <button class="difficulty_button" id="evil-button">Test</button>
     </div>
 
     <div class="sudoku-container">
@@ -69,15 +71,15 @@
             <button id="notes">Notes</button>
 
             <div class="button-grid">
-                <button class="number_button"><span class="number_button_content" id="1">1</button>
-                <button class="number_button"><span class="number_button_content" id="2">2</button>
-                <button class="number_button"><span class="number_button_content" id="3">3</button>
-                <button class="number_button"><span class="number_button_content" id="4">4</button>
-                <button class="number_button"><span class="number_button_content" id="5">5</button>
-                <button class="number_button"><span class="number_button_content" id="6">6</button>
-                <button class="number_button"><span class="number_button_content" id="7">7</button>
-                <button class="number_button"><span class="number_button_content" id="8">8</button>
-                <button class="number_button"><span class="number_button_content" id="9">9</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="1">1</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="2">2</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="3">3</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="4">4</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="5">5</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="6">6</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="7">7</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="8">8</button>
+                <button class="number_button"><span class="number_button_content" draggable="true"id="9">9</button>
             </div>
 
             <div class="filler pc-only"></div> 
@@ -96,5 +98,14 @@
     </div>
     
     <script type="module" src="../static/js/zudoku.js"></script>
+
+    <div id="win-overlay" class="overlay">
+        <div class="win-modal">
+            <h2>You Win!</h2>
+            <button id="play-again">Play Again</button>
+            <button id="exit">Exit</button>
+        </div>
+    </div>
+
 </body>
 </html>

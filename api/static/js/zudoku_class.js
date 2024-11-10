@@ -1,24 +1,3 @@
-// export default class Colors {
-//     static WRONG_RED_DARK = "#1E5A8C"; // Tomato Red
-//     static LIGHTER_WRONG_RED = "rgb(255, 150, 128)";
-//     static DARKER_WRONG_RED = "rgb(205, 49, 21)";
-//     static CORRECT_BLUE = "rgb(70, 130, 180)"; // Steel Blue
-//     static LIGHTER_CORRECT_BLUE = "rgb(100, 170, 220)";
-//     static DARKER_CORRECT_BLUE = "rgb(30, 90, 140)";
-// }
-// RGB: (255, 150, 128)
-// Hex: #FF9680
-// Lighter Steel Blue:
-// RGB: (100, 170, 220)
-// Hex: #64AAD8
-// Darker Versions:
-// Darker Tomato Red:
-// RGB: (205, 49, 21)
-// Hex: #CD3115
-// Darker Steel Blue:
-// RGB: (30, 90, 140)
-// Hex: #1E5A8C
-
 export default class Sudoku {
     constructor() {
         this.colors = {
@@ -78,8 +57,202 @@ export default class Sudoku {
    
         return true;    
     };
+
+    check_victory() {
+        if (this.check()) {
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    if (this.sudoku[r][c] == ' ') {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; 
+        }
+        return array;
+    }
+    
+    generate_full_board() {
+        this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(" "));
+        let numbers = this.shuffle(Array.from({ length: 9 }, (_, x) => (x + 1).toString()));
+        this.fill_board(numbers);
+    }
+    
+    fill_board(numbers) {
+        let empty = this.find_empty(this.sudoku);
+        if (!empty) {
+            return true;
+        }
+        let [row, col] = empty;
+    
+        for (let num of numbers) {
+            if (this.is_valid(this.sudoku, num, [row, col])) {
+                this.sudoku[row][col] = num;
+                if (this.fill_board(numbers)) {
+                    return true;
+                }
+                this.sudoku[row][col] = " ";
+            }
+        }
+        return false;
+    }
+    
+    solve(board) {
+        let empty = this.find_empty(board);
+        if (!empty) {
+            return true;
+        }
+        let [row, col] = empty;
+    
+        for (let num of Array.from({ length: 9 }, (_, x) => (x + 1).toString())) {
+            if (this.is_valid(board, num, [row, col])) {
+                board[row][col] = num;
+                if (this.solve(board)) {
+                    return true;
+                }
+                board[row][col] = " ";
+            }
+        }
+        return false;
+    }
+    
+    is_valid(board, num, pos) {
+        let [row, col] = pos;
+    
+        // Checking row
+        if (board[row].includes(num)) {
+            return false;
+        }
+    
+        // Checking column
+        if ([...Array(9)].some((_, r) => board[r][col] === num)) {
+            return false;
+        }
+    
+        // Determine 3x3 box
+        let box_x = Math.floor(col / 3);
+        let box_y = Math.floor(row / 3);
+    
+        // Check within the 3x3 box
+        for (let x = box_y * 3; x < box_y * 3 + 3; x++) {
+            for (let y = box_x * 3; y < box_x * 3 + 3; y++) {
+                if (board[x][y] === num) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    find_empty(board) {
+        for (let x = 0; x < 9; x++) {
+            for (let y = 0; y < 9; y++) {
+                if (board[x][y] === " ") {
+                    return [x, y];
+                }
+            }
+        }
+        return null;
+    }
+    
+    has_unique_solution() {
+        let sudoku_copy = JSON.parse(JSON.stringify(this.sudoku));
+        const max_solutions = 2;
+        let solutions = this.solve_multiple(sudoku_copy, max_solutions);
+        return solutions === 1;
+    }
+    
+    solve_multiple(board, max_solutions) {
+        let empty = this.find_empty(board);
+        if (!empty) {
+            return 1;
+        }
+        let [row, col] = empty;
+        let solutions = 0;
+    
+        for (let num of Array.from({ length: 9 }, (_, x) => (x + 1).toString())) {
+            if (this.is_valid(board, num, [row, col])) {
+                board[row][col] = num;
+                solutions += this.solve_multiple(board, max_solutions);
+                board[row][col] = " ";
+                if (solutions >= max_solutions) {
+                    return solutions;
+                }
+            }
+        }
+        return solutions;
+    }
+    
+    generateSudoku(difficulty, hints = null) {
+        if (!hints) {
+            const validDifficulties = ["easy", "medium", "hard", "evil", "test"];
+            const fDifficulty = difficulty.toLowerCase();
+            if (!validDifficulties.includes(fDifficulty)) {
+                throw new Error("Invalid difficulty");
+            }
+
+            this.difficulty = fDifficulty
      
-    generateSudoku() {
+            let dif_index = validDifficulties.indexOf(fDifficulty);
+            hints = 35 - (5 * dif_index) + Math.floor(Math.random() * 5);
+            this.lives = 4 + 2 * dif_index;
+
+            if (dif_index === 4) {
+                hints = 80;
+                this.lives = 10;
+            } 
+
+        } else {
+            this.lives = 6;
+        }
+    
+        const attempts = 5;
+    
+        for (let attempt = 0; attempt < attempts; attempt++) {
+            this.generate_full_board();
+            this.solution = JSON.parse(JSON.stringify(this.sudoku));
+    
+            const cells = this.shuffle(
+                Array.from({ length: 9 }, (_, x) =>
+                    Array.from({ length: 9 }, (_, y) => [x, y])
+                ).flat()
+            );
+    
+            let filledCells = 81;
+    
+            for (const [row, col] of cells) {
+                if (filledCells <= hints) {
+                    break;
+                }
+                const backup = this.sudoku[row][col];
+                this.sudoku[row][col] = " ";
+    
+                if (!this.has_unique_solution()) {
+                    this.sudoku[row][col] = backup;
+                } else {
+                    filledCells--;
+                }
+            }
+    
+            if (filledCells <= hints) {
+                break;
+            } else {
+                console.log("Could not reach the target hints; generated closest possible.");
+            }
+        }
+    
+        this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
+        return this.sudoku;
+    }
+    
+
+    generateSudoku2() {
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
         let n = 1;
         let r = -1;
@@ -155,13 +328,6 @@ export default class Sudoku {
         this.solution = JSON.parse(JSON.stringify(this.sudoku));
         this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => ['WHITE', 'BLACK']));
     }
-    shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
 
     check_cell(x,y) {
         if (this.sudoku[x][y] == this.solution[x][y]) {
@@ -191,10 +357,7 @@ export default class Sudoku {
         }
     }
 
-    // checkNumber(x,y) {
-    //     this.sudoku
-    // }
-    
+
     clear_colors_and_notes() {
         this.notes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']));
         this.notes_map = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => false));
@@ -203,7 +366,7 @@ export default class Sudoku {
     }
 
     setDifficulty(difficulty) {
-        if (!['Easy', 'Medium', 'Hard', 'Arduous', 'Test'].includes(difficulty)) {
+        if (!['Easy', 'Medium', 'Hard', 'Evil', 'Test'].includes(difficulty)) {
             throw new Error('Invalid difficulty');
         }
 
@@ -211,8 +374,8 @@ export default class Sudoku {
 
         let emptyCells;
         if (difficulty === 'Easy') {
-            emptyCells = 40;
-            this.lives = 10;
+            emptyCells = 1; // used to be 40
+            this.lives = 5;
             document.getElementById('lives-label').innerHTML = `${this.lives} lives`;
         } else if (difficulty === 'Medium') {
             emptyCells = 50;
