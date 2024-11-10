@@ -239,53 +239,66 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore the context state to remove shadow properties
         ctx.restore();
     }
-    // const canvas = document.getElementById('sudoku-canvas');
+
     const numberButtons = document.getElementsByClassName('number_button_content');
-    
+
     let selectedNumber = null;
-    // Add drag event listeners to number buttons
+
     for (let i = 0; i < numberButtons.length; i++) {
-        
+  
         numberButtons[i].addEventListener('dragstart', (event) => {
             selectedNumber = parseInt(event.target.id, 10);
-
             event.dataTransfer.setData('text/plain', selectedNumber);
+        });
+
+        
+        numberButtons[i].addEventListener('touchstart', (event) => {
+            selectedNumber = parseInt(event.target.id, 10);
         });
     }
 
 
-    // Add drop event listeners to the canvas
     canvas.addEventListener('dragover', (event) => {
         event.preventDefault();
     });
 
+
     canvas.addEventListener('drop', (event) => {
         event.preventDefault();
+        handleDrop(event.clientX, event.clientY);
+    });
 
+
+    canvas.addEventListener('touchmove', (event) => {
+        event.preventDefault(); 
+    });
+
+    canvas.addEventListener('touchend', (event) => {
+        event.preventDefault();
+
+        const touch = event.changedTouches[0];
+        handleDrop(touch.clientX, touch.clientY);
+    });
+
+
+    function handleDrop(clientX, clientY) {
         const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
 
-        // If a number was dragged, place it in the grid
+
         if (selectedNumber) {
             selectedCell = { row, col };
-            insert_number(selectedNumber)
+            insert_number(selectedNumber);
             selectedNumber = null;
-            drawGrid(); 
+            drawGrid();
             drawNumbers();
         }
-    });
+    }
 
-    // Function to insert a number into a cell
-    // function insert_number_into_cell(row, col, number) {
-    //     // Update your sudoku data model with the number at the specified row and column
-    //     // Example: sudokuGrid[row][col] = number;
-    // }
-
-    // Update the canvas to handle click events
     canvas.addEventListener('click', handleClick);
 
     function handleClick(event) {
