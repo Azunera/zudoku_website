@@ -202,11 +202,13 @@ export default class Sudoku {
             let dif_index = validDifficulties.indexOf(fDifficulty);
             hints = 35 - (5 * dif_index) + Math.floor(Math.random() * 5);
             this.lives = 4 + 2 * dif_index;
+            document.getElementById('lives-label').innerHTML = `${this.lives} lives `
 
-            if (dif_index === 4) {
+            if (dif_index === 4) { // only for testing
                 hints = 80;
-                this.lives = 10;
+                this.lives = 100;
             } 
+            
 
         } else {
             this.lives = 6;
