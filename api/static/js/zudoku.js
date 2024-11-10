@@ -239,57 +239,57 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore the context state to remove shadow properties
         ctx.restore();
     }
-
+    // const canvas = document.getElementById('sudoku-canvas');
     const numberButtons = document.getElementsByClassName('number_button_content');
-
+    
     let selectedNumber = null;
-
+    
     for (let i = 0; i < numberButtons.length; i++) {
-  
-        numberButtons[i].addEventListener('dragstart', (event) => {
-            selectedNumber = parseInt(event.target.id, 10);
-            event.dataTransfer.setData('text/plain', selectedNumber);
-        });
-
         
-        numberButtons[i].addEventListener('touchstart', (event) => {
-            selectedNumber = parseInt(event.target.id, 10);
-        });
+        if (screenWidth < 620) {
+            numberButtons[i].addEventListener('touchstart', (event) => {
+                console.log('hey!')
+                selectedNumber = parseInt(event.target.id, 10);
+                // event.dataTransfer.setData('text/plain', selectedNumber);
+            });
+        } else {
+            numberButtons[i].addEventListener('dragstart', (event) => {
+                console.log('how?!')
+                selectedNumber = parseInt(event.target.id, 10);
+    
+                event.dataTransfer.setData('text/plain', selectedNumber);
+            });
+        }
     }
 
+    canvas.addEventListener('touchmove', (event) => {
+        event.preventDefault();
+    });
 
     canvas.addEventListener('dragover', (event) => {
         event.preventDefault();
     });
 
-
     canvas.addEventListener('drop', (event) => {
         event.preventDefault();
-        handleDrop(event.clientX, event.clientY);
-    });
-
-
-    canvas.addEventListener('touchmove', (event) => {
-        event.preventDefault(); 
+        handleDrop(event.clientX, event.clientY)
     });
 
     canvas.addEventListener('touchend', (event) => {
-        event.preventDefault();
-
+        // event.preventDefault();
         const touch = event.changedTouches[0];
         handleDrop(touch.clientX, touch.clientY);
     });
-
 
     function handleDrop(clientX, clientY) {
         const rect = canvas.getBoundingClientRect();
         const x = clientX - rect.left;
         const y = clientY - rect.top;
-
+    
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
-
-
+    
+        // If a number was selected, place it in the grid
         if (selectedNumber) {
             selectedCell = { row, col };
             insert_number(selectedNumber);
@@ -299,6 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+    // Update the canvas to handle click events
     canvas.addEventListener('click', handleClick);
 
     function handleClick(event) {
