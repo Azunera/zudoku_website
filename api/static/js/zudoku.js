@@ -243,20 +243,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const numberButtons = document.getElementsByClassName('number_button_content');
     
     let selectedNumber = null;
-    
+    let dragSelect = false;
+
     for (let i = 0; i < numberButtons.length; i++) {
         
         if (screenWidth < 620) {
             numberButtons[i].addEventListener('touchstart', (event) => {
-                console.log('hey!')
                 selectedNumber = parseInt(event.target.id, 10);
+                dragSelect = true;
                 // event.dataTransfer.setData('text/plain', selectedNumber);
             });
         } else {
             numberButtons[i].addEventListener('dragstart', (event) => {
-                console.log('how?!')
                 selectedNumber = parseInt(event.target.id, 10);
-    
+
                 event.dataTransfer.setData('text/plain', selectedNumber);
             });
         }
@@ -277,8 +277,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     canvas.addEventListener('touchend', (event) => {
         // event.preventDefault();
-        const touch = event.changedTouches[0];
-        handleDrop(touch.clientX, touch.clientY);
+        if (dragSelect) {
+            const touch = event.changedTouches[0];
+            handleDrop(touch.clientX, touch.clientY);
+            dragSelect = false;
+         } 
     });
 
     function handleDrop(clientX, clientY) {
@@ -293,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedNumber) {
             selectedCell = { row, col };
             insert_number(selectedNumber);
-            selectedNumber = null;
+            // selectedNumber = null;
             drawGrid();
             drawNumbers();
         }
