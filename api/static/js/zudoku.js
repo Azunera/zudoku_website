@@ -72,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         if (numbers_style == 'dark') { 
-            ctx.strokeStyle = sudoku.number_color[0][0][0];
+            ctx.strokeStyle = "rgb(0,0,0)";
         } 
         else if (numbers_style == 'light') {
-            ctx.strokeStyle = sudoku.number_color[1][1][1];
+            ctx.strokeStyle = "rgb(200,200,200)";
         }
 
         for (let i = 0; i <= 9; i++) {
@@ -275,14 +275,14 @@ document.addEventListener('DOMContentLoaded', () => {
         handleDrop(event.clientX, event.clientY)
     });
 
-    canvas.addEventListener('touchend', (event) => {
-        // event.preventDefault();
-        if (dragSelect) {
-            const touch = event.changedTouches[0];
-            handleDrop(touch.clientX, touch.clientY);
-            dragSelect = false;
-         } 
-    });
+    // canvas.addEventListener('touchend', (event) => {
+    //     // event.preventDefault();
+    //     // if (dragSelect) {
+    //     //     const touch = event.changedTouches[0];
+    //     //     handleDrop(touch.clientX, touch.clientY);
+    //     //     dragSelect = false;
+    //     //  } 
+    // });
 
     function handleDrop(clientX, clientY) {
         const rect = canvas.getBoundingClientRect();
@@ -313,14 +313,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const col = Math.floor(x / cellSize);
         const row = Math.floor(y / cellSize);
-
-        // Checking if the clicked cell is the same as the currently selected cell
-        if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
-            selectedCell = null;
-        } else {
-            selectedCell = { row, col };
+        console.log(dragSelect)
+        if (dragSelect) {
+            dragSelect = false;
+            console.log(dragSelect)
+            const touch = event.changedTouches[0];
+            handleDrop(touch.clientX, touch.clientY);
+         } else {
+            // Checking if the clicked cell is the same as the currently selected cell
+            if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
+                selectedCell = null;
+            } else {
+                selectedCell = { row, col };
+            }
         }
-
         drawGrid(); 
         drawNumbers(); 
     }

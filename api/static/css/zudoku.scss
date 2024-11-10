@@ -70,6 +70,10 @@ h1 {
     text-align: center;
     font-size: 48px;
     text-shadow: 2px 2px 4px #aaa;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Standard */
 
     // & {
     //     background: linear-gradient(to right, red, blue);
@@ -119,6 +123,10 @@ p {
     padding: 10px;
     margin: 0;
     text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Standard */
 }
 
 .sudoku-container {
@@ -268,13 +276,17 @@ p {
         justify-content: center;
         align-items: center;
         margin: 0px;
-        overflow: hidden;
+        overflow: visible;
 
         .number_button_content {
             transition: transform 0.5s;
             display: flex;
             justify-content: center;
             align-items: center;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE10+/Edge */
+            user-select: none;         /* Standard */
         }
 
         &:hover .number_button_content {
@@ -323,6 +335,10 @@ label {
     font-family: 'Dancing Script', cursive;
     text-decoration: none;
     font-size: 30px;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Standard */
 }
 
 .dropdown {
