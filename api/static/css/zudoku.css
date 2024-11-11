@@ -5,7 +5,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f2f2f2;
+  background: rgba(242, 242, 242, 0.9529411765);
   position: relative;
   overflow: hidden;
   height: 100vh;
@@ -24,27 +24,27 @@ body::before {
   opacity: 0.5;
 }
 body.daylight {
-  background-color: #ECFEFF;
+  background-color: rgba(236, 254, 255, 0.9529411765);
   color: #333;
 }
 body.daylight::before {
   background-image: url("../images/skylight.jpg");
 }
 body.moonlight {
-  background-color: #1a1a2e;
+  background-color: rgba(26, 26, 46, 0.9529411765);
 }
 body.moonlight::before {
   background-image: url("../images/night.jpg");
 }
 body.aquatic {
-  background-color: #e0f7fa;
+  background-color: rgba(224, 247, 250, 0.9529411765);
   color: #00796b;
 }
 body.aquatic::before {
   background-image: url("../images/aquatic2.png");
 }
 body.twilight {
-  background-color: #aa6a93;
+  background-color: rgba(170, 106, 147, 0.9529411765);
   color: #ffffff;
 }
 body.twilight::before {
@@ -59,9 +59,9 @@ h1 {
   text-align: center;
   font-size: 48px;
   text-shadow: 2px 2px 4px #aaa;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */ /* IE10+/Edge */
-  user-select: none; /* Standard */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 h2 {
@@ -266,6 +266,10 @@ p {
   display: block;
   cursor: pointer;
   transition: transform 0.3s ease;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */ /* IE10+/Edge */
+  user-select: none; /* Standard */
+  -webkit-tap-highlight-color: transparent;
 }
 .difficulty_button:hover, .bottom_buttons:hover, #notes:hover {
   transform: scale(1.2);
