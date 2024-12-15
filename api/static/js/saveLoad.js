@@ -21,10 +21,10 @@ async function getUserInfo() {
 
 async function getUserSudoku() {
     const response = await fetch('/load', {
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
     });
 
@@ -81,6 +81,7 @@ async function loadSudoku(sudoku) {
     const userZudoku = await getUserSudoku();
     if (userZudoku) {
         sudoku.sudoku = JSONtoObject(userZudoku.zudoku.sudoku);
+        
         sudoku.difficulty = userZudoku.zudoku.difficulty;
         // sudoku.statuses = JSONtoObject(userZudoku.zudoku.status);
         sudoku.solution = JSONtoObject(userZudoku.zudoku.solution);

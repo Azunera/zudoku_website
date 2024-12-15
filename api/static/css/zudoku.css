@@ -195,9 +195,9 @@ p {
 }
 
 .row, .mobile-only-row {
-  display: flex;
-  flex-direction: horizontal;
-  align-items: center;
+  display: flex; /* Enables flexbox */
+  justify-content: center; /* Centers items horizontally */
+  align-items: center; /* Optional: Centers items vertically */
 }
 
 .mobile-only-row {
@@ -367,8 +367,11 @@ label {
 }
 
 .openbtn {
-  position: absolute;
-  font-size: 20px;
+  position: fixed;
+  bottom: 1;
+  right: 0;
+  margin-right: 150px;
+  font-size: 25px;
   display: flex;
   flex-direction: row-reverse;
   cursor: pointer;
@@ -396,6 +399,9 @@ label {
   margin-top: 10px;
   display: block;
   color: #333;
+}
+.entry-form input {
+  background: rgba(255, 255, 255, 0.4);
 }
 .entry-form input[type=text],
 .entry-form input[type=password] {

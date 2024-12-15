@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const y = row * cellSize + cellSize / 2;
 
                 // VERY IMPORTANT LOGIC ORDER!, should be kept in this form to avoid issues)
-
                 if (sudoku.notes_map[row][col]) {
                     ctx.font = `${cellSize / 4}px Dancing Script`;
                     drawNotes(ctx, sudoku.notes[row][col], x, y, cellSize);
@@ -302,7 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     // Update the canvas to handle click events
     canvas.addEventListener('click', handleClick);
 
@@ -358,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('lives-label').innerHTML = `${sudoku.lives} lives`;  // used to be lives left          
                 } else {
                     sudoku.number_color[row][col] = [sudoku.colors.DARK_CORRECT_BLUE, sudoku.colors.LIGHT_CORRECT_BLUE];
+
                 }
                 }    
             }
@@ -410,8 +409,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     load.addEventListener('click', async () => {
         await loadSudoku(sudoku);
+        sudoku.findWrongs()
         drawGrid();
         drawNumbers();
+        
     });
 
     // SETTING DIFFICULTIES
@@ -501,9 +502,9 @@ document.addEventListener('DOMContentLoaded', () => {
             case '4': // Twilight
                 document.body.classList.add('twilight');
                 color = '#ffe4e1';
-                
                 sudoku.color = '#ffffff'; 
                 numbers_style = 'light';
+
                 drawGrid();
                 drawNumbers();
                 break;
@@ -515,14 +516,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         document.querySelector('h1').style.color = color;
-
+        document.querySelector('#notes').style.color = color2;
         document.querySelector('label').style.color = color2;
 
-        // document.getElementById('dropdownButton').style.color = color2; 
-
-        // document.querySelectorAll('.option').forEach(style_option => {
-        //     style_option.style.color = color2;
-        // })
 
         document.querySelectorAll('.number_button').forEach(button => {
             button.style.color = color2;

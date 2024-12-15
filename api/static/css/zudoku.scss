@@ -20,7 +20,6 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        // background: url('a.png') no-repeat center center fixed;
         background-size: cover;
         z-index: -1;
         opacity: 0.5;
@@ -235,9 +234,9 @@ p {
 }
 
 .row, .mobile-only-row {
-    display: flex;
-    flex-direction: horizontal;
-    align-items: center;
+    display: flex;        /* Enables flexbox */
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;  /* Optional: Centers items vertically */
 }
 
 .mobile-only-row {
@@ -253,6 +252,8 @@ p {
     max-width: 450px;
     width: 100%;
 }
+
+
 
 .button-grid {
     display: grid;
@@ -433,8 +434,11 @@ label {
 }
 
 .openbtn {
-    position: absolute;
-    font-size: 20px;
+    position: fixed;
+    bottom: 1;
+    right: 0;
+    margin-right: 150px;
+    font-size: 25px;
     display: flex;
     flex-direction: row-reverse;
     cursor: pointer;
@@ -463,18 +467,21 @@ label {
     // border: 1px solid #ddd;
   
     label {
-      margin-top: 10px;
-      display: block;
-      color: #333;
+        margin-top: 10px;
+        display: block;
+        color: #333;
     }
-  
+    input {
+        background: rgba(255,255,255,0.4);
+    }
+    
     input[type="text"],
     input[type="password"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-    //   border: 1px solid #ccc;
-      border-radius: 4px;
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        //   border: 1px solid #ccc;
+        border-radius: 4px;
     }
   }
   
@@ -607,16 +614,6 @@ label {
         width: 100%;
     }
 
-    // .canva-side-container, .canva-hidden-filler{
-    //     display: flex;
-    //     flex-direction: column;
-    //     align-items: center;
-    //     margin: 20px;
-    //     gap: 50px;
-    //     max-width: 450px;
-    //     width: 100%;
-    //}
-
     .button-grid {
         order: 1;
     }
@@ -648,6 +645,7 @@ label {
         display: flex;
         flex-direction: horizontal;
         align-items: center;
+        
         gap: 0;
     }
     

@@ -2,8 +2,6 @@ export default class Sudoku {
     constructor() {
         this.colors = {
             WRONG_RED: "rgb(205, 49, 21)",    // Tomato Red
-            // LIGHT_WRONG_RED: "rgb(205, 49, 21)",  // temporally the same as dark
-            // DARK_WRONG_RED: "rgb(205, 49, 21)",
             LIGHT_CORRECT_BLUE: "rgb(100, 170, 220)", // 173, 216, 230 also cool
             DARK_CORRECT_BLUE: "rgb(30, 90, 140)",
             BLACK: 'rgb(0,0,0)',
@@ -12,7 +10,6 @@ export default class Sudoku {
 
         
         this.sudoku = Array.from({ length: 9 }, () => Array(9).fill(' '));
-        // this.statuses = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => 'clear'));
         this.notes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']));
         this.notes_map = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => false));
         this.number_color = Array.from({ length: 9}, () => Array.from({ length: 9}, () => [this.colors.BLACK, this.colors.WHITE]));
@@ -423,8 +420,8 @@ export default class Sudoku {
     
         let wrongCells = new Set(); // for wronging cell coordinates as strings and avoiding repetition of them
     
-        for (let r = 0; r < 9; r++) { // PER ROW
-            for (let c = 0; c < 9; c++) { // PER COLUMN
+        for (let r = 0; r < 9; r++) { 
+            for (let c = 0; c < 9; c++) {
                 if (this.sudoku[r][c] === ' ') {
                     continue;
                 }
