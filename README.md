@@ -1,6 +1,6 @@
 # 🌙 ...zzzudoku~
 
-Website for my game "Zudoku", currently hosting it here:
+Code hosted on for my sudoku aliased "Zudoku", currently hosted here:
 
 https://zudoku-website.vercel.app/
 
