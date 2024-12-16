@@ -1,6 +1,6 @@
 # 🌙 ...zzzudoku~
 
-Code hosted on for my sudoku aliased "Zudoku", currently hosted here:
+Code for my sudoku aliased "Zudoku", currently hosted here:
 
 https://zudoku-website.vercel.app/
 
