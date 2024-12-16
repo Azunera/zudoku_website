@@ -517,17 +517,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.querySelector('h1').style.color = color;
         document.querySelector('#notes').style.color = color2;
-        document.querySelector('label').style.color = color2;
+        document.querySelector('.openbtn').style.color = color2;
+        document.querySelector('label').style.color = color;
 
 
         document.querySelectorAll('.number_button').forEach(button => {
             button.style.color = color2;
-
+            button.style.border = `1px solid ${color2}`;
         });
         
 
         document.querySelectorAll('.bottom_buttons').forEach(button => {
             button.style.color = color2;
+            
 
         });
 

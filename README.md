@@ -5,4 +5,4 @@ https://zudoku-website.vercel.app/
 
 Choose go play online to play the online version, although the app version is also cool.
 
-![alt text](https://github.com/Azunera/zudoku_website/api/static/images/example.png)
+![alt text](api/static/images/images2.png)
