@@ -96,11 +96,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
+        let color_code = null;
         let selected_row, selected_col; 
 
         if (selectedCell) {
             selected_row = selectedCell.row; // Access row directly
             selected_col = selectedCell.col; // Access col directly
+        }
+
+        if (numbers_style == 'dark') { 
+            color_code = 0;
+        } 
+        else if (numbers_style == 'light') {
+            color_code = 1;
         }
 
         
@@ -114,15 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     highlightingSelectedCell()
                 }
                 
-                ctx.fillStyle == sudoku.color;
-
-                // Deciding the color of the numbers
-                if (numbers_style == 'dark') { 
-                    ctx.fillStyle = sudoku.number_color[row][col][0];
-                } 
-                else if (numbers_style == 'light') {
-                    ctx.fillStyle = sudoku.number_color[row][col][1];
-                }
+                // ctx.fillStyle == sudoku.color;
+                ctx.fillStyle = sudoku.number_color[row][col][color_code];
 
                 const num = sudoku.sudoku[row][col];
 
@@ -131,11 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // VERY IMPORTANT LOGIC ORDER!, should be kept in this form to avoid issues)
                 if (sudoku.notes_map[row][col]) {
+                    sudoku.sudoku[row][col] = ' ';
+                    sudoku.number_color[row][col] = [sudoku.colors.BLACK, sudoku.colors.WHITE];
+                    ctx.fillStyle = sudoku.number_color[row][col][color_code];
+                    
                     ctx.font = `${cellSize / 4}px Dancing Script`;
                     drawNotes(ctx, sudoku.notes[row][col], x, y, cellSize);
                     ctx.font = `${cellSize / 2}px Dancing Script`;
                 } else if (num != ' ' ) {
-                    ctx.fillText(num, x, y);
+                    ctx.fillText(num, x, y);    
                 } 
             
                 }
@@ -356,6 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('lives-label').innerHTML = `${sudoku.lives} lives`;  // used to be lives left          
                 } else {
                     sudoku.number_color[row][col] = [sudoku.colors.DARK_CORRECT_BLUE, sudoku.colors.LIGHT_CORRECT_BLUE];
+                    
+                    sudoku.remove_number_from_notes_area(num, row, col)
+                    // this.notes_map = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => false));
 
                 }
                 }    
@@ -399,7 +407,14 @@ document.addEventListener('DOMContentLoaded', () => {
     drawNumbers();
     
     notes.addEventListener('click', () => {
-        notes_mode = !notes_mode
+        notes_mode = !notes_mode;
+        if (notes_mode == true) {
+            notes.style.textShadow = '0 0 5px yellow';
+        }
+        else {
+            notes.style.textShadow = "none";
+        }
+
     });
 
     // SAVING AND LOADING SYSTEM
@@ -549,6 +564,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('win-overlay').style.display = 'none';
         stopFireworks()
     });
+
+
+    
     welcomeLogin()
     
 });

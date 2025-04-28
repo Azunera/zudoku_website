@@ -67,6 +67,29 @@ export default class Sudoku {
             return true;
         }
     }
+
+    remove_number_from_notes_area(number, row, col) {
+
+        let num_index = number - 1;
+
+        for (let r=0;  r<9; r++) {
+            this.notes[r][col][num_index] = ' ';
+        }
+
+        for (let c=0;  c<9; c++) {
+            this.notes[row][c][num_index] = ' ';
+        }
+
+        let box_r = Math.floor(col / 3);
+        let box_c = Math.floor(row / 3);
+    
+        for (let r = box_c * 3; r < box_c * 3 + 3; r++) {
+            for (let c = box_r * 3; c < box_r * 3 + 3; c++) {
+                this.notes[r][c][num_index] = ' '; 
+            }
+        }
+    }
+
     shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
